@@ -26,9 +26,7 @@ Thumbs.db
 *.tmp
 *.temp
 
-# Музыкальные файлы - коммитим (5-10 треков нормально)
-# Если треков станет много, раскомментируйте:
-# public/assets/music/*.mp3
-# public/assets/music/*.m4a
-# public/assets/music/*.ogg
+# Музыкальные файлы - исключаем большие (>100MB)
+public/assets/music/track-001.mp3
+# Остальные треки коммитим (они меньше 100MB)
 
