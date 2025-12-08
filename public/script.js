@@ -110,12 +110,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Загрузка плейлиста
 async function loadPlaylist() {
     try {
-        // Используем абсолютный путь от корня сайта для Cloudflare Pages
-        const basePath = window.location.pathname.split('/').slice(0, -1).join('/') || '';
-        const playlistUrl = basePath ? `${basePath}/playlist.json` : '/playlist.json';
-        
-        console.log('Загрузка плейлиста из:', playlistUrl, 'Base path:', basePath);
-        const response = await fetch(playlistUrl, {
+        // Относительный путь должен работать нормально
+        const response = await fetch('./playlist.json', {
             cache: 'no-cache'
         });
         
@@ -172,11 +168,10 @@ function loadTrack(index) {
     }
     
     currentTrackIndex = index;
-    // Используем абсолютный путь от корня для Cloudflare Pages
-    const trackPath = track.file.startsWith('/') ? track.file : '/' + track.file;
-    audioPlayer.src = trackPath;
+    // Относительный путь должен работать нормально
+    audioPlayer.src = track.file;
     
-    console.log('Загрузка трека:', trackPath, 'Track:', track.title);
+    console.log('Загрузка трека:', track.file, 'Track:', track.title);
     
     // Обновляем информацию о треке
     updateTrackInfo();
