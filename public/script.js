@@ -110,10 +110,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Загрузка плейлиста
 async function loadPlaylist() {
     try {
-        const response = await fetch('playlist.json');
+        // Используем абсолютный путь от корня сайта
+        const playlistUrl = new URL('playlist.json', window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '/')).href;
+        
+        console.log('Загрузка плейлиста из:', playlistUrl);
+        const response = await fetch(playlistUrl, {
+            cache: 'no-cache',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
+        
         const data = await response.json();
         console.log('Загруженные данные:', data);
         
@@ -122,6 +133,12 @@ async function loadPlaylist() {
         isRepeat = data.repeat !== false;
         
         console.log(`Загружено треков: ${playlist.length}`);
+        
+        if (playlist.length === 0) {
+            console.warn('Плейлист пуст! Проверь структуру playlist.json');
+            statusEl.textContent = 'Плейлист пуст. Проверь консоль (F12)';
+            return;
+        }
         
         // Создаем перемешанный плейлист если включен shuffle
         if (isShuffle) {
@@ -133,6 +150,7 @@ async function loadPlaylist() {
         console.log(`Перемешанный плейлист: ${shuffledPlaylist.length} треков`);
     } catch (error) {
         console.error('Ошибка загрузки плейлиста:', error);
+        console.error('URL:', window.location.href);
         statusEl.textContent = 'Ошибка загрузки плейлиста: ' + error.message;
     }
 }
