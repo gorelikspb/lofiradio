@@ -110,15 +110,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Загрузка плейлиста
 async function loadPlaylist() {
     try {
-        // Используем абсолютный путь от корня сайта
-        const playlistUrl = new URL('playlist.json', window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '/')).href;
+        // Используем абсолютный путь от корня сайта для Cloudflare Pages
+        const basePath = window.location.pathname.split('/').slice(0, -1).join('/') || '';
+        const playlistUrl = basePath ? `${basePath}/playlist.json` : '/playlist.json';
         
-        console.log('Загрузка плейлиста из:', playlistUrl);
+        console.log('Загрузка плейлиста из:', playlistUrl, 'Base path:', basePath);
         const response = await fetch(playlistUrl, {
-            cache: 'no-cache',
-            headers: {
-                'Accept': 'application/json'
-            }
+            cache: 'no-cache'
         });
         
         if (!response.ok) {
@@ -150,7 +148,7 @@ async function loadPlaylist() {
         console.log(`Перемешанный плейлист: ${shuffledPlaylist.length} треков`);
     } catch (error) {
         console.error('Ошибка загрузки плейлиста:', error);
-        console.error('URL:', window.location.href);
+        console.error('Current URL:', window.location.href);
         statusEl.textContent = 'Ошибка загрузки плейлиста: ' + error.message;
     }
 }
