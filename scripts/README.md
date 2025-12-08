@@ -28,6 +28,33 @@
 .\scripts\download-music.ps1
 ```
 
+### `capture-screenshots.js`
+Автоматически генерирует скриншоты для дневника проекта через Puppeteer
+
+**Использование:**
+```powershell
+npm run screenshots
+```
+
+**Что делает:**
+1. Открывает локальную версию сайта
+2. Создает скриншоты:
+   - `01-main-player.png` - главная страница
+   - `02-player-playing.png` - плеер играет
+   - `03-mobile.png` - мобильная версия
+3. Сохраняет в `lofiradio_log/screenshots/ru/`
+
+**Требования:**
+- Node.js установлен
+- Зависимости установлены: `npm install`
+- Локальный сервер запущен (или измени URL в скрипте на `http://localhost:8000`)
+
+**Добавление скриншотов в этапы:**
+После создания скриншотов обнови `lofiradio_log/stages/stages-index.json` и добавь ссылки в файлы этапов:
+```markdown
+![Главная страница](screenshots/ru/01-main-player.png)
+```
+
 ---
 
 **Примечание**: Все скрипты для Windows PowerShell. Для Linux/Mac используйте аналогичные bash скрипты.
