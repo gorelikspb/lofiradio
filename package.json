@@ -1,0 +1,27 @@
+{
+  "name": "lofiradio",
+  "version": "1.0.0",
+  "description": "Простое Lofi Radio - один клик и музыка играет без рекламы.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "screenshots": "node scripts/capture-screenshots.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gorelikspb/lofiradio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gorelikspb/lofiradio/issues"
+  },
+  "homepage": "https://github.com/gorelikspb/lofiradio#readme",
+  "devDependencies": {
+    "puppeteer": "^24.32.1"
+  }
+}
