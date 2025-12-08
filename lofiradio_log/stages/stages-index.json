@@ -1,0 +1,36 @@
+[
+  {
+    "id": "01",
+    "file": "01-basic-player.md",
+    "date": "2025-01-08",
+    "title": "Создание базового функционала",
+    "published": false,
+    "screenshots": {
+      "ru": [],
+      "en": []
+    }
+  },
+  {
+    "id": "02",
+    "file": "02-features.md",
+    "date": "2025-01-08",
+    "title": "Добавление функций управления",
+    "published": false,
+    "screenshots": {
+      "ru": [],
+      "en": []
+    }
+  },
+  {
+    "id": "03",
+    "file": "03-deployment.md",
+    "date": "2025-01-08",
+    "title": "Деплой на Cloudflare Pages",
+    "published": false,
+    "screenshots": {
+      "ru": [],
+      "en": []
+    }
+  }
+]
+
