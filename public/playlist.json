@@ -25,12 +25,6 @@
                        "id":  4,
                        "file":  "assets/music/rainy-lofi-city-lofi-music-332746.mp3"
                    },
-                   {
-                       "artist":  "Lofi Radio",
-                       "title":  "track 001",
-                       "id":  5,
-                       "file":  "assets/music/track-001.mp3"
-                   }
                ],
     "shuffle":  true
 }
