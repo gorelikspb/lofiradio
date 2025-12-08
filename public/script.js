@@ -172,7 +172,11 @@ function loadTrack(index) {
     }
     
     currentTrackIndex = index;
-    audioPlayer.src = track.file;
+    // Используем абсолютный путь от корня для Cloudflare Pages
+    const trackPath = track.file.startsWith('/') ? track.file : '/' + track.file;
+    audioPlayer.src = trackPath;
+    
+    console.log('Загрузка трека:', trackPath, 'Track:', track.title);
     
     // Обновляем информацию о треке
     updateTrackInfo();
