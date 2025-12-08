@@ -17,8 +17,36 @@ let isPlaying = false;
 let shuffledPlaylist = [];
 let likedTracks = new Set();
 
+// Определение языка из URL
+function getLanguage() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('lang') || 'ru';
+}
+
+// Установка языка
+function setLanguage(lang) {
+    if (!translations || !translations[lang]) return;
+    
+    const texts = translations[lang];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const keys = key.split('.');
+        let value = texts;
+        for (const k of keys) {
+            value = value?.[k];
+        }
+        if (value) {
+            el.textContent = value;
+        }
+    });
+}
+
 // Инициализация
 document.addEventListener('DOMContentLoaded', async () => {
+    // Устанавливаем язык
+    const lang = getLanguage();
+    setLanguage(lang);
+    
     audioPlayer = document.getElementById('audioPlayer');
     playBtn = document.getElementById('playBtn');
     prevBtn = document.getElementById('prevBtn');
@@ -59,7 +87,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     audioPlayer.addEventListener('error', (e) => {
         console.error('Ошибка загрузки трека:', e);
-        statusEl.textContent = 'Ошибка загрузки трека';
+        const lang = getLanguage();
+        statusEl.textContent = lang === 'en' ? 'Error loading track' : 'Ошибка загрузки трека';
         // Пробуем следующий трек
         setTimeout(() => {
             playNext();
@@ -102,7 +131,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (shuffledPlaylist.length > 0) {
         loadTrack(0);
     } else {
-        statusEl.textContent = 'Плейлист пуст. Добавьте треки в playlist.json';
+        const lang = getLanguage();
+        statusEl.textContent = lang === 'en' ? 'Playlist is empty. Add tracks to playlist.json' : 'Плейлист пуст. Добавьте треки в playlist.json';
         console.error('Плейлист не загружен. playlist.length:', playlist.length, 'shuffledPlaylist.length:', shuffledPlaylist.length);
     }
 });
@@ -130,7 +160,8 @@ async function loadPlaylist() {
         
         if (playlist.length === 0) {
             console.warn('Плейлист пуст! Проверь структуру playlist.json');
-            statusEl.textContent = 'Плейлист пуст. Проверь консоль (F12)';
+            const lang = getLanguage();
+            statusEl.textContent = lang === 'en' ? 'Playlist is empty. Check console (F12)' : 'Плейлист пуст. Проверь консоль (F12)';
             return;
         }
         
@@ -145,14 +176,16 @@ async function loadPlaylist() {
     } catch (error) {
         console.error('Ошибка загрузки плейлиста:', error);
         console.error('Current URL:', window.location.href);
-        statusEl.textContent = 'Ошибка загрузки плейлиста: ' + error.message;
+        const lang = getLanguage();
+        statusEl.textContent = lang === 'en' ? 'Error loading playlist: ' + error.message : 'Ошибка загрузки плейлиста: ' + error.message;
     }
 }
 
 // Загрузка трека
 function loadTrack(index) {
     if (shuffledPlaylist.length === 0) {
-        statusEl.textContent = 'Плейлист пуст';
+        const lang = getLanguage();
+        statusEl.textContent = lang === 'en' ? 'Playlist is empty' : 'Плейлист пуст';
         return;
     }
     
@@ -334,7 +367,8 @@ function playPrevious() {
 // Переключение Play/Pause
 function togglePlay() {
     if (shuffledPlaylist.length === 0) {
-        statusEl.textContent = 'Плейлист пуст. Добавьте треки';
+        const lang = getLanguage();
+        statusEl.textContent = lang === 'en' ? 'Playlist is empty. Add tracks' : 'Плейлист пуст. Добавьте треки';
         return;
     }
     
@@ -363,18 +397,19 @@ function togglePlay() {
 
 // Обновление UI
 function updateUI() {
+    const lang = getLanguage();
     if (isPlaying) {
         playBtn.classList.add('playing');
         playBtn.querySelector('.play-icon').style.display = 'none';
         playBtn.querySelector('.pause-icon').style.display = 'block';
-        statusEl.textContent = 'Играет';
+        statusEl.textContent = translations[lang]?.status?.playing || 'Играет';
         visualizer.classList.add('active');
         updateTrackInfo();
     } else {
         playBtn.classList.remove('playing');
         playBtn.querySelector('.play-icon').style.display = 'block';
         playBtn.querySelector('.pause-icon').style.display = 'none';
-        statusEl.textContent = 'Пауза';
+        statusEl.textContent = translations[lang]?.status?.pause || 'Пауза';
         visualizer.classList.remove('active');
     }
 }
