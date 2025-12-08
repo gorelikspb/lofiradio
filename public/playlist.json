@@ -1,0 +1,36 @@
+﻿{
+    "repeat":  true,
+    "tracks":  [
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "good night lofi cozy chill music 160166",
+                       "id":  1,
+                       "file":  "assets/music/good-night-lofi-cozy-chill-music-160166.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "lofi girl lofi ambient music 365952",
+                       "id":  2,
+                       "file":  "assets/music/lofi-girl-lofi-ambient-music-365952.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "lofi study calm peaceful chill hop 112191",
+                       "id":  3,
+                       "file":  "assets/music/lofi-study-calm-peaceful-chill-hop-112191.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "rainy lofi city lofi music 332746",
+                       "id":  4,
+                       "file":  "assets/music/rainy-lofi-city-lofi-music-332746.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "track 001",
+                       "id":  5,
+                       "file":  "assets/music/track-001.mp3"
+                   }
+               ],
+    "shuffle":  true
+}

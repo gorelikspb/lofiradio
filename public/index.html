@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Простое Lofi Radio - один клик и музыка играет без рекламы">
+    <title>Lofi Radio - Простое радио</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a1a2e">
+</head>
+<body>
+    <div class="container">
+        <div class="player-wrapper">
+            <div class="visualizer">
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+            </div>
+            
+            <div class="controls">
+                <button id="prevBtn" class="control-btn" aria-label="Предыдущий трек">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polygon points="19 20 9 12 19 4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="5" y1="4" x2="5" y2="20" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                
+                <button id="playBtn" class="play-btn" aria-label="Play/Pause">
+                    <svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polygon points="5 3 19 12 5 21" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <svg class="pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="display: none;">
+                        <rect x="6" y="4" width="4" height="16" stroke-width="2"/>
+                        <rect x="14" y="4" width="4" height="16" stroke-width="2"/>
+                    </svg>
+                </button>
+                
+                <button id="nextBtn" class="control-btn" aria-label="Следующий трек">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polygon points="5 4 15 12 5 20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="19" y1="4" x2="19" y2="20" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="status" id="status">Нажмите для начала</div>
+            <div class="source-info" id="sourceInfo"></div>
+            <div class="track-info">
+                <div class="track-time" id="trackTime">0:00 / 0:00</div>
+                <button id="likeBtn" class="like-btn" aria-label="Лайк">
+                    <svg class="like-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="track-counter" id="trackCounter"></div>
+        </div>
+        
+        <audio id="audioPlayer" preload="none" crossorigin="anonymous">
+            Ваш браузер не поддерживает аудио.
+        </audio>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
+
