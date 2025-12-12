@@ -37,22 +37,35 @@ npm run screenshots
 ```
 
 **Что делает:**
-1. Открывает локальную версию сайта
-2. Создает скриншоты:
+1. Открывает `index.html` напрямую через file:// протокол (без сервера!)
+2. Создает скриншоты для обоих языков (ru/en):
    - `01-main-player.png` - главная страница
    - `02-player-playing.png` - плеер играет
    - `03-mobile.png` - мобильная версия
-3. Сохраняет в `lofiradio_log/screenshots/ru/`
+3. Сохраняет в `lofiradio_log/screenshots/ru/` и `lofiradio_log/screenshots/en/`
 
 **Требования:**
 - Node.js установлен
 - Зависимости установлены: `npm install`
-- Локальный сервер запущен (или измени URL в скрипте на `http://localhost:8000`)
+- Файл `public/index.html` должен существовать
+
+**Преимущества:**
+- ✅ Работает без сервера (быстро, без зависаний)
+- ✅ Использует file:// протокол напрямую
+- ✅ `domcontentloaded` для быстрой загрузки
+- ✅ Минимальные таймауты (500-800ms)
+- ✅ Обходит CORS через флаги Puppeteer
+
+**Если скрипт не работает:**
+1. Проверь что файл `public/index.html` существует
+2. Убедись что установлены зависимости: `npm install`
+3. Проверь что Puppeteer установлен: `npm list puppeteer`
 
 **Добавление скриншотов в этапы:**
 После создания скриншотов обнови `lofiradio_log/stages/stages-index.json` и добавь ссылки в файлы этапов:
 ```markdown
 ![Главная страница](screenshots/ru/01-main-player.png)
+![Main page](screenshots/en/01-main-player.png)
 ```
 
 ---
