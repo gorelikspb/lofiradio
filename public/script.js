@@ -584,8 +584,23 @@ function updateTrackInfo() {
     const track = shuffledPlaylist[currentTrackIndex];
     if (track) {
         const cleanTitle = cleanTrackTitle(track.title);
-        sourceInfoEl.textContent = `${cleanTitle}${track.artist ? ' - ' + track.artist : ''}`;
-        trackCounterEl.textContent = `${currentTrackIndex + 1} / ${shuffledPlaylist.length}`;
+        
+        // Создаем slug для ссылки на страницу трека
+        const trackSlug = cleanTitle.toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .trim();
+        
+        const trackUrl = `track/${trackSlug}.html`;
+        
+        // Делаем название трека кликабельным
+        if (sourceInfoEl) {
+            sourceInfoEl.innerHTML = `<a href="${trackUrl}" style="color: rgba(255, 255, 255, 0.9); text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='rgba(255, 255, 255, 1)'" onmouseout="this.style.color='rgba(255, 255, 255, 0.9)'">${cleanTitle}</a>${track.artist ? ' - ' + track.artist : ''}`;
+        }
+        
+        if (trackCounterEl) {
+            trackCounterEl.textContent = `${currentTrackIndex + 1} / ${shuffledPlaylist.length}`;
+        }
         
         // Обновляем состояние лайка
         updateLikeButton();
