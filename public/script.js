@@ -117,18 +117,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     
     audioPlayer.addEventListener('error', (e) => {
-        console.error('Ошибка загрузки трека:', e);
-        // Показываем ошибку только если пользователь пытался играть
-        if (isPlaying) {
-            const lang = getLanguage();
-            statusEl.textContent = lang === 'en' ? 'Error loading track' : 'Ошибка загрузки трека';
-            // Пробуем следующий трек
-            setTimeout(() => {
-                playNext();
-            }, 1000);
+        console.error('Ошибка загрузки трека:', e, audioPlayer.error);
+        statusEl.classList.remove('loading');
+        
+        // Показываем ошибку только если это реальная ошибка загрузки файла
+        if (audioPlayer.error && audioPlayer.error.code !== 0) {
+            // Показываем ошибку только если пользователь пытался играть или трек не загрузился
+            if (isPlaying || audioPlayer.error.code === 4) { // MEDIA_ERR_SRC_NOT_SUPPORTED
+                const lang = getLanguage();
+                statusEl.textContent = lang === 'en' ? 'Error loading track' : 'Ошибка загрузки трека';
+                // Пробуем следующий трек
+                setTimeout(() => {
+                    playNext();
+                }, 1000);
+            } else {
+                // Если просто загрузка без воспроизведения, не показываем ошибку
+                const lang = getLanguage();
+                statusEl.textContent = translations[lang]?.status?.clickToStart || 'Нажмите для начала';
+            }
         } else {
-            // Если просто загрузка без воспроизведения, не показываем ошибку
-            console.warn('Трек не загружен, но воспроизведение не начато');
+            // Нет реальной ошибки, просто обновляем статус
+            const lang = getLanguage();
+            statusEl.textContent = translations[lang]?.status?.clickToStart || 'Нажмите для начала';
         }
     });
     
@@ -283,13 +293,21 @@ function loadTrack(index, autoPlay = false) {
     
     // Проверяем состояние трека после небольшой задержки
     setTimeout(() => {
-        if (!isPlaying && audioPlayer.readyState >= 2) {
-            // Трек загружен, обновляем статус
-            statusEl.classList.remove('loading');
-            const lang = getLanguage();
-            statusEl.textContent = translations[lang]?.status?.clickToStart || 'Нажмите для начала';
+        if (!isPlaying) {
+            // Проверяем что трек загружен и нет ошибок
+            if (audioPlayer.readyState >= 2 && (!audioPlayer.error || audioPlayer.error.code === 0)) {
+                // Трек загружен успешно, обновляем статус
+                statusEl.classList.remove('loading');
+                const lang = getLanguage();
+                statusEl.textContent = translations[lang]?.status?.clickToStart || 'Нажмите для начала';
+            } else if (audioPlayer.error && audioPlayer.error.code !== 0) {
+                // Есть реальная ошибка, но не показываем если не играет
+                statusEl.classList.remove('loading');
+                const lang = getLanguage();
+                statusEl.textContent = translations[lang]?.status?.clickToStart || 'Нажмите для начала';
+            }
         }
-    }, 500);
+    }, 1000);
     
     // Автоматически начинаем воспроизведение только если явно запрошено или уже играло
     if (autoPlay || isPlaying) {
@@ -674,7 +692,16 @@ function togglePlay() {
                 })
                 .catch(error => {
                     console.error('Ошибка воспроизведения:', error);
-                    statusEl.textContent = 'Ошибка воспроизведения';
+                    // Показываем ошибку только если это реальная ошибка воспроизведения
+                    // Автоплей блокируется браузером - это нормально, не показываем ошибку
+                    if (error.name !== 'NotAllowedError' && error.name !== 'NotSupportedError') {
+                        const lang = getLanguage();
+                        statusEl.textContent = lang === 'en' ? 'Error playing track' : 'Ошибка воспроизведения';
+                    } else {
+                        // Автоплей заблокирован - это нормально, просто обновляем статус
+                        const lang = getLanguage();
+                        statusEl.textContent = translations[lang]?.status?.clickToStart || 'Нажмите для начала';
+                    }
                 });
         }
     }
