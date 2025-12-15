@@ -365,7 +365,7 @@ function drawVisualization() {
         }
     }
     
-    // Рисуем на canvas внутри плеера (маленький, без кругов)
+    // Рисуем на canvas внутри плеера (внизу, одинаковые полоски)
     if (canvas && canvasCtx) {
         const width = canvas.width;
         const height = canvas.height;
@@ -373,31 +373,53 @@ function drawVisualization() {
         // Очищаем canvas
         canvasCtx.clearRect(0, 0, width, height);
         
-        // Рисуем волны по центру
-        const barCount = 50;
-        const barWidth = width / barCount;
-        const barGap = 2;
-        const centerY = height / 2;
+        // Рисуем полоски внизу, занимающие всю ширину
+        const barCount = 60;
+        const barWidth = width / barCount; // Без промежутков, полоски занимают всю ширину
+        const maxBarHeight = height * 0.15; // Максимальная высота полосок
+        
+        // Усредняем данные для более равномерной высоты
+        const smoothedData = [];
+        for (let i = 0; i < barCount; i++) {
+            const startIndex = Math.floor((i / barCount) * dataArray.length);
+            const endIndex = Math.floor(((i + 1) / barCount) * dataArray.length);
+            
+            // Усредняем значения в диапазоне для этой полоски
+            let sum = 0;
+            let count = 0;
+            for (let j = startIndex; j < endIndex && j < dataArray.length; j++) {
+                sum += dataArray[j];
+                count++;
+            }
+            const avg = count > 0 ? sum / count : 0;
+            smoothedData.push(avg);
+        }
+        
+        // Находим среднее значение для нормализации
+        const avgValue = smoothedData.reduce((a, b) => a + b, 0) / smoothedData.length;
+        const baseHeight = (avgValue / 255) * maxBarHeight;
         
         for (let i = 0; i < barCount; i++) {
-            const dataIndex = Math.floor((i / barCount) * dataArray.length);
-            const barHeight = (dataArray[dataIndex] / 255) * height * 0.3;
+            // Используем усредненное значение с небольшими вариациями
+            const normalizedValue = smoothedData[i] / 255;
+            // Делаем полоски примерно одинаковой высоты с небольшими вариациями
+            const barHeight = baseHeight * 0.7 + (normalizedValue * maxBarHeight * 0.3);
             
             // Lofi цвета для внутренней визуализации
             const gradient = canvasCtx.createLinearGradient(
-                i * barWidth, centerY - barHeight,
-                i * barWidth, centerY + barHeight
+                i * barWidth, height - barHeight,
+                i * barWidth, height
             );
-            gradient.addColorStop(0, `rgba(118, 75, 162, 0.5)`);
-            gradient.addColorStop(0.5, `rgba(102, 126, 234, 0.6)`);
-            gradient.addColorStop(1, `rgba(255, 255, 255, 0.3)`);
+            gradient.addColorStop(0, `rgba(118, 75, 162, 0.6)`);
+            gradient.addColorStop(0.5, `rgba(102, 126, 234, 0.7)`);
+            gradient.addColorStop(1, `rgba(255, 255, 255, 0.4)`);
             
             canvasCtx.fillStyle = gradient;
-            // Рисуем симметрично от центра
+            // Рисуем снизу вверх
             canvasCtx.fillRect(
-                i * barWidth + barGap,
-                centerY - barHeight / 2,
-                barWidth - barGap * 2,
+                i * barWidth,
+                height - barHeight,
+                barWidth,
                 barHeight
             );
         }
