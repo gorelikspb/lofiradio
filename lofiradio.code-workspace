@@ -7,5 +7,7 @@
 			"path": "../common"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"powershell.cwd": "lofiradio"
+	}
 }
