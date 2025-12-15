@@ -35,44 +35,15 @@
     <!-- Фоновый canvas для большой визуализации -->
     <canvas id="backgroundVisualizer" class="background-visualizer"></canvas>
     
+    <!-- Фоновое изображение: девочка в наушниках и котик -->
+    <div class="lofi-background-image">
+        <img src="https://cdn.pixabay.com/photo/2021/11/04/19/39/woman-6769382_1280.png" alt="Lofi girl with cat" />
+    </div>
+    
     <div class="container">
         <div class="player-wrapper">
             <!-- Canvas для визуализации звука -->
             <canvas id="audioVisualizer" class="audio-visualizer"></canvas>
-            
-            <!-- Lofi картинка: девочка в наушниках и котик -->
-            <div class="lofi-illustration">
-                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Девочка -->
-                    <!-- Голова -->
-                    <circle cx="100" cy="80" r="25" fill="rgba(255, 220, 200, 0.8)" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1"/>
-                    <!-- Волосы -->
-                    <path d="M 75 80 Q 70 60, 85 65 Q 100 50, 115 65 Q 130 60, 125 80 Q 130 100, 100 100 Q 70 100, 75 80" fill="rgba(100, 60, 40, 0.6)"/>
-                    <!-- Наушники -->
-                    <ellipse cx="80" cy="85" rx="18" ry="12" fill="none" stroke="rgba(255, 255, 255, 0.5)" stroke-width="2"/>
-                    <ellipse cx="120" cy="85" rx="18" ry="12" fill="none" stroke="rgba(255, 255, 255, 0.5)" stroke-width="2"/>
-                    <line x1="98" y1="85" x2="102" y2="85" stroke="rgba(255, 255, 255, 0.5)" stroke-width="2"/>
-                    <!-- Тело -->
-                    <ellipse cx="100" cy="130" rx="20" ry="30" fill="rgba(118, 75, 162, 0.4)" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1"/>
-                    <!-- Руки -->
-                    <ellipse cx="75" cy="125" rx="8" ry="20" fill="rgba(255, 220, 200, 0.8)" transform="rotate(-20 75 125)"/>
-                    <ellipse cx="125" cy="125" rx="8" ry="20" fill="rgba(255, 220, 200, 0.8)" transform="rotate(20 125 125)"/>
-                    
-                    <!-- Котик -->
-                    <!-- Тело котика -->
-                    <ellipse cx="140" cy="150" rx="15" ry="20" fill="rgba(200, 180, 160, 0.7)" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1"/>
-                    <!-- Голова котика -->
-                    <circle cx="140" cy="130" r="12" fill="rgba(200, 180, 160, 0.7)" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1"/>
-                    <!-- Ушки -->
-                    <path d="M 130 125 L 135 115 L 140 125 Z" fill="rgba(200, 180, 160, 0.7)"/>
-                    <path d="M 140 125 L 145 115 L 150 125 Z" fill="rgba(200, 180, 160, 0.7)"/>
-                    <!-- Хвост -->
-                    <path d="M 155 150 Q 165 140, 170 145 Q 175 150, 170 155" stroke="rgba(200, 180, 160, 0.7)" stroke-width="3" fill="none" stroke-linecap="round"/>
-                    <!-- Глаза котика -->
-                    <circle cx="137" cy="128" r="1.5" fill="rgba(50, 50, 50, 0.8)"/>
-                    <circle cx="143" cy="128" r="1.5" fill="rgba(50, 50, 50, 0.8)"/>
-                </svg>
-            </div>
             
             <div class="visualizer">
                 <div class="wave"></div>
