@@ -17,10 +17,18 @@ let isPlaying = false;
 let shuffledPlaylist = [];
 let likedTracks = new Set();
 
-// Определение языка из URL
+// Определение языка из URL пути
 function getLanguage() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('lang') || 'ru';
+    const path = window.location.pathname;
+    // Проверяем путь: /ru/ или /en/
+    if (path.startsWith('/en/') || path.includes('/en/')) {
+        return 'en';
+    }
+    if (path.startsWith('/ru/') || path.includes('/ru/')) {
+        return 'ru';
+    }
+    // По умолчанию русский
+    return 'ru';
 }
 
 // Установка языка
@@ -57,6 +65,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     trackTimeEl = document.getElementById('trackTime');
     likeBtn = document.getElementById('likeBtn');
     visualizer = document.querySelector('.visualizer');
+    canvas = document.getElementById('audioVisualizer');
+    
+    // Инициализация визуализации звука
+    if (canvas) {
+        canvasCtx = canvas.getContext('2d');
+        initAudioVisualizer();
+    }
     
     // Загружаем лайки из localStorage
     loadLikes();
@@ -72,6 +87,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Обработчики событий аудио
     audioPlayer.addEventListener('play', () => {
         isPlaying = true;
+        // Возобновляем AudioContext если нужно
+        if (audioContext && audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
         updateUI();
     });
     
@@ -140,8 +159,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Загрузка плейлиста
 async function loadPlaylist() {
     try {
-        // Относительный путь должен работать нормально
-        const response = await fetch('./playlist.json', {
+        // Путь к плейлисту (из папки ru/ или en/ нужно подняться на уровень выше)
+        const playlistPath = window.location.pathname.includes('/ru/') || window.location.pathname.includes('/en/') 
+            ? '../playlist.json' 
+            : './playlist.json';
+        const response = await fetch(playlistPath, {
             cache: 'no-cache'
         });
         
@@ -201,10 +223,18 @@ function loadTrack(index) {
     }
     
     currentTrackIndex = index;
-    // Относительный путь должен работать нормально
-    audioPlayer.src = track.file;
+    // Путь к треку (из папки ru/ или en/ нужно подняться на уровень выше)
+    const trackPath = window.location.pathname.includes('/ru/') || window.location.pathname.includes('/en/')
+        ? '../' + track.file
+        : track.file;
+    audioPlayer.src = trackPath;
     
     console.log('Загрузка трека:', track.file, 'Track:', track.title);
+    
+    // Инициализируем визуализацию если еще не инициализирована
+    if (!audioContext && canvas) {
+        initAudioVisualizer();
+    }
     
     // Обновляем информацию о треке
     updateTrackInfo();
@@ -220,11 +250,111 @@ function loadTrack(index) {
     }
 }
 
+// Инициализация визуализации звука
+function initAudioVisualizer() {
+    if (!canvas || !audioPlayer) return;
+    
+    // Настройка размера canvas
+    const resizeCanvas = () => {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+    };
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    
+    // Создаем AudioContext и AnalyserNode
+    try {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioContext.createAnalyser();
+        analyser.fftSize = 256;
+        dataArray = new Uint8Array(analyser.frequencyBinCount);
+        
+        // Подключаем аудио к анализатору
+        const source = audioContext.createMediaElementSource(audioPlayer);
+        source.connect(analyser);
+        analyser.connect(audioContext.destination);
+    } catch (e) {
+        console.warn('Web Audio API не поддерживается:', e);
+    }
+}
+
+// Визуализация звука
+function drawVisualization() {
+    if (!canvas || !canvasCtx || !analyser || !isPlaying) {
+        if (canvas) {
+            canvas.classList.remove('active');
+        }
+        return;
+    }
+    
+    canvas.classList.add('active');
+    
+    animationFrameId = requestAnimationFrame(drawVisualization);
+    
+    analyser.getByteFrequencyData(dataArray);
+    
+    const width = canvas.width;
+    const height = canvas.height;
+    
+    // Очищаем canvas
+    canvasCtx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+    canvasCtx.fillRect(0, 0, width, height);
+    
+    // Рисуем волны
+    const barCount = 60;
+    const barWidth = width / barCount;
+    const barGap = 2;
+    
+    for (let i = 0; i < barCount; i++) {
+        const dataIndex = Math.floor((i / barCount) * dataArray.length);
+        const barHeight = (dataArray[dataIndex] / 255) * height * 0.6;
+        
+        // Градиент для каждой полосы
+        const gradient = canvasCtx.createLinearGradient(0, height, 0, height - barHeight);
+        gradient.addColorStop(0, `rgba(102, 126, 234, 0.8)`);
+        gradient.addColorStop(0.5, `rgba(255, 107, 107, 0.6)`);
+        gradient.addColorStop(1, `rgba(255, 255, 255, 0.4)`);
+        
+        canvasCtx.fillStyle = gradient;
+        canvasCtx.fillRect(
+            i * barWidth + barGap,
+            height - barHeight,
+            barWidth - barGap * 2,
+            barHeight
+        );
+    }
+    
+    // Рисуем дополнительные круги для эффекта
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const maxRadius = Math.min(width, height) * 0.3;
+    
+    for (let i = 0; i < 3; i++) {
+        const radius = (dataArray[i * 10] / 255) * maxRadius;
+        const alpha = 0.1 + (dataArray[i * 10] / 255) * 0.2;
+        
+        canvasCtx.beginPath();
+        canvasCtx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        canvasCtx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+        canvasCtx.lineWidth = 2;
+        canvasCtx.stroke();
+    }
+}
+
+// Удаление цифр в конце названия трека
+function cleanTrackTitle(title) {
+    if (!title) return title;
+    // Убираем цифры и пробелы в конце строки
+    return title.replace(/\s+\d+$/, '').trim();
+}
+
 // Обновление информации о треке
 function updateTrackInfo() {
     const track = shuffledPlaylist[currentTrackIndex];
     if (track) {
-        sourceInfoEl.textContent = `${track.title}${track.artist ? ' - ' + track.artist : ''}`;
+        const cleanTitle = cleanTrackTitle(track.title);
+        sourceInfoEl.textContent = `${cleanTitle}${track.artist ? ' - ' + track.artist : ''}`;
         trackCounterEl.textContent = `${currentTrackIndex + 1} / ${shuffledPlaylist.length}`;
         
         // Обновляем состояние лайка
@@ -232,7 +362,7 @@ function updateTrackInfo() {
         
         if ('mediaSession' in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
-                title: track.title,
+                title: cleanTitle,
                 artist: track.artist || 'Lofi Radio',
                 artwork: []
             });
@@ -405,12 +535,24 @@ function updateUI() {
         statusEl.textContent = translations[lang]?.status?.playing || 'Играет';
         visualizer.classList.add('active');
         updateTrackInfo();
+        // Запускаем визуализацию
+        if (audioContext && audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
+        drawVisualization();
     } else {
         playBtn.classList.remove('playing');
         playBtn.querySelector('.play-icon').style.display = 'block';
         playBtn.querySelector('.pause-icon').style.display = 'none';
         statusEl.textContent = translations[lang]?.status?.pause || 'Пауза';
         visualizer.classList.remove('active');
+        // Останавливаем визуализацию
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+        }
+        if (canvas) {
+            canvas.classList.remove('active');
+        }
     }
 }
 

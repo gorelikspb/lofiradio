@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Simple Lofi Radio - one click and music plays without ads">
+    <title>Lofi Radio - Simple Radio</title>
+    
+    <!-- hreflang для SEO -->
+    <link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/">
+    <link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/">
+    <link rel="alternate" hreflang="x-default" href="https://lofilofi.pages.dev/ru/">
+    <link rel="canonical" href="https://lofilofi.pages.dev/en/">
+    
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#1a1a2e">
+    <script src="../translations.js"></script>
+</head>
+<body>
+    <!-- Переключатель языков -->
+    <div class="language-switcher">
+        <a href="../ru/" class="lang-link">RU</a>
+        <a href="../en/" class="lang-link active">EN</a>
+    </div>
+    
+    <!-- Фоновые декоративные элементы -->
+    <div class="background-decoration">
+        <div class="lofi-circle circle-1"></div>
+        <div class="lofi-circle circle-2"></div>
+        <div class="lofi-circle circle-3"></div>
+        <div class="lofi-circle circle-4"></div>
+    </div>
+    
+    <div class="container">
+        <div class="player-wrapper">
+            <!-- Canvas для визуализации звука -->
+            <canvas id="audioVisualizer" class="audio-visualizer"></canvas>
+            
+            <div class="visualizer">
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+            </div>
+            
+            <div class="controls">
+                <button id="prevBtn" class="control-btn" aria-label="Previous track">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polygon points="19 20 9 12 19 4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="5" y1="4" x2="5" y2="20" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                
+                <button id="playBtn" class="play-btn" aria-label="Play/Pause">
+                    <svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polygon points="5 3 19 12 5 21" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <svg class="pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="display: none;">
+                        <rect x="6" y="4" width="4" height="16" stroke-width="2"/>
+                        <rect x="14" y="4" width="4" height="16" stroke-width="2"/>
+                    </svg>
+                </button>
+                
+                <button id="nextBtn" class="control-btn" aria-label="Next track">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polygon points="5 4 15 12 5 20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="19" y1="4" x2="19" y2="20" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="status" id="status" data-i18n="status.clickToStart">Click to start</div>
+            <div class="source-info" id="sourceInfo"></div>
+            <div class="track-info">
+                <div class="track-time" id="trackTime">0:00 / 0:00</div>
+                <button id="likeBtn" class="like-btn" aria-label="Like">
+                    <svg class="like-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="track-counter" id="trackCounter"></div>
+        </div>
+        
+        <audio id="audioPlayer" preload="none" crossorigin="anonymous">
+            Your browser does not support audio.
+        </audio>
+    </div>
+    
+    <!-- Декоративные элементы для lofi атмосферы -->
+    <div class="lofi-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    
+    <script src="../script.js"></script>
+</body>
+</html>
+
+
+
