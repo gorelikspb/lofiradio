@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <!-- Главные страницы -->
     <url>
         <loc>https://lofilofi.pages.dev/ru/</loc>
         <lastmod>2025-12-15</lastmod>
@@ -17,5 +18,140 @@
         <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/"/>
     </url>
+    
+    <!-- Блог статьи (RU) -->
+    <url>
+        <loc>https://lofilofi.pages.dev/ru/blog/lofi-music-for-studying.html</loc>
+        <lastmod>2025-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/blog/lofi-music-for-studying.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/blog/lofi-music-for-studying.html"/>
+    </url>
+    <url>
+        <loc>https://lofilofi.pages.dev/ru/blog/rainy-lofi-music.html</loc>
+        <lastmod>2025-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/blog/rainy-lofi-music.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/blog/rainy-lofi-music.html"/>
+    </url>
+    <url>
+        <loc>https://lofilofi.pages.dev/ru/blog/japanese-lofi-music.html</loc>
+        <lastmod>2025-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/blog/japanese-lofi-music.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/blog/japanese-lofi-music.html"/>
+    </url>
+    <url>
+        <loc>https://lofilofi.pages.dev/ru/blog/lofi-music-for-sleep.html</loc>
+        <lastmod>2025-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/blog/lofi-music-for-sleep.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/blog/lofi-music-for-sleep.html"/>
+    </url>
+    
+    <!-- Блог статьи (EN) -->
+    <url>
+        <loc>https://lofilofi.pages.dev/en/blog/lofi-music-for-studying.html</loc>
+        <lastmod>2025-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/blog/lofi-music-for-studying.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/blog/lofi-music-for-studying.html"/>
+    </url>
+    <url>
+        <loc>https://lofilofi.pages.dev/en/blog/rainy-lofi-music.html</loc>
+        <lastmod>2025-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/blog/rainy-lofi-music.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/blog/rainy-lofi-music.html"/>
+    </url>
+    <url>
+        <loc>https://lofilofi.pages.dev/en/blog/japanese-lofi-music.html</loc>
+        <lastmod>2025-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/blog/japanese-lofi-music.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/blog/japanese-lofi-music.html"/>
+    </url>
+    <url>
+        <loc>https://lofilofi.pages.dev/en/blog/lofi-music-for-sleep.html</loc>
+        <lastmod>2025-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/blog/lofi-music-for-sleep.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/blog/lofi-music-for-sleep.html"/>
+    </url>
+    
+    <!-- Страницы треков (RU) -->
+    <url>
+        <loc>https://lofilofi.pages.dev/ru/track/japanese-lofi-music.html</loc>
+        <lastmod>2025-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/track/japanese-lofi-music.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/track/japanese-lofi-music.html"/>
+    </url>
+    <url>
+        <loc>https://lofilofi.pages.dev/ru/track/rainy-lofi-music.html</loc>
+        <lastmod>2025-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/track/rainy-lofi-music.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/track/rainy-lofi-music.html"/>
+    </url>
+    <url>
+        <loc>https://lofilofi.pages.dev/ru/track/lofi-study-music.html</loc>
+        <lastmod>2025-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/track/lofi-study-music.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/track/lofi-study-music.html"/>
+    </url>
+    <url>
+        <loc>https://lofilofi.pages.dev/ru/track/good-night-lofi-music.html</loc>
+        <lastmod>2025-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/track/good-night-lofi-music.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/track/good-night-lofi-music.html"/>
+    </url>
+    
+    <!-- Страницы треков (EN) -->
+    <url>
+        <loc>https://lofilofi.pages.dev/en/track/japanese-lofi-music.html</loc>
+        <lastmod>2025-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/track/japanese-lofi-music.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/track/japanese-lofi-music.html"/>
+    </url>
+    <url>
+        <loc>https://lofilofi.pages.dev/en/track/rainy-lofi-music.html</loc>
+        <lastmod>2025-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/track/rainy-lofi-music.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/track/rainy-lofi-music.html"/>
+    </url>
+    <url>
+        <loc>https://lofilofi.pages.dev/en/track/lofi-study-music.html</loc>
+        <lastmod>2025-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/track/lofi-study-music.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/track/lofi-study-music.html"/>
+    </url>
+    <url>
+        <loc>https://lofilofi.pages.dev/en/track/good-night-lofi-music.html</loc>
+        <lastmod>2025-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/track/good-night-lofi-music.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/track/good-night-lofi-music.html"/>
+    </url>
 </urlset>
-

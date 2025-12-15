@@ -75,8 +75,9 @@
     <script src="../translations.js"></script>
 </head>
 <body>
-    <!-- Переключатель языков -->
+    <!-- Переключатель языков и навигация -->
     <div class="language-switcher">
+        <a href="blog/lofi-music-for-studying.html" class="lang-link">Blog</a>
         <a href="../ru/" class="lang-link">RU</a>
         <a href="../en/" class="lang-link active">EN</a>
     </div>
@@ -166,6 +167,17 @@
                 </button>
             </div>
             <div class="track-counter" id="trackCounter"></div>
+        </div>
+        
+        <!-- Navigation to articles -->
+        <div class="content-links" style="margin-top: 30px; text-align: center; z-index: 3; position: relative;">
+            <h3 style="color: rgba(255, 255, 255, 0.9); margin-bottom: 15px; font-size: 1.2em;">Useful articles:</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+                <a href="blog/lofi-music-for-studying.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">Lofi for Studying</a>
+                <a href="blog/rainy-lofi-music.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">Rainy Lofi</a>
+                <a href="blog/japanese-lofi-music.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">Japanese Lofi</a>
+                <a href="blog/lofi-music-for-sleep.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">Sleep Music</a>
+            </div>
         </div>
         
         <audio id="audioPlayer" preload="none" crossorigin="anonymous">
