@@ -335,29 +335,42 @@ function drawVisualization() {
         backgroundCanvasCtx.fillStyle = 'rgba(102, 126, 234, 0.05)';
         backgroundCanvasCtx.fillRect(0, 0, bgWidth, bgHeight);
         
-        // Рисуем большие волны по центру экрана
-        const barCount = 80;
-        const barWidth = bgWidth / barCount;
+        // Рисуем большие волны симметрично от центра
+        const barCount = 40; // Половина от общего количества для симметрии
+        const barWidth = (bgWidth / 2) / barCount; // Ширина для половины экрана
         const barGap = 1;
         const centerY = bgHeight / 2;
+        const centerX = bgWidth / 2;
         
+        // Рисуем полоски слева от центра
         for (let i = 0; i < barCount; i++) {
             const dataIndex = Math.floor((i / barCount) * dataArray.length);
             const barHeight = (dataArray[dataIndex] / 255) * bgHeight * 0.4;
             
+            const xLeft = centerX - (barCount - i) * barWidth;
+            
             // Lofi цвета: фиолетовый, розовый, голубой
             const gradient = backgroundCanvasCtx.createLinearGradient(
-                i * barWidth, centerY - barHeight,
-                i * barWidth, centerY + barHeight
+                xLeft, centerY - barHeight,
+                xLeft, centerY + barHeight
             );
             gradient.addColorStop(0, `rgba(118, 75, 162, 0.4)`); // #764ba2
             gradient.addColorStop(0.5, `rgba(102, 126, 234, 0.5)`); // #667eea
             gradient.addColorStop(1, `rgba(118, 75, 162, 0.3)`);
             
             backgroundCanvasCtx.fillStyle = gradient;
-            // Рисуем симметрично от центра
+            // Рисуем слева от центра
             backgroundCanvasCtx.fillRect(
-                i * barWidth + barGap,
+                xLeft + barGap,
+                centerY - barHeight / 2,
+                barWidth - barGap * 2,
+                barHeight
+            );
+            
+            // Рисуем зеркально справа от центра
+            const xRight = centerX + i * barWidth;
+            backgroundCanvasCtx.fillRect(
+                xRight + barGap,
                 centerY - barHeight / 2,
                 barWidth - barGap * 2,
                 barHeight
