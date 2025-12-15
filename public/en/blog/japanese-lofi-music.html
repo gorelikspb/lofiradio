@@ -32,7 +32,7 @@
     </script>
     
     <link rel="stylesheet" href="../../styles.css">
-    <link rel="stylesheet" href="../../blog.css">
+    <link rel="stylesheet" href="../../blog.css">`n    <link rel="stylesheet" href="../../mini-player.css">
 </head>
 <body class="blog-page">
     <div class="language-switcher">
@@ -52,6 +52,11 @@
             
             <div class="article-content">
                 <p>Japanese lofi music combines Japanese culture aesthetics with soothing lofi hip hop rhythms. These cute Tokyo beats create a unique atmosphere, perfect for studying, working, or just relaxing.</p>
+                
+                <!-- Mini Player -->
+                <div id="miniPlayer" class="mini-player-wrapper" 
+                     data-tracks='[{"title":"cutie japan lofi 402355","artist":"Lofi Radio","file":"assets/music/cutie-japan-lofi-402355.mp3"}]'
+                     data-main-link="../../en/"></div>
                 
                 <h2>Features of Japanese Lofi Music</h2>
                 <p>Japanese lofi music has its distinctive features:</p>
@@ -76,6 +81,8 @@
             </div>
         </article>
     </div>
+    
+    <script src="../../mini-player.js"></script>
 </body>
 </html>
 
