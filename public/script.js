@@ -250,6 +250,9 @@ async function loadPlaylist() {
         
         // Создаем список треков для навигации
         createTracksList();
+        
+        // Создаем список треков для навигации
+        createTracksList();
     } catch (error) {
         console.error('Ошибка загрузки плейлиста:', error);
         console.error('Current URL:', window.location.href);
@@ -577,6 +580,31 @@ function cleanTrackTitle(title) {
     if (!title) return title;
     // Убираем цифры и пробелы в конце строки
     return title.replace(/\s+\d+$/, '').trim();
+}
+
+// Создание списка треков для навигации
+function createTracksList() {
+    const tracksListEl = document.getElementById('tracksList');
+    if (!tracksListEl || playlist.length === 0) return;
+    
+    // Используем оригинальный плейлист (не перемешанный) для списка
+    playlist.forEach((track) => {
+        const cleanTitle = cleanTrackTitle(track.title);
+        const trackSlug = cleanTitle.toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .trim();
+        
+        const trackUrl = `track/${trackSlug}.html`;
+        const link = document.createElement('a');
+        link.href = trackUrl;
+        link.textContent = cleanTitle;
+        link.style.cssText = 'color: rgba(255, 255, 255, 0.7); text-decoration: none; padding: 6px 12px; background: rgba(255, 255, 255, 0.05); border-radius: 12px; font-size: 0.9em; transition: all 0.3s ease; backdrop-filter: blur(5px);';
+        link.onmouseover = function() { this.style.color = 'rgba(255, 255, 255, 1)'; this.style.background = 'rgba(255, 255, 255, 0.15)'; };
+        link.onmouseout = function() { this.style.color = 'rgba(255, 255, 255, 0.7)'; this.style.background = 'rgba(255, 255, 255, 0.05)'; };
+        
+        tracksListEl.appendChild(link);
+    });
 }
 
 // Обновление информации о треке
