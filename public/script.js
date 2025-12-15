@@ -16,6 +16,14 @@ let visualizer;
 let isPlaying = false;
 let shuffledPlaylist = [];
 let likedTracks = new Set();
+let canvas;
+let canvasCtx;
+let backgroundCanvas;
+let backgroundCanvasCtx;
+let analyser;
+let audioContext;
+let dataArray;
+let animationFrameId;
 
 // Определение языка из URL пути
 function getLanguage() {
@@ -66,12 +74,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     likeBtn = document.getElementById('likeBtn');
     visualizer = document.querySelector('.visualizer');
     canvas = document.getElementById('audioVisualizer');
+    backgroundCanvas = document.getElementById('backgroundVisualizer');
     
     // Инициализация визуализации звука
     if (canvas) {
         canvasCtx = canvas.getContext('2d');
-        initAudioVisualizer();
     }
+    if (backgroundCanvas) {
+        backgroundCanvasCtx = backgroundCanvas.getContext('2d');
+    }
+    initAudioVisualizer();
     
     // Загружаем лайки из localStorage
     loadLikes();
@@ -252,16 +264,28 @@ function loadTrack(index) {
 
 // Инициализация визуализации звука
 function initAudioVisualizer() {
-    if (!canvas || !audioPlayer) return;
+    if (!audioPlayer) return;
     
-    // Настройка размера canvas
-    const resizeCanvas = () => {
-        const rect = canvas.parentElement.getBoundingClientRect();
-        canvas.width = rect.width;
-        canvas.height = rect.height;
-    };
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+    // Настройка размера canvas внутри плеера
+    if (canvas) {
+        const resizeCanvas = () => {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+        };
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+    }
+    
+    // Настройка размера фонового canvas
+    if (backgroundCanvas) {
+        const resizeBackgroundCanvas = () => {
+            backgroundCanvas.width = window.innerWidth;
+            backgroundCanvas.height = window.innerHeight;
+        };
+        resizeBackgroundCanvas();
+        window.addEventListener('resize', resizeBackgroundCanvas);
+    }
     
     // Создаем AudioContext и AnalyserNode
     try {
@@ -281,64 +305,102 @@ function initAudioVisualizer() {
 
 // Визуализация звука
 function drawVisualization() {
-    if (!canvas || !canvasCtx || !analyser || !isPlaying) {
+    if (!analyser || !isPlaying) {
         if (canvas) {
             canvas.classList.remove('active');
+        }
+        if (backgroundCanvas) {
+            backgroundCanvas.classList.remove('active');
         }
         return;
     }
     
-    canvas.classList.add('active');
+    if (canvas) {
+        canvas.classList.add('active');
+    }
+    if (backgroundCanvas) {
+        backgroundCanvas.classList.add('active');
+    }
     
     animationFrameId = requestAnimationFrame(drawVisualization);
     
     analyser.getByteFrequencyData(dataArray);
     
-    const width = canvas.width;
-    const height = canvas.height;
-    
-    // Очищаем canvas
-    canvasCtx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-    canvasCtx.fillRect(0, 0, width, height);
-    
-    // Рисуем волны
-    const barCount = 60;
-    const barWidth = width / barCount;
-    const barGap = 2;
-    
-    for (let i = 0; i < barCount; i++) {
-        const dataIndex = Math.floor((i / barCount) * dataArray.length);
-        const barHeight = (dataArray[dataIndex] / 255) * height * 0.6;
+    // Рисуем на фоновом canvas (большой, на весь экран)
+    if (backgroundCanvas && backgroundCanvasCtx) {
+        const bgWidth = backgroundCanvas.width;
+        const bgHeight = backgroundCanvas.height;
         
-        // Градиент для каждой полосы
-        const gradient = canvasCtx.createLinearGradient(0, height, 0, height - barHeight);
-        gradient.addColorStop(0, `rgba(102, 126, 234, 0.8)`);
-        gradient.addColorStop(0.5, `rgba(255, 107, 107, 0.6)`);
-        gradient.addColorStop(1, `rgba(255, 255, 255, 0.4)`);
+        // Очищаем с небольшим fade эффектом
+        backgroundCanvasCtx.fillStyle = 'rgba(102, 126, 234, 0.05)';
+        backgroundCanvasCtx.fillRect(0, 0, bgWidth, bgHeight);
         
-        canvasCtx.fillStyle = gradient;
-        canvasCtx.fillRect(
-            i * barWidth + barGap,
-            height - barHeight,
-            barWidth - barGap * 2,
-            barHeight
-        );
+        // Рисуем большие волны по центру экрана
+        const barCount = 80;
+        const barWidth = bgWidth / barCount;
+        const barGap = 1;
+        const centerY = bgHeight / 2;
+        
+        for (let i = 0; i < barCount; i++) {
+            const dataIndex = Math.floor((i / barCount) * dataArray.length);
+            const barHeight = (dataArray[dataIndex] / 255) * bgHeight * 0.4;
+            
+            // Lofi цвета: фиолетовый, розовый, голубой
+            const gradient = backgroundCanvasCtx.createLinearGradient(
+                i * barWidth, centerY - barHeight,
+                i * barWidth, centerY + barHeight
+            );
+            gradient.addColorStop(0, `rgba(118, 75, 162, 0.4)`); // #764ba2
+            gradient.addColorStop(0.5, `rgba(102, 126, 234, 0.5)`); // #667eea
+            gradient.addColorStop(1, `rgba(118, 75, 162, 0.3)`);
+            
+            backgroundCanvasCtx.fillStyle = gradient;
+            // Рисуем симметрично от центра
+            backgroundCanvasCtx.fillRect(
+                i * barWidth + barGap,
+                centerY - barHeight / 2,
+                barWidth - barGap * 2,
+                barHeight
+            );
+        }
     }
     
-    // Рисуем дополнительные круги для эффекта
-    const centerX = width / 2;
-    const centerY = height / 2;
-    const maxRadius = Math.min(width, height) * 0.3;
-    
-    for (let i = 0; i < 3; i++) {
-        const radius = (dataArray[i * 10] / 255) * maxRadius;
-        const alpha = 0.1 + (dataArray[i * 10] / 255) * 0.2;
+    // Рисуем на canvas внутри плеера (маленький, без кругов)
+    if (canvas && canvasCtx) {
+        const width = canvas.width;
+        const height = canvas.height;
         
-        canvasCtx.beginPath();
-        canvasCtx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-        canvasCtx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
-        canvasCtx.lineWidth = 2;
-        canvasCtx.stroke();
+        // Очищаем canvas
+        canvasCtx.clearRect(0, 0, width, height);
+        
+        // Рисуем волны по центру
+        const barCount = 50;
+        const barWidth = width / barCount;
+        const barGap = 2;
+        const centerY = height / 2;
+        
+        for (let i = 0; i < barCount; i++) {
+            const dataIndex = Math.floor((i / barCount) * dataArray.length);
+            const barHeight = (dataArray[dataIndex] / 255) * height * 0.3;
+            
+            // Lofi цвета для внутренней визуализации
+            const gradient = canvasCtx.createLinearGradient(
+                i * barWidth, centerY - barHeight,
+                i * barWidth, centerY + barHeight
+            );
+            gradient.addColorStop(0, `rgba(118, 75, 162, 0.5)`);
+            gradient.addColorStop(0.5, `rgba(102, 126, 234, 0.6)`);
+            gradient.addColorStop(1, `rgba(255, 255, 255, 0.3)`);
+            
+            canvasCtx.fillStyle = gradient;
+            // Рисуем симметрично от центра
+            canvasCtx.fillRect(
+                i * barWidth + barGap,
+                centerY - barHeight / 2,
+                barWidth - barGap * 2,
+                barHeight
+            );
+        }
     }
 }
 
@@ -549,9 +611,17 @@ function updateUI() {
         // Останавливаем визуализацию
         if (animationFrameId) {
             cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
         }
         if (canvas) {
             canvas.classList.remove('active');
+        }
+        if (backgroundCanvas) {
+            backgroundCanvas.classList.remove('active');
+            // Очищаем фоновый canvas
+            if (backgroundCanvasCtx) {
+                backgroundCanvasCtx.clearRect(0, 0, backgroundCanvas.width, backgroundCanvas.height);
+            }
         }
     }
 }

@@ -124,10 +124,7 @@ body {
 
 .container {
     position: relative;
-    z-index: 1;
-}
-
-.container {
+    z-index: 2;
     text-align: center;
     width: 100%;
     max-width: 400px;
@@ -144,7 +141,24 @@ body {
     overflow: hidden;
 }
 
-/* Canvas визуализация звука */
+/* Фоновый canvas для большой визуализации */
+.background-visualizer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.background-visualizer.active {
+    opacity: 0.4;
+}
+
+/* Canvas визуализация звука внутри плеера */
 .audio-visualizer {
     position: absolute;
     top: 0;
@@ -155,11 +169,11 @@ body {
     opacity: 0;
     transition: opacity 0.5s ease;
     pointer-events: none;
-    z-index: 0;
+    z-index: 1;
 }
 
 .audio-visualizer.active {
-    opacity: 0.3;
+    opacity: 0.5;
 }
 
 .visualizer {
@@ -213,7 +227,7 @@ body {
     gap: 20px;
     margin-bottom: 30px;
     position: relative;
-    z-index: 2;
+    z-index: 3;
 }
 
 .play-btn {
@@ -293,7 +307,7 @@ body {
     font-weight: 500;
     margin-bottom: 10px;
     position: relative;
-    z-index: 2;
+    z-index: 3;
 }
 
 .source-info {
@@ -302,7 +316,7 @@ body {
     margin-top: 10px;
     font-weight: 500;
     position: relative;
-    z-index: 2;
+    z-index: 3;
 }
 
 .track-info {
@@ -312,12 +326,12 @@ body {
     margin-top: 15px;
     gap: 15px;
     position: relative;
-    z-index: 2;
+    z-index: 3;
 }
 
 .track-counter {
     position: relative;
-    z-index: 2;
+    z-index: 3;
 }
 
 .track-time {
