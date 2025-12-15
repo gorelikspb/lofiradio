@@ -344,36 +344,52 @@ function drawVisualization() {
         
         // Рисуем полоски слева от центра
         for (let i = 0; i < barCount; i++) {
-            const dataIndex = Math.floor((i / barCount) * dataArray.length);
-            const barHeight = (dataArray[dataIndex] / 255) * bgHeight * 0.4;
+            // Для левой части используем обычный порядок частот
+            const dataIndexLeft = Math.floor((i / barCount) * dataArray.length);
+            const barHeightLeft = (dataArray[dataIndexLeft] / 255) * bgHeight * 0.4;
             
             const xLeft = centerX - (barCount - i) * barWidth;
             
             // Lofi цвета: фиолетовый, розовый, голубой
-            const gradient = backgroundCanvasCtx.createLinearGradient(
-                xLeft, centerY - barHeight,
-                xLeft, centerY + barHeight
+            const gradientLeft = backgroundCanvasCtx.createLinearGradient(
+                xLeft, centerY - barHeightLeft,
+                xLeft, centerY + barHeightLeft
             );
-            gradient.addColorStop(0, `rgba(118, 75, 162, 0.4)`); // #764ba2
-            gradient.addColorStop(0.5, `rgba(102, 126, 234, 0.5)`); // #667eea
-            gradient.addColorStop(1, `rgba(118, 75, 162, 0.3)`);
+            gradientLeft.addColorStop(0, `rgba(118, 75, 162, 0.4)`); // #764ba2
+            gradientLeft.addColorStop(0.5, `rgba(102, 126, 234, 0.5)`); // #667eea
+            gradientLeft.addColorStop(1, `rgba(118, 75, 162, 0.3)`);
             
-            backgroundCanvasCtx.fillStyle = gradient;
+            backgroundCanvasCtx.fillStyle = gradientLeft;
             // Рисуем слева от центра
             backgroundCanvasCtx.fillRect(
                 xLeft + barGap,
-                centerY - barHeight / 2,
+                centerY - barHeightLeft / 2,
                 barWidth - barGap * 2,
-                barHeight
+                barHeightLeft
             );
             
-            // Рисуем зеркально справа от центра
+            // Для правой части используем перевернутый порядок частот (зеркально)
+            const reversedIndex = barCount - 1 - i;
+            const dataIndexRight = Math.floor((reversedIndex / barCount) * dataArray.length);
+            const barHeightRight = (dataArray[dataIndexRight] / 255) * bgHeight * 0.4;
+            
             const xRight = centerX + i * barWidth;
+            
+            const gradientRight = backgroundCanvasCtx.createLinearGradient(
+                xRight, centerY - barHeightRight,
+                xRight, centerY + barHeightRight
+            );
+            gradientRight.addColorStop(0, `rgba(118, 75, 162, 0.4)`);
+            gradientRight.addColorStop(0.5, `rgba(102, 126, 234, 0.5)`);
+            gradientRight.addColorStop(1, `rgba(118, 75, 162, 0.3)`);
+            
+            backgroundCanvasCtx.fillStyle = gradientRight;
+            // Рисуем справа от центра с перевернутыми частотами
             backgroundCanvasCtx.fillRect(
                 xRight + barGap,
-                centerY - barHeight / 2,
+                centerY - barHeightRight / 2,
                 barWidth - barGap * 2,
-                barHeight
+                barHeightRight
             );
         }
     }
