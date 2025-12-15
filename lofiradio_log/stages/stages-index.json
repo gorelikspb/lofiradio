@@ -31,6 +31,17 @@
       "ru": ["01-main-player.png"],
       "en": ["01-main-player.png"]
     }
+  },
+  {
+    "id": "04",
+    "file": "04-visual-enhancements.md",
+    "date": "2025-12-15",
+    "title": "Визуальные улучшения и анимации",
+    "published": false,
+    "screenshots": {
+      "ru": ["01-main-player.png", "02-player-playing.png"],
+      "en": ["01-main-player.png", "02-player-playing.png"]
+    }
   }
 ]
 
