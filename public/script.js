@@ -139,10 +139,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     audioPlayer.addEventListener('canplay', () => {
         statusEl.classList.remove('loading');
-        if (isPlaying) {
-            updateTrackInfo();
-        }
+        updateTrackInfo();
         updateTime();
+        
+        // Обновляем статус если трек не играет
+        if (!isPlaying) {
+            const lang = getLanguage();
+            statusEl.textContent = translations[lang]?.status?.clickToStart || 'Нажмите для начала';
+        }
     });
     
     audioPlayer.addEventListener('timeupdate', () => {
@@ -151,6 +155,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     audioPlayer.addEventListener('loadedmetadata', () => {
         updateTime();
+    });
+    
+    audioPlayer.addEventListener('loadeddata', () => {
+        statusEl.classList.remove('loading');
+        if (!isPlaying) {
+            const lang = getLanguage();
+            statusEl.textContent = translations[lang]?.status?.clickToStart || 'Нажмите для начала';
+        }
     });
     
     // Обработчик лайка
