@@ -247,6 +247,9 @@ async function loadPlaylist() {
         
         // Обновляем Schema.org для плейлиста
         updatePlaylistSchema();
+        
+        // Создаем список треков для навигации
+        createTracksList();
     } catch (error) {
         console.error('Ошибка загрузки плейлиста:', error);
         console.error('Current URL:', window.location.href);
