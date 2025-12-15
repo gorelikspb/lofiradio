@@ -186,9 +186,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         navigator.mediaSession.setActionHandler('nexttrack', playNext);
     }
     
-    // Загружаем первый трек после загрузки плейлиста (но не начинаем воспроизведение)
+    // Загружаем первый трек после загрузки плейлиста и пытаемся запустить автоплей
     if (shuffledPlaylist.length > 0) {
-        loadTrack(0, false); // false = не начинать воспроизведение автоматически
+        loadTrack(0, true); // true = пытаемся начать воспроизведение автоматически
         
         // Устанавливаем начальный статус через небольшую задержку на случай если события не сработают
         setTimeout(() => {
@@ -311,14 +311,34 @@ function loadTrack(index, autoPlay = false) {
     
     // Автоматически начинаем воспроизведение только если явно запрошено или уже играло
     if (autoPlay || isPlaying) {
-        audioPlayer.play().catch(err => {
-            console.error('Ошибка автоплея:', err);
-            // Не показываем ошибку пользователю, если это просто автоплей
-            if (!autoPlay) {
-                const lang = getLanguage();
-                statusEl.textContent = lang === 'en' ? 'Error playing track' : 'Ошибка воспроизведения';
+        // Пытаемся запустить автоплей после небольшой задержки, чтобы трек успел загрузиться
+        setTimeout(() => {
+            if (audioPlayer.readyState >= 2) {
+                audioPlayer.play().then(() => {
+                    isPlaying = true;
+                    updateUI();
+                }).catch(err => {
+                    console.log('Автоплей заблокирован браузером (это нормально):', err.name);
+                    // Браузер блокирует автоплей - это нормально, не показываем ошибку
+                    statusEl.classList.remove('loading');
+                    const lang = getLanguage();
+                    statusEl.textContent = translations[lang]?.status?.clickToStart || 'Нажмите для начала';
+                });
+            } else {
+                // Трек еще не загружен, ждем события canplay
+                audioPlayer.addEventListener('canplay', () => {
+                    audioPlayer.play().then(() => {
+                        isPlaying = true;
+                        updateUI();
+                    }).catch(err => {
+                        console.log('Автоплей заблокирован браузером (это нормально):', err.name);
+                        statusEl.classList.remove('loading');
+                        const lang = getLanguage();
+                        statusEl.textContent = translations[lang]?.status?.clickToStart || 'Нажмите для начала';
+                    });
+                }, { once: true });
             }
-        });
+        }, 300);
     }
 }
 
