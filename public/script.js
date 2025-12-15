@@ -118,12 +118,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     audioPlayer.addEventListener('error', (e) => {
         console.error('Ошибка загрузки трека:', e);
-        const lang = getLanguage();
-        statusEl.textContent = lang === 'en' ? 'Error loading track' : 'Ошибка загрузки трека';
-        // Пробуем следующий трек
-        setTimeout(() => {
-            playNext();
-        }, 1000);
+        // Показываем ошибку только если пользователь пытался играть
+        if (isPlaying) {
+            const lang = getLanguage();
+            statusEl.textContent = lang === 'en' ? 'Error loading track' : 'Ошибка загрузки трека';
+            // Пробуем следующий трек
+            setTimeout(() => {
+                playNext();
+            }, 1000);
+        } else {
+            // Если просто загрузка без воспроизведения, не показываем ошибку
+            console.warn('Трек не загружен, но воспроизведение не начато');
+        }
     });
     
     audioPlayer.addEventListener('loadstart', () => {
@@ -158,9 +164,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         navigator.mediaSession.setActionHandler('nexttrack', playNext);
     }
     
-    // Загружаем первый трек после загрузки плейлиста
+    // Загружаем первый трек после загрузки плейлиста (но не начинаем воспроизведение)
     if (shuffledPlaylist.length > 0) {
-        loadTrack(0);
+        loadTrack(0, false); // false = не начинать воспроизведение автоматически
     } else {
         const lang = getLanguage();
         statusEl.textContent = lang === 'en' ? 'Playlist is empty. Add tracks to playlist.json' : 'Плейлист пуст. Добавьте треки в playlist.json';
@@ -216,7 +222,7 @@ async function loadPlaylist() {
 }
 
 // Загрузка трека
-function loadTrack(index) {
+function loadTrack(index, autoPlay = false) {
     if (shuffledPlaylist.length === 0) {
         const lang = getLanguage();
         statusEl.textContent = lang === 'en' ? 'Playlist is empty' : 'Плейлист пуст';
@@ -229,7 +235,7 @@ function loadTrack(index) {
         // Если трек не найден, начинаем сначала
         if (isRepeat) {
             currentTrackIndex = 0;
-            loadTrack(0);
+            loadTrack(0, autoPlay);
         }
         return;
     }
@@ -254,10 +260,15 @@ function loadTrack(index) {
     // Загружаем трек
     audioPlayer.load();
     
-    // Автоматически начинаем воспроизведение если уже играло
-    if (isPlaying) {
+    // Автоматически начинаем воспроизведение только если явно запрошено или уже играло
+    if (autoPlay || isPlaying) {
         audioPlayer.play().catch(err => {
             console.error('Ошибка автоплея:', err);
+            // Не показываем ошибку пользователю, если это просто автоплей
+            if (!autoPlay) {
+                const lang = getLanguage();
+                statusEl.textContent = lang === 'en' ? 'Error playing track' : 'Ошибка воспроизведения';
+            }
         });
     }
 }

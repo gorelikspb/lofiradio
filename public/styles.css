@@ -185,8 +185,9 @@ body {
     height: 100%;
     z-index: 0;
     pointer-events: none;
-    opacity: 0.15;
+    opacity: 0.2;
     overflow: hidden;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
 }
 
 .lofi-background-image img {
@@ -194,7 +195,8 @@ body {
     height: 100%;
     object-fit: cover;
     object-position: center;
-    filter: blur(2px) brightness(0.8);
+    filter: blur(3px) brightness(0.7) saturate(0.8);
+    mix-blend-mode: overlay;
 }
 
 .visualizer {
