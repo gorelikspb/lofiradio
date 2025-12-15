@@ -179,6 +179,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Загружаем первый трек после загрузки плейлиста (но не начинаем воспроизведение)
     if (shuffledPlaylist.length > 0) {
         loadTrack(0, false); // false = не начинать воспроизведение автоматически
+        
+        // Устанавливаем начальный статус через небольшую задержку на случай если события не сработают
+        setTimeout(() => {
+            if (!isPlaying && statusEl.textContent === 'Загрузка...') {
+                const lang = getLanguage();
+                statusEl.textContent = translations[lang]?.status?.clickToStart || 'Нажмите для начала';
+                statusEl.classList.remove('loading');
+            }
+        }, 2000);
     } else {
         const lang = getLanguage();
         statusEl.textContent = lang === 'en' ? 'Playlist is empty. Add tracks to playlist.json' : 'Плейлист пуст. Добавьте треки в playlist.json';
@@ -271,6 +280,16 @@ function loadTrack(index, autoPlay = false) {
     
     // Загружаем трек
     audioPlayer.load();
+    
+    // Проверяем состояние трека после небольшой задержки
+    setTimeout(() => {
+        if (!isPlaying && audioPlayer.readyState >= 2) {
+            // Трек загружен, обновляем статус
+            statusEl.classList.remove('loading');
+            const lang = getLanguage();
+            statusEl.textContent = translations[lang]?.status?.clickToStart || 'Нажмите для начала';
+        }
+    }, 500);
     
     // Автоматически начинаем воспроизведение только если явно запрошено или уже играло
     if (autoPlay || isPlaying) {
