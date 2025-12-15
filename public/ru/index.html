@@ -51,7 +51,21 @@
             "ratingValue": "4.8",
             "ratingCount": "150"
         },
-        "featureList": "Без рекламы, Фоновая музыка, Lofi hip hop, Chill beats, Ambient music"
+        "featureList": "Без рекламы, Фоновая музыка, Lofi hip hop, Chill beats, Ambient music",
+        "keywords": "lofi music, lofi radio, lofi hip hop, chill music, study music, relaxing music, background music"
+    }
+    </script>
+    
+    <!-- Schema.org для MusicPlaylist -->
+    <script type="application/ld+json" id="playlist-schema">
+    {
+        "@context": "https://schema.org",
+        "@type": "MusicPlaylist",
+        "name": "Lofi Radio Playlist",
+        "description": "Коллекция успокаивающей lofi музыки для учебы, работы и отдыха",
+        "numTracks": 9,
+        "genre": ["Lofi Hip Hop", "Chill", "Ambient", "Study Music"],
+        "inLanguage": "ru"
     }
     </script>
     
@@ -80,11 +94,31 @@
     
     <!-- Фоновое изображение: девочка в наушниках и котик -->
     <div class="lofi-background-image">
-        <img src="../assets/images/background.jpg" alt="Lofi girl studying with headphones and cat - relaxing lofi music background" onerror="this.style.display='none'" />
+        <img src="../assets/images/background.jpg" alt="Lofi girl studying with headphones and cat - relaxing lofi music background" loading="lazy" onerror="this.style.display='none'" />
     </div>
     
     <div class="container">
         <h1 class="sr-only">Lofi Radio - Слушайте Lofi Музыку Онлайн Без Рекламы</h1>
+        
+        <!-- SEO контент (скрытый для пользователей, видимый для поисковиков) -->
+        <div class="seo-content" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;">
+            <h2>Lofi Radio - Лучшая Lofi Музыка Онлайн</h2>
+            <p>Lofi Radio - это бесплатный онлайн-плеер lofi музыки без рекламы. Слушайте успокаивающую lofi hip hop музыку для учебы, работы и отдыха. Наша коллекция включает chill beats, ambient music и расслабляющие мелодии, которые помогут вам сосредоточиться и расслабиться.</p>
+            <h3>Особенности Lofi Radio</h3>
+            <ul>
+                <li>Бесплатная lofi музыка без рекламы</li>
+                <li>Фоновая музыка для учебы и работы</li>
+                <li>Lofi hip hop и chill beats</li>
+                <li>Ambient music для расслабления</li>
+                <li>Автоматическое воспроизведение</li>
+                <li>Визуализация звука</li>
+            </ul>
+            <h3>Что такое Lofi Музыка?</h3>
+            <p>Lofi (low fidelity) музыка - это жанр музыки, характеризующийся намеренно низким качеством звука, включающим шумы, искажения и винтажные эффекты. Lofi hip hop стал популярным жанром для фоновой музыки во время учебы, работы или отдыха благодаря своему расслабляющему и ненавязчивому характеру.</p>
+            <h3>Почему выбирают Lofi Radio?</h3>
+            <p>Lofi Radio предлагает лучшую коллекцию lofi музыки онлайн. Наш плеер работает без рекламы, имеет красивый интерфейс с визуализацией звука и автоматически воспроизводит музыку. Идеально подходит для концентрации во время учебы, работы или просто для расслабления.</p>
+        </div>
+        
         <div class="player-wrapper">
             <!-- Canvas для визуализации звука -->
             <canvas id="audioVisualizer" class="audio-visualizer"></canvas>

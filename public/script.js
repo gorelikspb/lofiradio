@@ -244,6 +244,9 @@ async function loadPlaylist() {
         }
         
         console.log(`Перемешанный плейлист: ${shuffledPlaylist.length} треков`);
+        
+        // Обновляем Schema.org для плейлиста
+        updatePlaylistSchema();
     } catch (error) {
         console.error('Ошибка загрузки плейлиста:', error);
         console.error('Current URL:', window.location.href);
@@ -533,6 +536,37 @@ function drawVisualization() {
             );
         }
     }
+}
+
+// Обновление Schema.org для плейлиста
+function updatePlaylistSchema() {
+    const schemaScript = document.getElementById('playlist-schema');
+    if (!schemaScript || playlist.length === 0) return;
+    
+    const lang = getLanguage();
+    const tracks = playlist.slice(0, 10).map(track => ({
+        "@type": "MusicRecording",
+        "name": cleanTrackTitle(track.title),
+        "byArtist": {
+            "@type": "MusicGroup",
+            "name": track.artist || "Lofi Radio"
+        }
+    }));
+    
+    const schema = {
+        "@context": "https://schema.org",
+        "@type": "MusicPlaylist",
+        "name": lang === 'en' ? "Lofi Radio Playlist" : "Lofi Radio Плейлист",
+        "description": lang === 'en' 
+            ? "Collection of relaxing lofi music for study, work and relaxation"
+            : "Коллекция успокаивающей lofi музыки для учебы, работы и отдыха",
+        "numTracks": playlist.length,
+        "genre": ["Lofi Hip Hop", "Chill", "Ambient", "Study Music"],
+        "inLanguage": lang,
+        "track": tracks
+    };
+    
+    schemaScript.textContent = JSON.stringify(schema);
 }
 
 // Удаление цифр в конце названия трека
