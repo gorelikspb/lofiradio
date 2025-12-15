@@ -134,6 +134,18 @@ body:has(.blog-container) {
     text-decoration: underline;
 }
 
+/* Переопределение стилей body для страниц треков */
+body.track-page,
+body:has(.track-info-section) {
+    overflow: auto !important;
+    overflow-x: hidden !important;
+    display: block !important;
+    align-items: unset !important;
+    justify-content: unset !important;
+    min-height: 100vh;
+    height: auto;
+}
+
 /* Стили для страниц треков */
 .track-page {
     max-width: 600px;
