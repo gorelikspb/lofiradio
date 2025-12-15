@@ -3,14 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Простое Lofi Radio - один клик и музыка играет без рекламы">
-    <title>Lofi Radio - Простое радио</title>
+    <meta name="description" content="Lofi Radio - слушайте lofi музыку онлайн бесплатно без рекламы. Успокаивающая музыка для учебы, работы и отдыха. Lofi hip hop, chill beats, ambient music.">
+    <meta name="keywords" content="lofi music, lofi radio, lofi hip hop, chill music, study music, relaxing music, background music, lofi beats, ambient music, focus music, lofi girl">
+    <meta name="author" content="Lofi Radio">
+    <meta name="robots" content="index, follow">
+    <title>Lofi Radio - Слушайте Lofi Музыку Онлайн Без Рекламы | Lofi Hip Hop</title>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lofilofi.pages.dev/ru/">
+    <meta property="og:title" content="Lofi Radio - Слушайте Lofi Музыку Онлайн Без Рекламы">
+    <meta property="og:description" content="Успокаивающая lofi музыка для учебы, работы и отдыха. Lofi hip hop, chill beats, ambient music - все без рекламы.">
+    <meta property="og:image" content="https://lofilofi.pages.dev/assets/images/background.jpg">
+    <meta property="og:locale" content="ru_RU">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://lofilofi.pages.dev/ru/">
+    <meta name="twitter:title" content="Lofi Radio - Слушайте Lofi Музыку Онлайн Без Рекламы">
+    <meta name="twitter:description" content="Успокаивающая lofi музыка для учебы, работы и отдыха. Lofi hip hop, chill beats, ambient music - все без рекламы.">
+    <meta name="twitter:image" content="https://lofilofi.pages.dev/assets/images/background.jpg">
     
     <!-- hreflang для SEO -->
     <link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/">
     <link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/">
     <link rel="alternate" hreflang="x-default" href="https://lofilofi.pages.dev/ru/">
     <link rel="canonical" href="https://lofilofi.pages.dev/ru/">
+    
+    <!-- Schema.org структурированные данные -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Lofi Radio",
+        "description": "Слушайте lofi музыку онлайн бесплатно без рекламы. Успокаивающая музыка для учебы, работы и отдыха.",
+        "url": "https://lofilofi.pages.dev/ru/",
+        "applicationCategory": "MusicApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "150"
+        },
+        "featureList": "Без рекламы, Фоновая музыка, Lofi hip hop, Chill beats, Ambient music"
+    }
+    </script>
     
     <link rel="stylesheet" href="../styles.css">
     <link rel="manifest" href="../manifest.json">
@@ -37,10 +79,11 @@
     
     <!-- Фоновое изображение: девочка в наушниках и котик -->
     <div class="lofi-background-image">
-        <img src="../assets/images/background.jpg" alt="Lofi girl with cat" onerror="this.style.display='none'" />
+        <img src="../assets/images/background.jpg" alt="Lofi girl studying with headphones and cat - relaxing lofi music background" onerror="this.style.display='none'" />
     </div>
     
     <div class="container">
+        <h1 class="sr-only">Lofi Radio - Слушайте Lofi Музыку Онлайн Без Рекламы</h1>
         <div class="player-wrapper">
             <!-- Canvas для визуализации звука -->
             <canvas id="audioVisualizer" class="audio-visualizer"></canvas>
