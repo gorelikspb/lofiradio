@@ -66,24 +66,38 @@
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "christmas lofi beat",
+                       "title":  "christmas lofi music 269177",
                        "category":  "xmas",
                        "id":  10,
-                       "file":  "assets/music/xmas/christmas-lofi-beat.mp3"
+                       "file":  "assets/music/xmas/christmas-lofi-music-269177.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "xmas lofi music",
+                       "title":  "christmas relax music 275516",
                        "category":  "xmas",
                        "id":  11,
-                       "file":  "assets/music/xmas/xmas-lofi-music.mp3"
+                       "file":  "assets/music/xmas/christmas-relax-music-275516.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "new year lofi beat",
+                       "title":  "christmas tree chillhop lofi christmas background music 126617",
                        "category":  "xmas",
                        "id":  12,
-                       "file":  "assets/music/xmas/new-year-lofi-beat.mp3"
+                       "file":  "assets/music/xmas/christmas-tree-chillhop-lofi-christmas-background-music-126617.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "happy new year lo fi beat 281422",
+                       "category":  "xmas",
+                       "id":  13,
+                       "file":  "assets/music/xmas/happy-new-year-lo-fi-beat-281422.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "lofi christmas music 271594",
+                       "category":  "xmas",
+                       "id":  14,
+                       "file":  "assets/music/xmas/lofi-christmas-music-271594.mp3"
                    }
                ],
     "shuffle":  true
