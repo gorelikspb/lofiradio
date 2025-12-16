@@ -284,6 +284,11 @@ async function loadPlaylist() {
         
         // Создаем список треков для навигации
         createTracksList();
+        
+        // Загружаем первый трек для автозапуска
+        if (shuffledPlaylist.length > 0) {
+            loadTrack(0, true);
+        }
     } catch (error) {
         console.error('Ошибка загрузки плейлиста:', error);
         console.error('Current URL:', window.location.href);
