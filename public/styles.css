@@ -226,7 +226,7 @@ body {
     height: 100%;
     z-index: 0;
     pointer-events: none;
-    opacity: 0.15;
+    opacity: 0.2;
     overflow: hidden;
 }
 
@@ -235,7 +235,7 @@ body {
     height: 100%;
     object-fit: cover; /* Растягивает по максимуму с сохранением пропорций */
     object-position: right center; /* Композиция справа */
-    filter: blur(3px) brightness(0.7);
+    filter: blur(2.5px) brightness(0.9) contrast(1.1) saturate(1.05);
     border: none;
     outline: none;
     min-width: 100%;
@@ -265,11 +265,11 @@ body:has(.lofi-background-image img[src*="background-newyear"]) .lofi-background
 
 @media (max-width: 768px) {
     .lofi-background-image {
-        opacity: 0.1;
+        opacity: 0.15;
     }
     
     .lofi-background-image img {
-        filter: blur(4px) brightness(0.6);
+        filter: blur(3px) brightness(0.8) contrast(1.05);
     }
 }
 
