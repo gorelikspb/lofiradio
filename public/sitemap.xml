@@ -87,6 +87,42 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/blog/lofi-music-for-sleep.html"/>
     </url>
     
+    <!-- Рождественские статьи (RU) -->
+    <url>
+        <loc>https://lofilofi.pages.dev/ru/blog/christmas-lofi-music.html</loc>
+        <lastmod>2025-12-15T12:00:00+00:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/blog/christmas-lofi-music.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/blog/christmas-lofi-music.html"/>
+    </url>
+    <url>
+        <loc>https://lofilofi.pages.dev/ru/blog/new-year-lofi-music.html</loc>
+        <lastmod>2025-12-15T12:00:00+00:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/blog/new-year-lofi-music.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/blog/new-year-lofi-music.html"/>
+    </url>
+    
+    <!-- Рождественские статьи (EN) -->
+    <url>
+        <loc>https://lofilofi.pages.dev/en/blog/christmas-lofi-music.html</loc>
+        <lastmod>2025-12-15T12:00:00+00:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/blog/christmas-lofi-music.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/blog/christmas-lofi-music.html"/>
+    </url>
+    <url>
+        <loc>https://lofilofi.pages.dev/en/blog/new-year-lofi-music.html</loc>
+        <lastmod>2025-12-15T12:00:00+00:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/blog/new-year-lofi-music.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/blog/new-year-lofi-music.html"/>
+    </url>
+    
     <!-- Страницы треков (RU) -->
     <url>
         <loc>https://lofilofi.pages.dev/ru/track/cutie-japan-lofi.html</loc>

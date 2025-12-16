@@ -59,3 +59,4 @@
 - object-fit: cover для фонового изображения
 - requestAnimationFrame для плавной анимации
 
+

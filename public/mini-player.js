@@ -1,13 +1,53 @@
 // Мини-плеер для статей блога
 class MiniPlayer {
-    constructor(containerId, tracks, mainPlayerLink) {
-        this.container = document.getElementById(containerId);
-        this.tracks = tracks;
+    constructor(options = {}) {
+        this.containerId = options.containerId || 'miniPlayer';
+        this.container = document.getElementById(this.containerId);
+        this.tracks = options.tracks || [];
+        this.playlistUrl = options.playlistUrl || '../../playlist.json';
+        this.filterCategory = options.filterCategory || null;
+        this.mainPlayerLink = options.mainPlayerLink || null;
         this.currentTrackIndex = 0;
         this.isPlaying = false;
         this.audio = null;
-        this.mainPlayerLink = mainPlayerLink;
-        this.init();
+        
+        // Legacy support: old constructor signature
+        if (typeof options === 'string' && arguments.length >= 2) {
+            this.containerId = options;
+            this.tracks = arguments[1] || [];
+            this.mainPlayerLink = arguments[2] || null;
+        }
+        
+        if (this.tracks.length === 0 && this.playlistUrl) {
+            this.loadPlaylist();
+        } else {
+            this.init();
+        }
+    }
+    
+    async loadPlaylist() {
+        try {
+            const response = await fetch(this.playlistUrl);
+            const data = await response.json();
+            let tracks = data.tracks || [];
+            
+            // Filter by category if specified
+            if (this.filterCategory) {
+                tracks = tracks.filter(track => track.category === this.filterCategory);
+            }
+            
+            if (tracks.length === 0) {
+                console.warn('No tracks found for category:', this.filterCategory);
+                // Fallback to all tracks if filter returns empty
+                const allData = await fetch(this.playlistUrl).then(r => r.json());
+                tracks = allData.tracks || [];
+            }
+            
+            this.tracks = tracks;
+            this.init();
+        } catch (error) {
+            console.error('Error loading playlist:', error);
+        }
     }
     
     getLanguage() {
@@ -25,67 +65,70 @@ class MiniPlayer {
     }
     
     createPlayerHTML() {
+        if (!this.container || this.tracks.length === 0) return;
+        
         const currentTrack = this.tracks[this.currentTrackIndex];
         const cleanTitle = currentTrack.title.replace(/\s+\d+$/, '').trim();
         
         const lang = this.getLanguage();
-        const titleText = lang === 'ru' ? '🎵 Слушайте пока читаете' : '🎵 Listen while reading';
+        const mainLink = this.mainPlayerLink || (lang === 'en' ? '../../en/' : '../../ru/');
         const linkText = lang === 'ru' ? 'Полный плеер →' : 'Full player →';
+        
+        // Get title from container if it exists, otherwise use default
+        const existingTitle = this.container.querySelector('.mini-player-title');
+        const titleText = existingTitle ? existingTitle.textContent : (lang === 'ru' ? '🎵 Слушайте пока читаете' : '🎵 Listen while reading');
         
         this.container.innerHTML = `
             <div class="mini-player-header">
-                <h3 class="mini-player-title">${titleText}</h3>
-                <a href="${this.mainPlayerLink}" class="mini-player-link">${linkText}</a>
+                <span class="mini-player-title">${titleText}</span>
+                <a href="${mainLink}" class="mini-player-link">${linkText}</a>
             </div>
             <div class="mini-player-controls">
-                <button class="mini-play-btn" id="miniPlayBtn" aria-label="Play/Pause">
-                    <svg class="mini-play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <polygon points="5 3 19 12 5 21" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <svg class="mini-pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="display: none;">
-                        <rect x="6" y="4" width="4" height="16" stroke-width="2"/>
-                        <rect x="14" y="4" width="4" height="16" stroke-width="2"/>
-                    </svg>
-                </button>
+                <button class="mini-play-btn" id="miniPlayBtn">▶</button>
                 <div class="mini-track-info">
-                    <div class="mini-track-name" id="miniTrackName">${cleanTitle}</div>
-                    <div class="mini-track-artist" id="miniTrackArtist">${currentTrack.artist}</div>
+                    <div class="mini-track-title" id="miniTrackTitle">${cleanTitle}</div>
+                    <div class="mini-progress-bar">
+                        <div class="mini-progress" id="miniProgress"></div>
+                    </div>
+                    <div class="mini-time">
+                        <span id="miniCurrentTime">0:00</span> / <span id="miniDuration">0:00</span>
+                    </div>
                 </div>
-            </div>
-            <div class="mini-progress-container" id="miniProgressContainer">
-                <div class="mini-progress-bar" id="miniProgressBar"></div>
-            </div>
-            <div class="mini-time-info">
-                <span id="miniCurrentTime">0:00</span>
-                <span id="miniDuration">0:00</span>
             </div>
         `;
     }
     
     setupAudio() {
+        if (!this.audio) {
+            this.audio = new Audio();
+            this.audio.preload = 'metadata';
+            
+            this.audio.addEventListener('loadedmetadata', () => {
+                this.updateDuration();
+            });
+            
+            this.audio.addEventListener('timeupdate', () => {
+                this.updateProgress();
+            });
+            
+            this.audio.addEventListener('ended', () => {
+                this.playNext();
+            });
+            
+            this.audio.addEventListener('error', (e) => {
+                console.error('Ошибка загрузки трека:', e);
+            });
+        }
+        
         const currentTrack = this.tracks[this.currentTrackIndex];
+        if (!currentTrack) return;
+        
         const trackPath = currentTrack.file.startsWith('assets/') 
             ? `../../${currentTrack.file}` 
             : currentTrack.file;
         
-        this.audio = new Audio(trackPath);
-        this.audio.preload = 'metadata';
-        
-        this.audio.addEventListener('loadedmetadata', () => {
-            this.updateDuration();
-        });
-        
-        this.audio.addEventListener('timeupdate', () => {
-            this.updateProgress();
-        });
-        
-        this.audio.addEventListener('ended', () => {
-            this.playNext();
-        });
-        
-        this.audio.addEventListener('error', (e) => {
-            console.error('Ошибка загрузки трека:', e);
-        });
+        this.audio.src = trackPath;
+        this.audio.load();
     }
     
     setupEventListeners() {
@@ -141,54 +184,61 @@ class MiniPlayer {
     }
     
     updateTrack() {
-        const currentTrack = this.tracks[this.currentTrackIndex];
-        const cleanTitle = currentTrack.title.replace(/\s+\d+$/, '').trim();
+        if (!this.container || this.tracks.length === 0) return;
         
-        this.container.querySelector('#miniTrackName').textContent = cleanTitle;
-        this.container.querySelector('#miniTrackArtist').textContent = currentTrack.artist;
+        const currentTrack = this.tracks[this.currentTrackIndex];
+        if (!currentTrack) return;
+        
+        const cleanTitle = currentTrack.title.replace(/\s+\d+$/, '').trim();
+        const titleEl = this.container.querySelector('#miniTrackTitle');
+        if (titleEl) {
+            titleEl.textContent = cleanTitle;
+        }
         
         this.setupAudio();
     }
     
     updatePlayButton() {
-        const playIcon = this.container.querySelector('.mini-play-icon');
-        const pauseIcon = this.container.querySelector('.mini-pause-icon');
-        
-        if (this.isPlaying) {
-            playIcon.style.display = 'none';
-            pauseIcon.style.display = 'block';
-        } else {
-            playIcon.style.display = 'block';
-            pauseIcon.style.display = 'none';
+        if (!this.container) return;
+        const playBtn = this.container.querySelector('#miniPlayBtn');
+        if (playBtn) {
+            playBtn.textContent = this.isPlaying ? '⏸' : '▶';
         }
     }
     
     updateProgress() {
-        if (!this.audio) return;
+        if (!this.audio || !this.container) return;
         
-        const percent = (this.audio.currentTime / this.audio.duration) * 100;
-        this.container.querySelector('#miniProgressBar').style.width = percent + '%';
+        const percent = this.audio.duration ? (this.audio.currentTime / this.audio.duration) * 100 : 0;
+        const progressEl = this.container.querySelector('#miniProgress');
+        if (progressEl) {
+            progressEl.style.width = percent + '%';
+        }
         this.updateCurrentTime();
     }
     
     updateCurrentTime() {
-        if (!this.audio) return;
+        if (!this.audio || !this.container) return;
         
-        const currentTime = Math.floor(this.audio.currentTime);
+        const currentTime = Math.floor(this.audio.currentTime || 0);
         const minutes = Math.floor(currentTime / 60);
         const seconds = currentTime % 60;
-        this.container.querySelector('#miniCurrentTime').textContent = 
-            `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        const timeEl = this.container.querySelector('#miniCurrentTime');
+        if (timeEl) {
+            timeEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
     }
     
     updateDuration() {
-        if (!this.audio || !this.audio.duration) return;
+        if (!this.audio || !this.audio.duration || !this.container) return;
         
         const duration = Math.floor(this.audio.duration);
         const minutes = Math.floor(duration / 60);
         const seconds = duration % 60;
-        this.container.querySelector('#miniDuration').textContent = 
-            `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        const durationEl = this.container.querySelector('#miniDuration');
+        if (durationEl) {
+            durationEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
     }
     
     seek(percent) {
@@ -198,21 +248,39 @@ class MiniPlayer {
     }
 }
 
-// Инициализация мини-плеера для статей
+// Инициализация мини-плеера для статей (legacy support)
 document.addEventListener('DOMContentLoaded', () => {
     const miniPlayerContainer = document.getElementById('miniPlayer');
     if (!miniPlayerContainer) return;
     
+    // Check if already initialized via new method
+    if (window.miniPlayerInstance) return;
+    
+    // Legacy: support for data-tracks attribute
     const tracksData = miniPlayerContainer.getAttribute('data-tracks');
-    const mainPlayerLink = miniPlayerContainer.getAttribute('data-main-link') || '../../ru/';
+    const mainPlayerLink = miniPlayerContainer.getAttribute('data-main-link');
+    const playlistUrl = miniPlayerContainer.getAttribute('data-playlist-url');
+    const filterCategory = miniPlayerContainer.getAttribute('data-filter-category');
     
-    if (!tracksData) return;
-    
-    try {
-        const tracks = JSON.parse(tracksData);
-        new MiniPlayer('miniPlayer', tracks, mainPlayerLink);
-    } catch (e) {
-        console.error('Ошибка парсинга треков:', e);
+    if (tracksData) {
+        try {
+            const tracks = JSON.parse(tracksData);
+            window.miniPlayerInstance = new MiniPlayer({
+                containerId: 'miniPlayer',
+                tracks: tracks,
+                mainPlayerLink: mainPlayerLink
+            });
+        } catch (e) {
+            console.error('Ошибка парсинга треков:', e);
+        }
+    } else if (playlistUrl || filterCategory) {
+        // New method: load from playlist.json with optional filter
+        window.miniPlayerInstance = new MiniPlayer({
+            containerId: 'miniPlayer',
+            playlistUrl: playlistUrl || '../../playlist.json',
+            filterCategory: filterCategory,
+            mainPlayerLink: mainPlayerLink
+        });
     }
 });
 
