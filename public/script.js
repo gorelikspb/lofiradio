@@ -208,10 +208,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Загрузка плейлиста
 async function loadPlaylist() {
     try {
-        // Путь к плейлисту (из папки ru/ или en/ нужно подняться на уровень выше)
-        const playlistPath = window.location.pathname.includes('/ru/') || window.location.pathname.includes('/en/') 
-            ? '../playlist.json' 
-            : './playlist.json';
+        // Определяем путь к плейлисту в зависимости от структуры папок
+        let playlistPath;
+        const path = window.location.pathname;
+        if (path.includes('/christmas/')) {
+            // Из папки christmas нужно подняться на 2 уровня выше
+            playlistPath = '../../playlist.json';
+        } else if (path.includes('/ru/') || path.includes('/en/')) {
+            // Из папки ru/ или en/ нужно подняться на уровень выше
+            playlistPath = '../playlist.json';
+        } else {
+            playlistPath = './playlist.json';
+        }
+        
         const response = await fetch(playlistPath, {
             cache: 'no-cache'
         });
@@ -223,7 +232,18 @@ async function loadPlaylist() {
         const data = await response.json();
         console.log('Загруженные данные:', data);
         
-        playlist = data.tracks || [];
+        let allTracks = data.tracks || [];
+        
+        // Фильтруем треки по категории, если мы на странице Christmas
+        if (path.includes('/christmas/')) {
+            playlist = allTracks.filter(track => track.category === 'xmas');
+            console.log(`Фильтр Christmas: загружено ${playlist.length} из ${allTracks.length} треков`);
+        } else {
+            // На обычной странице показываем все треки или только regular (если есть категория)
+            playlist = allTracks.filter(track => !track.category || track.category === 'regular');
+            console.log(`Обычный плейлист: загружено ${playlist.length} из ${allTracks.length} треков`);
+        }
+        
         isShuffle = data.shuffle !== false;
         isRepeat = data.repeat !== false;
         
@@ -247,9 +267,6 @@ async function loadPlaylist() {
         
         // Обновляем Schema.org для плейлиста
         updatePlaylistSchema();
-        
-        // Создаем список треков для навигации
-        createTracksList();
         
         // Создаем список треков для навигации
         createTracksList();
@@ -281,10 +298,18 @@ function loadTrack(index, autoPlay = false) {
     }
     
     currentTrackIndex = index;
-    // Путь к треку (из папки ru/ или en/ нужно подняться на уровень выше)
-    const trackPath = window.location.pathname.includes('/ru/') || window.location.pathname.includes('/en/')
-        ? '../' + track.file
-        : track.file;
+    // Путь к треку в зависимости от структуры папок
+    let trackPath;
+    const path = window.location.pathname;
+    if (path.includes('/christmas/')) {
+        // Из папки christmas нужно подняться на 2 уровня выше
+        trackPath = '../../' + track.file;
+    } else if (path.includes('/ru/') || path.includes('/en/')) {
+        // Из папки ru/ или en/ нужно подняться на уровень выше
+        trackPath = '../' + track.file;
+    } else {
+        trackPath = track.file;
+    }
     audioPlayer.src = trackPath;
     
     console.log('Загрузка трека:', track.file, 'Track:', track.title);

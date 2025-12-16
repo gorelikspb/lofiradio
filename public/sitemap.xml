@@ -19,6 +19,24 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/"/>
     </url>
     
+    <!-- Christmas плееры -->
+    <url>
+        <loc>https://lofilofi.pages.dev/ru/christmas/</loc>
+        <lastmod>2025-12-15T12:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/christmas/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/christmas/"/>
+    </url>
+    <url>
+        <loc>https://lofilofi.pages.dev/en/christmas/</loc>
+        <lastmod>2025-12-15T12:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/christmas/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/christmas/"/>
+    </url>
+    
     <!-- Блог статьи (RU) -->
     <url>
         <loc>https://lofilofi.pages.dev/ru/blog/lofi-music-for-studying.html</loc>
