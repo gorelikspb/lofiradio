@@ -85,6 +85,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     initAudioVisualizer();
     
+    // Инициализация фейерверков для новогодней страницы
+    if (window.location.pathname.includes('/christmas/')) {
+        initFireworks();
+    }
+    
     // Загружаем лайки из localStorage
     loadLikes();
     

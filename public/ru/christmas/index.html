@@ -74,7 +74,7 @@
     <meta name="theme-color" content="#1a1a2e">
     <script src="../../translations.js"></script>
 </head>
-<body>
+<body class="christmas-page">
     <!-- Переключатель языков и навигация -->
     <div class="language-switcher">
         <a href="../blog/christmas-lofi-music.html" class="lang-link">Блог</a>
@@ -197,7 +197,7 @@
         </audio>
     </div>
     
-    <!-- Декоративные элементы для lofi атмосферы -->
+    <!-- Декоративные элементы для lofi атмосферы и фейерверки -->
     <div class="lofi-particles">
         <div class="particle"></div>
         <div class="particle"></div>
@@ -208,7 +208,13 @@
         <div class="particle"></div>
         <div class="particle"></div>
         <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
     </div>
+    
+    <!-- Дополнительные фейерверки -->
+    <div id="fireworks-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></div>
     
     <script src="../../script.js"></script>
 </body>

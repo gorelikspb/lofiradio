@@ -242,6 +242,27 @@ body {
     min-height: 100%;
 }
 
+/* Специальные стили для новогодней страницы - более контрастное изображение */
+body:has(.lofi-background-image img[src*="background-newyear"]) .lofi-background-image,
+.christmas-page .lofi-background-image {
+    opacity: 0.25;
+}
+
+body:has(.lofi-background-image img[src*="background-newyear"]) .lofi-background-image img,
+.christmas-page .lofi-background-image img {
+    filter: blur(2px) brightness(1.1) contrast(1.3) saturate(1.2);
+    animation: newyearGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes newyearGlow {
+    0% {
+        filter: blur(2px) brightness(1.1) contrast(1.3) saturate(1.2);
+    }
+    100% {
+        filter: blur(2px) brightness(1.3) contrast(1.4) saturate(1.3);
+    }
+}
+
 @media (max-width: 768px) {
     .lofi-background-image {
         opacity: 0.1;
@@ -580,6 +601,25 @@ body {
     animation-duration: 14s;
 }
 
+/* Дополнительные частицы для новогодней страницы */
+.particle:nth-child(10) {
+    left: 50%;
+    animation-delay: 1.5s;
+    animation-duration: 15s;
+}
+
+.particle:nth-child(11) {
+    left: 30%;
+    animation-delay: 3.5s;
+    animation-duration: 17s;
+}
+
+.particle:nth-child(12) {
+    left: 70%;
+    animation-delay: 5.5s;
+    animation-duration: 16s;
+}
+
 @keyframes particleFloat {
     0% {
         transform: translateY(100vh) translateX(0) scale(0.8) rotate(0deg);
@@ -613,6 +653,89 @@ body {
     }
     50% {
         filter: brightness(1.5) drop-shadow(0 0 8px currentColor);
+    }
+}
+
+/* Фейерверки для новогодней страницы */
+.firework {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.firework::before,
+.firework::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: inherit;
+    animation: fireworkExplode 1s ease-out forwards;
+}
+
+.firework::before {
+    animation-delay: 0s;
+}
+
+.firework::after {
+    animation-delay: 0.1s;
+}
+
+@keyframes fireworkExplode {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(20);
+        opacity: 0;
+    }
+}
+
+/* Специальные частицы-фейерверки для новогодней страницы */
+body:has(.lofi-background-image img[src*="background-newyear"]) .particle,
+.christmas-page .particle {
+    animation: particleFloat 15s infinite ease-in-out, twinkle 2s infinite ease-in-out, fireworkPulse 3s infinite ease-in-out;
+    box-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+}
+
+@keyframes fireworkPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 1;
+    }
+}
+
+/* Дополнительные яркие частицы для новогодней страницы */
+body:has(.lofi-background-image img[src*="background-newyear"]) .lofi-particles::after,
+.christmas-page .lofi-particles::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 192, 203, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(135, 206, 250, 0.2) 0%, transparent 50%);
+    animation: fireworkBackground 8s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+
+@keyframes fireworkBackground {
+    0% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0.6;
+        transform: scale(1.1);
     }
 }
 
