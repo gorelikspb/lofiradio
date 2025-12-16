@@ -925,3 +925,77 @@ window.addEventListener('load', async () => {
         }, 500);
     }
 });
+
+// Фейерверки для новогодних страниц
+function initFireworks() {
+    const fireworksContainer = document.getElementById('fireworks-container');
+    if (!fireworksContainer) {
+        console.warn('Fireworks container not found');
+        return;
+    }
+    
+    function createFirework() {
+        const firework = document.createElement('div');
+        firework.classList.add('firework');
+        fireworksContainer.appendChild(firework);
+
+        const colors = ['#FFD700', '#FF69B4', '#87CEEB', '#FFA07A', '#FF4500']; // Gold, Pink, SkyBlue, LightSalmon, OrangeRed
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        firework.style.background = randomColor;
+
+        const startX = Math.random() * window.innerWidth;
+        const startY = window.innerHeight;
+        const endY = Math.random() * window.innerHeight / 2;
+        const endX = startX + (Math.random() - 0.5) * 200; // Slight horizontal drift
+
+        firework.style.left = `${startX}px`;
+        firework.style.top = `${startY}px`;
+
+        const animation = firework.animate([
+            { transform: `translateY(0) translateX(0) scale(0.5)`, opacity: 0.8 },
+            { transform: `translateY(${endY - startY}px) translateX(${endX - startX}px) scale(1)`, opacity: 1 }
+        ], {
+            duration: 1000 + Math.random() * 1000, // 1-2 seconds
+            easing: 'ease-out',
+            fill: 'forwards'
+        });
+
+        animation.onfinish = () => {
+            // Create sparks
+            for (let i = 0; i < 30; i++) {
+                const spark = document.createElement('div');
+                spark.classList.add('spark');
+                spark.style.background = randomColor;
+                spark.style.left = `${firework.offsetLeft + firework.offsetWidth / 2}px`;
+                spark.style.top = `${firework.offsetTop + firework.offsetHeight / 2}px`;
+                fireworksContainer.appendChild(spark);
+
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 80 + 20; // 20-100px
+                const sparkX = firework.offsetLeft + Math.cos(angle) * distance;
+                const sparkY = firework.offsetTop + Math.sin(angle) * distance;
+
+                const sparkAnimation = spark.animate([
+                    { transform: `translate(0,0) scale(1)`, opacity: 1 },
+                    { transform: `translate(${sparkX - firework.offsetLeft}px, ${sparkY - firework.offsetTop}px) scale(0)`, opacity: 0 }
+                ], {
+                    duration: 500 + Math.random() * 500, // 0.5-1 second
+                    easing: 'ease-out',
+                    fill: 'forwards'
+                });
+                sparkAnimation.onfinish = () => spark.remove();
+            }
+            firework.remove();
+        };
+    }
+
+    // Launch fireworks periodically
+    setInterval(createFirework, 2000 + Math.random() * 2000); // Every 2-4 seconds
+    // Sometimes launch multiple at once
+    setInterval(() => {
+        if (Math.random() > 0.7) { // 30% chance for extra fireworks
+            setTimeout(createFirework, Math.random() * 300);
+            setTimeout(createFirework, Math.random() * 300);
+        }
+    }, 5000);
+}
