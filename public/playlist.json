@@ -63,6 +63,27 @@
                        "category":  "regular",
                        "id":  9,
                        "file":  "assets/music/rainy-lofi-city-lofi-music-332746.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "christmas lofi beat",
+                       "category":  "xmas",
+                       "id":  10,
+                       "file":  "assets/music/xmas/christmas-lofi-beat.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "xmas lofi music",
+                       "category":  "xmas",
+                       "id":  11,
+                       "file":  "assets/music/xmas/xmas-lofi-music.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "new year lofi beat",
+                       "category":  "xmas",
+                       "id":  12,
+                       "file":  "assets/music/xmas/new-year-lofi-beat.mp3"
                    }
                ],
     "shuffle":  true
