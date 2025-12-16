@@ -245,7 +245,7 @@ body {
 /* Специальные стили для новогодней страницы - более контрастное изображение */
 body:has(.lofi-background-image img[src*="background-newyear"]) .lofi-background-image,
 .christmas-page .lofi-background-image {
-    opacity: 0.25;
+    opacity: 0.3;
 }
 
 body:has(.lofi-background-image img[src*="background-newyear"]) .lofi-background-image img,
