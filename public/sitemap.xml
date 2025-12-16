@@ -19,22 +19,40 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/"/>
     </url>
     
-    <!-- Christmas плееры -->
+    <!-- Xmas плееры -->
     <url>
-        <loc>https://lofilofi.pages.dev/ru/christmas/</loc>
+        <loc>https://lofilofi.pages.dev/ru/xmas/</loc>
         <lastmod>2025-12-15T12:00:00+00:00</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/christmas/"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/christmas/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/xmas/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/xmas/"/>
     </url>
     <url>
-        <loc>https://lofilofi.pages.dev/en/christmas/</loc>
+        <loc>https://lofilofi.pages.dev/en/xmas/</loc>
         <lastmod>2025-12-15T12:00:00+00:00</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/christmas/"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/christmas/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/xmas/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/xmas/"/>
+    </url>
+    
+    <!-- New Year плееры -->
+    <url>
+        <loc>https://lofilofi.pages.dev/ru/new-year/</loc>
+        <lastmod>2025-12-15T12:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/new-year/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/new-year/"/>
+    </url>
+    <url>
+        <loc>https://lofilofi.pages.dev/en/new-year/</loc>
+        <lastmod>2025-12-15T12:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/new-year/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/new-year/"/>
     </url>
     
     <!-- Блог статьи (RU) -->

@@ -85,8 +85,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     initAudioVisualizer();
     
-    // Инициализация фейерверков для новогодней страницы
-    if (window.location.pathname.includes('/christmas/')) {
+    // Инициализация фейерверков для новогодних страниц
+    const path = window.location.pathname;
+    if (path.includes('/xmas/') || path.includes('/new-year/') || path.includes('/christmas/')) {
         initFireworks();
     }
     
@@ -216,8 +217,8 @@ async function loadPlaylist() {
         // Определяем путь к плейлисту в зависимости от структуры папок
         let playlistPath;
         const path = window.location.pathname;
-        if (path.includes('/christmas/')) {
-            // Из папки christmas нужно подняться на 2 уровня выше
+        if (path.includes('/xmas/') || path.includes('/new-year/') || path.includes('/christmas/')) {
+            // Из папки xmas/new-year/christmas нужно подняться на 2 уровня выше
             playlistPath = '../../playlist.json';
         } else if (path.includes('/ru/') || path.includes('/en/')) {
             // Из папки ru/ или en/ нужно подняться на уровень выше
@@ -239,10 +240,11 @@ async function loadPlaylist() {
         
         let allTracks = data.tracks || [];
         
-        // Фильтруем треки по категории, если мы на странице Christmas
-        if (path.includes('/christmas/')) {
+        // Фильтруем треки по категории для xmas/new-year страниц
+        if (path.includes('/xmas/') || path.includes('/new-year/') || path.includes('/christmas/')) {
             playlist = allTracks.filter(track => track.category === 'xmas');
-            console.log(`Фильтр Christmas: загружено ${playlist.length} xmas треков из ${allTracks.length} всего треков`);
+            const pageType = path.includes('/xmas/') ? 'Xmas' : path.includes('/new-year/') ? 'New Year' : 'Christmas';
+            console.log(`Фильтр ${pageType}: загружено ${playlist.length} xmas треков из ${allTracks.length} всего треков`);
             if (playlist.length === 0) {
                 const lang = getLanguage();
                 if (statusEl) {
@@ -313,8 +315,8 @@ function loadTrack(index, autoPlay = false) {
     // Путь к треку в зависимости от структуры папок
     let trackPath;
     const path = window.location.pathname;
-    if (path.includes('/christmas/')) {
-        // Из папки christmas нужно подняться на 2 уровня выше
+    if (path.includes('/xmas/') || path.includes('/new-year/') || path.includes('/christmas/')) {
+        // Из папки xmas/new-year/christmas нужно подняться на 2 уровня выше
         trackPath = '../../' + track.file;
     } else if (path.includes('/ru/') || path.includes('/en/')) {
         // Из папки ru/ или en/ нужно подняться на уровень выше

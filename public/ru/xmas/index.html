@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Рождественская Lofi Музыка - слушайте Christmas lofi hip hop онлайн бесплатно без рекламы. Уютная рождественская музыка для зимних вечеров и праздничного настроения. Xmas lofi beats, christmas lofi music, holiday lofi.">
+    <meta name="keywords" content="christmas lofi, рождественская lofi музыка, xmas lofi music, christmas lofi hip hop, holiday lofi, christmas lofi beats, festive lofi, рождественская музыка lofi, christmas music lofi, xmas beats, holiday beats, christmas hip hop lofi">
+    <meta name="author" content="Lofi Radio">
+    <meta name="robots" content="index, follow">
+    <meta name="google-site-verification" content="wS-_aa2b50a2LhtwRlajlLvfLAahxsxllEu42mJtC" />
+    <title>Рождественская Lofi Музыка - Christmas Lofi Hip Hop | Lofi Radio</title>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lofilofi.pages.dev/ru/xmas/">
+    <meta property="og:title" content="Рождественская Lofi Музыка - Christmas Lofi Hip Hop">
+    <meta property="og:description" content="Уютная рождественская lofi музыка для создания праздничной атмосферы. Слушайте онлайн бесплатно без рекламы.">
+    <meta property="og:image" content="https://lofilofi.pages.dev/assets/images/background-newyear.png">
+    <meta property="og:locale" content="ru_RU">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://lofilofi.pages.dev/ru/xmas/">
+    <meta name="twitter:title" content="Рождественская Lofi Музыка - Christmas Lofi Hip Hop">
+    <meta name="twitter:description" content="Уютная рождественская lofi музыка для создания праздничной атмосферы. Слушайте онлайн бесплатно без рекламы.">
+    <meta name="twitter:image" content="https://lofilofi.pages.dev/assets/images/background-newyear.png">
+    
+    <!-- hreflang для SEO -->
+    <link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/xmas/">
+    <link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/xmas/">
+    <link rel="alternate" hreflang="x-default" href="https://lofilofi.pages.dev/ru/xmas/">
+    <link rel="canonical" href="https://lofilofi.pages.dev/ru/xmas/">
+    
+    <!-- Schema.org структурированные данные -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Рождественская Lofi Radio",
+        "description": "Слушайте рождественскую lofi музыку онлайн бесплатно без рекламы. Уютная праздничная музыка для зимних вечеров.",
+        "url": "https://lofilofi.pages.dev/ru/xmas/",
+        "applicationCategory": "MusicApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "150"
+        },
+        "featureList": "Без рекламы, Рождественская музыка, Christmas lofi hip hop, Holiday beats",
+        "keywords": "christmas lofi, xmas lofi music, christmas lofi hip hop, holiday lofi, christmas lofi beats, festive lofi"
+    }
+    </script>
+    
+    <!-- Schema.org для MusicPlaylist -->
+    <script type="application/ld+json" id="playlist-schema">
+    {
+        "@context": "https://schema.org",
+        "@type": "MusicPlaylist",
+        "name": "Рождественская Lofi Radio Плейлист",
+        "description": "Коллекция рождественской lofi музыки для праздничного настроения",
+        "numTracks": 0,
+        "genre": ["Christmas Lofi", "Holiday Music", "Xmas Lofi", "Festive Beats"],
+        "inLanguage": "ru"
+    }
+    </script>
+    
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="manifest" href="../../manifest.json">
+    <meta name="theme-color" content="#1a1a2e">
+    <script src="../../translations.js"></script>
+</head>
+<body class="christmas-page">
+    <!-- Переключатель языков и навигация -->
+    <div class="language-switcher">
+        <a href="../blog/christmas-lofi-music.html" class="lang-link">Блог</a>
+        <a href="../index.html" class="lang-link">Lofi Radio</a>
+        <a href="../new-year/" class="lang-link">Новый Год</a>
+        <a href="../../ru/" class="lang-link">RU</a>
+        <a href="../../en/xmas/" class="lang-link">EN</a>
+    </div>
+    
+    <!-- Фоновые декоративные элементы -->
+    <div class="background-decoration">
+        <div class="lofi-circle circle-1"></div>
+        <div class="lofi-circle circle-2"></div>
+        <div class="lofi-circle circle-3"></div>
+        <div class="lofi-circle circle-4"></div>
+    </div>
+    
+    <!-- Фоновый canvas для большой визуализации -->
+    <canvas id="backgroundVisualizer" class="background-visualizer"></canvas>
+    
+    <!-- Фоновое изображение: новогодняя атмосфера -->
+    <div class="lofi-background-image">
+        <img src="../../assets/images/background-newyear.png" alt="Рождественская атмосфера - новогодний город с фейерверками и lofi музыкой" loading="lazy" onerror="this.style.display='none'" />
+    </div>
+    
+    <div class="container">
+        <h1 class="sr-only">Рождественская Lofi Музыка - Christmas Lofi Hip Hop</h1>
+        
+        <!-- SEO контент (скрытый для пользователей, видимый для поисковиков) -->
+        <div class="seo-content" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;">
+            <h2>Рождественская Lofi Музыка - Christmas Lofi Radio</h2>
+            <p>Рождественская Lofi Radio - это бесплатный онлайн-плеер рождественской lofi музыки без рекламы. Слушайте уютную Christmas lofi hip hop музыку для создания праздничной атмосферы. Наша коллекция включает xmas lofi beats, holiday beats и рождественские мелодии, которые помогут вам насладиться праздничным настроением. Christmas lofi music идеально подходит для зимних вечеров, рождественских праздников и создания уютной атмосферы дома.</p>
+            <h3>Особенности Christmas Lofi Radio</h3>
+            <ul>
+                <li>Бесплатная рождественская lofi музыка без рекламы</li>
+                <li>Праздничная музыка для зимних вечеров</li>
+                <li>Christmas lofi hip hop и xmas lofi beats</li>
+                <li>Рождественская атмосфера</li>
+                <li>Автоматическое воспроизведение</li>
+                <li>Визуализация звука</li>
+                <li>Festive lofi music для праздничного настроения</li>
+            </ul>
+            <h3>Что такое Рождественская Lofi Музыка?</h3>
+            <p>Рождественская lofi музыка сочетает уютную атмосферу праздника с расслабляющими звуками lofi hip hop. Это идеальный выбор для создания особенного настроения в зимние вечера, когда хочется насладиться тишиной и теплом домашнего очага с праздничными нотками. Christmas lofi music включает в себя элементы традиционных рождественских мелодий, вплетенные в современные lofi beats, создавая уникальную атмосферу праздника.</p>
+            <h3>Популярные Запросы: Christmas Lofi, Xmas Lofi Music</h3>
+            <p>Пользователи часто ищут: <strong>christmas lofi</strong>, <strong>xmas lofi music</strong>, <strong>рождественская lofi музыка</strong>, <strong>christmas lofi hip hop</strong>, <strong>holiday lofi</strong>, <strong>christmas lofi beats</strong>, <strong>festive lofi</strong>, <strong>рождественские биты</strong>, <strong>christmas music lofi</strong>, <strong>xmas beats</strong>, <strong>holiday beats</strong>. Наш Christmas Lofi Radio предлагает лучшую коллекцию такой музыки онлайн.</p>
+            <h3>Когда Слушать Рождественскую Lofi Музыку?</h3>
+            <p>Рождественская lofi музыка отлично подходит для различных ситуаций: подготовка к Рождеству, украшение дома, работа и учеба в праздничные дни, вечерний отдых у камина, рождественские праздники. Xmas lofi music создает уютную атмосферу без навязчивости, идеально подходит для чтения, работы или просто расслабления в праздничные дни.</p>
+            <h3>Почему выбирают Christmas Lofi Radio?</h3>
+            <p>Christmas Lofi Radio предлагает лучшую коллекцию рождественской lofi музыки онлайн. Наш плеер работает без рекламы, имеет красивый интерфейс с визуализацией звука и автоматически воспроизводит музыку. Идеально подходит для создания праздничной атмосферы во время подготовки к Рождеству или просто для наслаждения зимними вечерами. Мы собрали лучшие Christmas lofi beats и xmas lofi music в одном месте.</p>
+            <h3>Связанные Темы</h3>
+            <p>Если вам нравится рождественская lofi музыка, вы также можете быть заинтересованы в: <a href="../blog/christmas-lofi-music.html">статье о Christmas lofi</a>, <a href="../new-year/">новогодней lofi музыке</a>, <a href="../index.html">обычной lofi музыке для учебы</a>, <a href="../blog/lofi-music-for-studying.html">lofi для учебы</a>.</p>
+        </div>
+        
+        <div class="player-wrapper">
+            <!-- Canvas для визуализации звука -->
+            <canvas id="audioVisualizer" class="audio-visualizer"></canvas>
+            
+            <div class="visualizer">
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+            </div>
+            
+            <div class="controls">
+                <button id="prevBtn" class="control-btn" aria-label="Предыдущий трек">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polygon points="19 20 9 12 19 4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="5" y1="4" x2="5" y2="20" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                
+                <button id="playBtn" class="play-btn" aria-label="Play/Pause">
+                    <svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polygon points="5 3 19 12 5 21" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <svg class="pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="display: none;">
+                        <rect x="6" y="4" width="4" height="16" stroke-width="2"/>
+                        <rect x="14" y="4" width="4" height="16" stroke-width="2"/>
+                    </svg>
+                </button>
+                
+                <button id="nextBtn" class="control-btn" aria-label="Следующий трек">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polygon points="5 4 15 12 5 20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="19" y1="4" x2="19" y2="20" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="status" id="status" data-i18n="status.clickToStart">Нажмите для начала</div>
+            <div class="source-info" id="sourceInfo"></div>
+            <div class="track-info">
+                <div class="track-time" id="trackTime">0:00 / 0:00</div>
+                <button id="likeBtn" class="like-btn" aria-label="Лайк">
+                    <svg class="like-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="track-counter" id="trackCounter"></div>
+        </div>
+        
+        <!-- Навигация к статьям и трекам -->
+        <div class="content-links" style="margin-top: 30px; text-align: center; z-index: 3; position: relative;">
+            <h3 style="color: rgba(255, 255, 255, 0.9); margin-bottom: 15px; font-size: 1.2em;">Полезные статьи:</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 25px;">
+                <a href="../blog/christmas-lofi-music.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">Рождественская Lofi</a>
+                <a href="../blog/new-year-lofi-music.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">Новогодняя Lofi</a>
+                <a href="../blog/lofi-music-for-studying.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">Lofi для учебы</a>
+            </div>
+            <h3 style="color: rgba(255, 255, 255, 0.9); margin-bottom: 15px; font-size: 1.2em;">Все треки:</h3>
+            <div id="tracksList" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 600px; margin: 0 auto;">
+                <!-- Список треков будет добавлен через JavaScript -->
+            </div>
+        </div>
+        
+        <audio id="audioPlayer" preload="none" crossorigin="anonymous">
+            Ваш браузер не поддерживает аудио.
+        </audio>
+    </div>
+    
+    <!-- Декоративные элементы для lofi атмосферы и фейерверки -->
+    <div class="lofi-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    
+    <!-- Дополнительные фейерверки -->
+    <div id="fireworks-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></div>
+    
+    <script src="../../script.js"></script>
+</body>
+</html>
+
