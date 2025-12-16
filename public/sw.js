@@ -46,13 +46,57 @@ self.addEventListener('activate', (event) => {
   return self.clients.claim(); // Берем контроль над всеми страницами
 });
 
-// Перехват запросов - стратегия Network First, Fallback to Cache
+// Перехват запросов - стратегия Cache First для аудио, Network First для остального
 self.addEventListener('fetch', (event) => {
-  // Пропускаем запросы к аудио файлам - они должны загружаться напрямую
-  if (event.request.url.includes('.mp3') || event.request.url.includes('audio')) {
-    return; // Не кешируем аудио, чтобы всегда получать свежие треки
+  const url = new URL(event.request.url);
+  
+  // Для аудио файлов используем Cache First стратегию (офлайн работа)
+  if (url.pathname.includes('.mp3') || event.request.destination === 'audio') {
+    event.respondWith(
+      caches.match(event.request)
+        .then((cachedResponse) => {
+          // Если есть в кеше, возвращаем из кеша
+          if (cachedResponse) {
+            // В фоне обновляем кеш для следующего раза
+            fetch(event.request)
+              .then((networkResponse) => {
+                if (networkResponse.status === 200) {
+                  const responseToCache = networkResponse.clone();
+                  caches.open(CACHE_NAME).then((cache) => {
+                    cache.put(event.request, responseToCache);
+                  });
+                }
+              })
+              .catch(() => {
+                // Игнорируем ошибки обновления кеша
+              });
+            return cachedResponse;
+          }
+          
+          // Если нет в кеше, загружаем из сети и кешируем
+          return fetch(event.request)
+            .then((networkResponse) => {
+              if (networkResponse.status === 200) {
+                const responseToCache = networkResponse.clone();
+                caches.open(CACHE_NAME).then((cache) => {
+                  cache.put(event.request, responseToCache);
+                });
+              }
+              return networkResponse;
+            })
+            .catch(() => {
+              // Если сеть недоступна и нет в кеше, возвращаем ошибку
+              return new Response('Audio file not available offline', {
+                status: 408,
+                headers: { 'Content-Type': 'text/plain' }
+              });
+            });
+        })
+    );
+    return;
   }
 
+  // Для остальных файлов используем Network First стратегию
   event.respondWith(
     fetch(event.request)
       .then((response) => {
