@@ -241,14 +241,14 @@ async function loadPlaylist() {
         
         // Фильтруем треки по категории, если мы на странице Christmas
         if (path.includes('/christmas/')) {
-            const xmasTracks = allTracks.filter(track => track.category === 'xmas');
-            if (xmasTracks.length > 0) {
-                playlist = xmasTracks;
-                console.log(`Фильтр Christmas: загружено ${playlist.length} из ${allTracks.length} треков`);
-            } else {
-                // Если нет xmas треков, показываем все треки с предупреждением
-                playlist = allTracks;
-                console.log(`Нет xmas треков, показываем все треки: ${playlist.length}`);
+            playlist = allTracks.filter(track => track.category === 'xmas');
+            console.log(`Фильтр Christmas: загружено ${playlist.length} xmas треков из ${allTracks.length} всего треков`);
+            if (playlist.length === 0) {
+                const lang = getLanguage();
+                if (statusEl) {
+                    statusEl.textContent = lang === 'en' ? 'No Xmas tracks available. Add MP3 files to assets/music/xmas/ folder and run create-playlist.ps1' : 'Нет новогодних треков. Добавьте MP3 файлы в папку assets/music/xmas/ и запустите create-playlist.ps1';
+                }
+                console.warn('Нет xmas треков! Добавьте треки в папку xmas и запустите create-playlist.ps1');
             }
         } else {
             // На обычной странице показываем все треки или только regular (если есть категория)
