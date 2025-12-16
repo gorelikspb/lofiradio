@@ -1,12 +1,15 @@
 {
-  "name": "Lofi Radio",
+  "name": "Lofi Radio - Успокаивающая Музыка",
   "short_name": "Lofi Radio",
-  "description": "Простое Lofi Radio - один клик и музыка играет без рекламы",
+  "description": "Слушайте lofi музыку онлайн бесплатно без рекламы. Успокаивающая музыка для учебы, работы и отдыха.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#667eea",
   "theme_color": "#1a1a2e",
-  "orientation": "portrait-primary",
+  "orientation": "any",
+  "categories": ["music", "entertainment", "lifestyle"],
+  "screenshots": [],
   "icons": [
     {
       "src": "icon-192.png",
@@ -19,6 +22,22 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Рождественская Lofi",
+      "short_name": "Xmas Lofi",
+      "description": "Слушайте рождественскую lofi музыку",
+      "url": "/ru/xmas/",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Новогодняя Lofi",
+      "short_name": "New Year",
+      "description": "Слушайте новогоднюю lofi музыку",
+      "url": "/ru/new-year/",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
     }
   ]
 }

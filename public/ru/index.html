@@ -208,6 +208,26 @@
     </div>
     
     <script src="../script.js"></script>
+    <script src="../pwa-install.js"></script>
+    <script>
+        // Регистрация Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('Service Worker зарегистрирован:', registration.scope);
+                        
+                        // Проверяем обновления каждые 60 секунд
+                        setInterval(() => {
+                            registration.update();
+                        }, 60000);
+                    })
+                    .catch((error) => {
+                        console.log('Ошибка регистрации Service Worker:', error);
+                    });
+            });
+        }
+    </script>
 </body>
 </html>
 
