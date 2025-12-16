@@ -236,8 +236,15 @@ async function loadPlaylist() {
         
         // Фильтруем треки по категории, если мы на странице Christmas
         if (path.includes('/christmas/')) {
-            playlist = allTracks.filter(track => track.category === 'xmas');
-            console.log(`Фильтр Christmas: загружено ${playlist.length} из ${allTracks.length} треков`);
+            const xmasTracks = allTracks.filter(track => track.category === 'xmas');
+            if (xmasTracks.length > 0) {
+                playlist = xmasTracks;
+                console.log(`Фильтр Christmas: загружено ${playlist.length} из ${allTracks.length} треков`);
+            } else {
+                // Если нет xmas треков, показываем все треки с предупреждением
+                playlist = allTracks;
+                console.log(`Нет xmas треков, показываем все треки: ${playlist.length}`);
+            }
         } else {
             // На обычной странице показываем все треки или только regular (если есть категория)
             playlist = allTracks.filter(track => !track.category || track.category === 'regular');
