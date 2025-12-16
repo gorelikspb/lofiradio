@@ -124,6 +124,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     audioPlayer.addEventListener('error', (e) => {
         console.error('Ошибка загрузки трека:', e, audioPlayer.error);
+        console.error('Текущий src:', audioPlayer.src);
+        console.error('Ожидаемый путь:', trackPath);
+        console.error('Текущий URL:', window.location.href);
         statusEl.classList.remove('loading');
         
         // Показываем ошибку только если это реальная ошибка загрузки файла
@@ -335,6 +338,7 @@ function loadTrack(index, autoPlay = false) {
     audioPlayer.src = trackPath;
     
     console.log('Загрузка трека:', track.file, 'Track:', track.title);
+    console.log('Полный путь к треку:', trackPath, 'Текущий путь:', path);
     
     // Инициализируем визуализацию если еще не инициализирована
     if (!audioContext && canvas) {
