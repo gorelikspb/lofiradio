@@ -253,7 +253,7 @@ async function loadPlaylist() {
                     statusEl.textContent = lang === 'en' ? 'No Xmas tracks available. Add MP3 files to assets/music/xmas/ folder and run create-playlist.ps1' : 'Нет новогодних треков. Добавьте MP3 файлы в папку assets/music/xmas/ и запустите create-playlist.ps1';
                 }
                 console.warn('Нет xmas треков! Добавьте треки в папку xmas и запустите create-playlist.ps1');
-                return; // Выходим если нет треков
+                // Не выходим, продолжаем выполнение чтобы создать пустой shuffledPlaylist
             }
         } else {
             // На обычной странице показываем все треки или только regular (если есть категория)
