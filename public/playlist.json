@@ -1,69 +1,69 @@
 ﻿{
-    "repeat": true,
-    "shuffle": true,
-    "tracks": [
-        {
-            "id": 1,
-            "title": "cutie japan lofi 402355",
-            "artist": "Lofi Radio",
-            "file": "assets/music/cutie-japan-lofi-402355.mp3",
-            "category": "regular"
-        },
-        {
-            "id": 2,
-            "title": "good night lofi cozy chill music 160166",
-            "artist": "Lofi Radio",
-            "file": "assets/music/good-night-lofi-cozy-chill-music-160166.mp3",
-            "category": "regular"
-        },
-        {
-            "id": 3,
-            "title": "lofi background music 314199",
-            "artist": "Lofi Radio",
-            "file": "assets/music/lofi-background-music-314199.mp3",
-            "category": "regular"
-        },
-        {
-            "id": 4,
-            "title": "lofi background music 326931",
-            "artist": "Lofi Radio",
-            "file": "assets/music/lofi-background-music-326931.mp3",
-            "category": "regular"
-        },
-        {
-            "id": 5,
-            "title": "lofi girl lofi ambient music 365952",
-            "artist": "Lofi Radio",
-            "file": "assets/music/lofi-girl-lofi-ambient-music-365952.mp3",
-            "category": "regular"
-        },
-        {
-            "id": 6,
-            "title": "lofi girl lofi hiphop beats 328177",
-            "artist": "Lofi Radio",
-            "file": "assets/music/lofi-girl-lofi-hiphop-beats-328177.mp3",
-            "category": "regular"
-        },
-        {
-            "id": 7,
-            "title": "lofi lofi chill lofi girl 438671",
-            "artist": "Lofi Radio",
-            "file": "assets/music/lofi-lofi-chill-lofi-girl-438671.mp3",
-            "category": "regular"
-        },
-        {
-            "id": 8,
-            "title": "lofi study calm peaceful chill hop 112191",
-            "artist": "Lofi Radio",
-            "file": "assets/music/lofi-study-calm-peaceful-chill-hop-112191.mp3",
-            "category": "regular"
-        },
-        {
-            "id": 9,
-            "title": "rainy lofi city lofi music 332746",
-            "artist": "Lofi Radio",
-            "file": "assets/music/rainy-lofi-city-lofi-music-332746.mp3",
-            "category": "regular"
-        }
-    ]
+    "repeat":  true,
+    "tracks":  [
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "cutie japan lofi 402355",
+                       "category":  "regular",
+                       "id":  1,
+                       "file":  "assets/music/cutie-japan-lofi-402355.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "good night lofi cozy chill music 160166",
+                       "category":  "regular",
+                       "id":  2,
+                       "file":  "assets/music/good-night-lofi-cozy-chill-music-160166.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "lofi background music 314199",
+                       "category":  "regular",
+                       "id":  3,
+                       "file":  "assets/music/lofi-background-music-314199.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "lofi background music 326931",
+                       "category":  "regular",
+                       "id":  4,
+                       "file":  "assets/music/lofi-background-music-326931.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "lofi girl lofi ambient music 365952",
+                       "category":  "regular",
+                       "id":  5,
+                       "file":  "assets/music/lofi-girl-lofi-ambient-music-365952.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "lofi girl lofi hiphop beats 328177",
+                       "category":  "regular",
+                       "id":  6,
+                       "file":  "assets/music/lofi-girl-lofi-hiphop-beats-328177.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "lofi lofi chill lofi girl 438671",
+                       "category":  "regular",
+                       "id":  7,
+                       "file":  "assets/music/lofi-lofi-chill-lofi-girl-438671.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "lofi study calm peaceful chill hop 112191",
+                       "category":  "regular",
+                       "id":  8,
+                       "file":  "assets/music/lofi-study-calm-peaceful-chill-hop-112191.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "rainy lofi city lofi music 332746",
+                       "category":  "regular",
+                       "id":  9,
+                       "file":  "assets/music/rainy-lofi-city-lofi-music-332746.mp3"
+                   }
+               ],
+    "shuffle":  true
 }
