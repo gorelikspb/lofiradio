@@ -1,0 +1,13 @@
+[
+  {
+    "id": "03",
+    "file": "03-enhancements.md",
+    "date": "2024-12-30",
+    "title": "Расширение функциональности и улучшение UX",
+    "published": false,
+    "screenshots": {
+      "ru": ["01-main-player.png", "02-player-playing.png", "03-mobile.png"],
+      "en": ["01-main-player.png", "02-player-playing.png", "03-mobile.png"]
+    }
+  }
+]

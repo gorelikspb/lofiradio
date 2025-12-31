@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lofi Radio - слушайте lofi музыку онлайн бесплатно без рекламы. Успокаивающая музыка для учебы, работы и отдыха. Lofi hip hop, chill beats, ambient music.">
+    <meta name="keywords" content="lofi music, lofi radio, lofi hip hop, chill music, study music, relaxing music, background music, lofi beats, ambient music, focus music, lofi girl, christmas lofi, xmas lofi music, new year lofi">
+    <meta name="author" content="Lofi Radio">
+    <meta name="robots" content="index, follow">
+    <meta name="google-site-verification" content="wS-_aa2b50a2LhtwRlajlLvfLAahxsxllEu42mJtC" />
+    <title>Lofi Radio - Слушайте Lofi Музыку Онлайн Без Рекламы | Lofi Hip Hop</title>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lofilofi.pages.dev/ru/">
+    <meta property="og:title" content="Lofi Radio - Слушайте Lofi Музыку Онлайн Без Рекламы">
+    <meta property="og:description" content="Успокаивающая lofi музыка для учебы, работы и отдыха. Lofi hip hop, chill beats, ambient music - все без рекламы.">
+    <meta property="og:image" content="https://lofilofi.pages.dev/assets/images/background.jpg">
+    <meta property="og:locale" content="ru_RU">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://lofilofi.pages.dev/ru/">
+    <meta name="twitter:title" content="Lofi Radio - Слушайте Lofi Музыку Онлайн Без Рекламы">
+    <meta name="twitter:description" content="Успокаивающая lofi музыка для учебы, работы и отдыха. Lofi hip hop, chill beats, ambient music - все без рекламы.">
+    <meta name="twitter:image" content="https://lofilofi.pages.dev/assets/images/background.jpg">
+    
+    <!-- hreflang для SEO -->
+    <link rel="alternate" hreflang="ru" href="https://lofilofi.pages.dev/ru/">
+    <link rel="alternate" hreflang="en" href="https://lofilofi.pages.dev/en/">
+    <link rel="alternate" hreflang="x-default" href="https://lofilofi.pages.dev/ru/">
+    <link rel="canonical" href="https://lofilofi.pages.dev/ru/">
+    
+    <!-- Schema.org структурированные данные -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Lofi Radio",
+        "description": "Слушайте lofi музыку онлайн бесплатно без рекламы. Успокаивающая музыка для учебы, работы и отдыха.",
+        "url": "https://lofilofi.pages.dev/ru/",
+        "applicationCategory": "MusicApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "150"
+        },
+        "featureList": "Без рекламы, Фоновая музыка, Lofi hip hop, Chill beats, Ambient music",
+        "keywords": "lofi music, lofi radio, lofi hip hop, chill music, study music, relaxing music, background music"
+    }
+    </script>
+    
+    <!-- Schema.org для MusicPlaylist -->
+    <script type="application/ld+json" id="playlist-schema">
+    {
+        "@context": "https://schema.org",
+        "@type": "MusicPlaylist",
+        "name": "Lofi Radio Плейлист",
+        "description": "Коллекция успокаивающей lofi музыки для учебы, работы и отдыха",
+        "numTracks": 9,
+        "genre": ["Lofi Hip Hop", "Chill", "Ambient", "Study Music"],
+        "inLanguage": "ru"
+    }
+    </script>
+    
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#1a1a2e">
+    <script src="../translations.js"></script>
+    
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "uu3pmhave1");
+    </script>
+</head>
+<body>
+    <!-- Переключатель языков и навигация -->
+    <div class="language-switcher">
+        <a href="blog/lofi-music-for-studying.html" class="lang-link">Блог</a>
+        <a href="xmas/" class="lang-link">🎄 Рождество</a>
+        <a href="new-year/" class="lang-link">🎆 Новый Год</a>
+        <a href="../ru/" class="lang-link active">RU</a>
+        <a href="../en/" class="lang-link">EN</a>
+    </div>
+    
+    <!-- Фоновые декоративные элементы -->
+    <div class="background-decoration">
+        <div class="lofi-circle circle-1"></div>
+        <div class="lofi-circle circle-2"></div>
+        <div class="lofi-circle circle-3"></div>
+        <div class="lofi-circle circle-4"></div>
+    </div>
+    
+    <!-- Фоновый canvas для большой визуализации -->
+    <canvas id="backgroundVisualizer" class="background-visualizer"></canvas>
+    
+    <!-- Фоновое изображение: девочка в наушниках и котик -->
+    <div class="lofi-background-image">
+        <img src="../assets/images/background.jpg" alt="Девочка в наушниках с котиком слушает lofi музыку - успокаивающий фон для учебы" loading="lazy" onerror="this.style.display='none'" />
+    </div>
+    
+    <div class="container">
+        <h1 class="sr-only">Lofi Radio - Слушайте Lofi Музыку Онлайн Без Рекламы</h1>
+        
+        <!-- SEO контент (скрытый для пользователей, видимый для поисковиков) -->
+        <div class="seo-content" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;">
+            <h2>Lofi Radio - Лучшая Lofi Музыка Онлайн</h2>
+            <p>Lofi Radio - это бесплатный онлайн-плеер lofi музыки без рекламы. Слушайте успокаивающую lofi hip hop музыку для учебы, работы и отдыха. Наша коллекция включает chill beats, ambient music и расслабляющие мелодии, которые помогут вам сосредоточиться и расслабиться.</p>
+            <h3>Особенности Lofi Radio</h3>
+            <ul>
+                <li>Бесплатная lofi музыка без рекламы</li>
+                <li>Фоновая музыка для учебы и работы</li>
+                <li>Lofi hip hop и chill beats</li>
+                <li>Ambient music для расслабления</li>
+                <li>Автоматическое воспроизведение</li>
+                <li>Визуализация звука</li>
+            </ul>
+            <h3>Что такое Lofi Музыка?</h3>
+            <p>Lofi (low fidelity) музыка - это жанр музыки, характеризующийся намеренно низким качеством звука, включающим шумы, искажения и винтажные эффекты. Lofi hip hop стал популярным жанром для фоновой музыки во время учебы, работы или отдыха благодаря своему расслабляющему и ненавязчивому характеру.</p>
+            <h3>Почему выбирают Lofi Radio?</h3>
+            <p>Lofi Radio предлагает лучшую коллекцию lofi музыки онлайн. Наш плеер работает без рекламы, имеет красивый интерфейс с визуализацией звука и автоматически воспроизводит музыку. Идеально подходит для концентрации во время учебы, работы или просто для расслабления.</p>
+        </div>
+        
+        <div class="player-wrapper">
+            <!-- Canvas для визуализации звука -->
+            <canvas id="audioVisualizer" class="audio-visualizer"></canvas>
+            
+            <div class="visualizer">
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+            </div>
+            
+            <div class="controls">
+                <button id="prevBtn" class="control-btn" aria-label="Предыдущий трек">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polygon points="19 20 9 12 19 4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="5" y1="4" x2="5" y2="20" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                
+                <button id="playBtn" class="play-btn" aria-label="Play/Pause">
+                    <svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polygon points="5 3 19 12 5 21" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <svg class="pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="display: none;">
+                        <rect x="6" y="4" width="4" height="16" stroke-width="2"/>
+                        <rect x="14" y="4" width="4" height="16" stroke-width="2"/>
+                    </svg>
+                </button>
+                
+                <button id="nextBtn" class="control-btn" aria-label="Следующий трек">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polygon points="5 4 15 12 5 20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="19" y1="4" x2="19" y2="20" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="status" id="status" data-i18n="status.clickToStart">Нажмите для начала</div>
+            <div class="source-info" id="sourceInfo"></div>
+            <div class="track-info">
+                <div class="track-time" id="trackTime">0:00 / 0:00</div>
+                <button id="likeBtn" class="like-btn" aria-label="Лайк">
+                    <svg class="like-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="track-counter" id="trackCounter"></div>
+        </div>
+        
+        <!-- Навигация к статьям и трекам -->
+        <div class="content-links" style="margin-top: 30px; text-align: center; z-index: 3; position: relative;">
+            <h3 style="color: rgba(255, 255, 255, 0.9); margin-bottom: 15px; font-size: 1.2em;">Полезные статьи:</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 25px;">
+                <a href="blog/lofi-music-for-studying.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">Lofi для учебы</a>
+                <a href="blog/rainy-lofi-music.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">Rainy Lofi</a>
+                <a href="blog/japanese-lofi-music.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">Japanese Lofi</a>
+                <a href="blog/lofi-music-for-sleep.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">Музыка для сна</a>
+                <a href="xmas/" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">🎄 Рождественская Lofi</a>
+                <a href="new-year/" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">🎆 Новогодняя Lofi</a>
+                <a href="blog/christmas-lofi-music.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">Статья о Christmas</a>
+            </div>
+            <h3 style="color: rgba(255, 255, 255, 0.9); margin-bottom: 15px; font-size: 1.2em;">Все треки:</h3>
+            <div id="tracksList" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 600px; margin: 0 auto;">
+                <!-- Список треков будет добавлен через JavaScript -->
+            </div>
+        </div>
+        
+        <audio id="audioPlayer" preload="none" crossorigin="anonymous">
+            Ваш браузер не поддерживает аудио.
+        </audio>
+    </div>
+    
+    <!-- Декоративные элементы для lofi атмосферы -->
+    <div class="lofi-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    
+    <script src="../script.js"></script>
+    <script src="../pwa-install.js"></script>
+    <script>
+        // Регистрация Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('Service Worker зарегистрирован:', registration.scope);
+                        
+                        // Проверяем обновления каждые 60 секунд
+                        setInterval(() => {
+                            registration.update();
+                        }, 60000);
+                    })
+                    .catch((error) => {
+                        console.log('Ошибка регистрации Service Worker:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+

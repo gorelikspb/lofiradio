@@ -1,0 +1,104 @@
+﻿{
+    "repeat":  true,
+    "tracks":  [
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "cutie japan lofi 402355",
+                       "category":  "regular",
+                       "id":  1,
+                       "file":  "assets/music/cutie-japan-lofi-402355.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "good night lofi cozy chill music 160166",
+                       "category":  "regular",
+                       "id":  2,
+                       "file":  "assets/music/good-night-lofi-cozy-chill-music-160166.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "lofi background music 314199",
+                       "category":  "regular",
+                       "id":  3,
+                       "file":  "assets/music/lofi-background-music-314199.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "lofi background music 326931",
+                       "category":  "regular",
+                       "id":  4,
+                       "file":  "assets/music/lofi-background-music-326931.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "lofi girl lofi ambient music 365952",
+                       "category":  "regular",
+                       "id":  5,
+                       "file":  "assets/music/lofi-girl-lofi-ambient-music-365952.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "lofi girl lofi hiphop beats 328177",
+                       "category":  "regular",
+                       "id":  6,
+                       "file":  "assets/music/lofi-girl-lofi-hiphop-beats-328177.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "lofi lofi chill lofi girl 438671",
+                       "category":  "regular",
+                       "id":  7,
+                       "file":  "assets/music/lofi-lofi-chill-lofi-girl-438671.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "lofi study calm peaceful chill hop 112191",
+                       "category":  "regular",
+                       "id":  8,
+                       "file":  "assets/music/lofi-study-calm-peaceful-chill-hop-112191.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "rainy lofi city lofi music 332746",
+                       "category":  "regular",
+                       "id":  9,
+                       "file":  "assets/music/rainy-lofi-city-lofi-music-332746.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "christmas lofi music 269177",
+                       "category":  "xmas",
+                       "id":  10,
+                       "file":  "assets/music/xmas/christmas-lofi-music-269177.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "christmas relax music 275516",
+                       "category":  "xmas",
+                       "id":  11,
+                       "file":  "assets/music/xmas/christmas-relax-music-275516.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "christmas tree chillhop lofi christmas background music 126617",
+                       "category":  "xmas",
+                       "id":  12,
+                       "file":  "assets/music/xmas/christmas-tree-chillhop-lofi-christmas-background-music-126617.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "happy new year lo fi beat 281422",
+                       "category":  "xmas",
+                       "id":  13,
+                       "file":  "assets/music/xmas/happy-new-year-lo-fi-beat-281422.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "lofi christmas music 271594",
+                       "category":  "xmas",
+                       "id":  14,
+                       "file":  "assets/music/xmas/lofi-christmas-music-271594.mp3"
+                   }
+               ],
+    "shuffle":  true
+}

@@ -1,0 +1,12 @@
+{
+  "name": "lofiradio",
+  "version": "1.0.0",
+  "description": "Lofi Radio - бесплатная lofi музыка без рекламы",
+  "scripts": {
+    "screenshots": "node scripts/capture-screenshots.js"
+  },
+  "devDependencies": {
+    "puppeteer": "^21.0.0"
+  }
+}
+
