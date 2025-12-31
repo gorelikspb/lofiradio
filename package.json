@@ -1,6 +1,7 @@
 {
   "name": "lofiradio",
   "version": "1.0.0",
+<<<<<<< HEAD
   "description": "Lofi Radio - бесплатная lofi музыка без рекламы",
   "scripts": {
     "screenshots": "node scripts/capture-screenshots.js"
@@ -10,3 +11,30 @@
   }
 }
 
+=======
+  "description": "Простое Lofi Radio - один клик и музыка играет без рекламы.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "screenshots": "node scripts/capture-screenshots.js",
+    "screenshots:server": "cd public && python -m http.server 8000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gorelikspb/lofiradio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gorelikspb/lofiradio/issues"
+  },
+  "homepage": "https://github.com/gorelikspb/lofiradio#readme",
+  "devDependencies": {
+    "puppeteer": "^24.32.1"
+  }
+}
+>>>>>>> 62fb05cce1eb900a92e9afe92e40646d597c9b60

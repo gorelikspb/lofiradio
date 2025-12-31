@@ -1,4 +1,36 @@
+# Node.js
 node_modules/
-lofiradio_log/
 package-lock.json
 
+# Документация проекта
+lofiradio_log/
+docs/
+project-docs/
+project-instructions/
+reports/
+instructions/
+
+# Конфигурационные файлы с секретами
+*.config.local
+.env
+.env.local
+wrangler.toml
+
+# Системные файлы
+.DS_Store
+Thumbs.db
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Временные файлы
+*.tmp
+*.temp
+
+# Музыкальные файлы - исключаем большие (>100MB)
+public/assets/music/track-001.mp3
+# Остальные треки коммитим (они меньше 100MB)
