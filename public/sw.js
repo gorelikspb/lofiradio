@@ -1,5 +1,5 @@
 // Service Worker для Lofi Radio PWA
-const CACHE_NAME = 'lofi-radio-v1';
+const CACHE_NAME = 'lofi-radio-v2'; // Обновлена версия для принудительного обновления
 const urlsToCache = [
   '/',
   '/ru/',
@@ -46,54 +46,14 @@ self.addEventListener('activate', (event) => {
   return self.clients.claim(); // Берем контроль над всеми страницами
 });
 
-// Перехват запросов - стратегия Cache First для аудио, Network First для остального
+// Перехват запросов - стратегия Network First для всех файлов
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   
-  // Для аудио файлов используем Cache First стратегию (офлайн работа)
+  // Пропускаем аудио файлы - пусть загружаются напрямую без перехвата
+  // Это предотвращает проблемы с кешированием и QUIC протоколом
   if (url.pathname.includes('.mp3') || event.request.destination === 'audio') {
-    event.respondWith(
-      caches.match(event.request)
-        .then((cachedResponse) => {
-          // Если есть в кеше, возвращаем из кеша
-          if (cachedResponse) {
-            // В фоне обновляем кеш для следующего раза
-            fetch(event.request)
-              .then((networkResponse) => {
-                if (networkResponse.status === 200) {
-                  const responseToCache = networkResponse.clone();
-                  caches.open(CACHE_NAME).then((cache) => {
-                    cache.put(event.request, responseToCache);
-                  });
-                }
-              })
-              .catch(() => {
-                // Игнорируем ошибки обновления кеша
-              });
-            return cachedResponse;
-          }
-          
-          // Если нет в кеше, загружаем из сети и кешируем
-          return fetch(event.request)
-            .then((networkResponse) => {
-              if (networkResponse.status === 200) {
-                const responseToCache = networkResponse.clone();
-                caches.open(CACHE_NAME).then((cache) => {
-                  cache.put(event.request, responseToCache);
-                });
-              }
-              return networkResponse;
-            })
-            .catch(() => {
-              // Если сеть недоступна и нет в кеше, возвращаем ошибку
-              return new Response('Audio file not available offline', {
-                status: 408,
-                headers: { 'Content-Type': 'text/plain' }
-              });
-            });
-        })
-    );
-    return;
+    return; // Не перехватываем аудио запросы
   }
 
   // Для остальных файлов используем Network First стратегию
