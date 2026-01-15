@@ -73,13 +73,21 @@
     <link rel="manifest" href="../manifest.json">
     <meta name="theme-color" content="#1a1a2e">
     <script src="../translations.js"></script>
+    
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "uu3pmhave1");
+    </script>
 </head>
 <body>
     <!-- Переключатель языков и навигация -->
     <div class="language-switcher">
         <a href="blog/lofi-music-for-studying.html" class="lang-link">Blog</a>
-        <a href="xmas/" class="lang-link">🎄 Xmas</a>
-        <a href="new-year/" class="lang-link">🎆 New Year</a>
+        <a href="new-year/" class="lang-link">🎆 Xmas&NY</a>
         <a href="../ru/" class="lang-link">RU</a>
         <a href="../en/" class="lang-link active">EN</a>
     </div>
@@ -179,8 +187,7 @@
                 <a href="blog/rainy-lofi-music.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">Rainy Lofi</a>
                 <a href="blog/japanese-lofi-music.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">Japanese Lofi</a>
                 <a href="blog/lofi-music-for-sleep.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">Sleep Music</a>
-                <a href="xmas/" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">🎄 Christmas Lofi</a>
-                <a href="new-year/" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">🎆 New Year Lofi</a>
+                <a href="new-year/" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">🎆 Xmas&NY</a>
                 <a href="blog/christmas-lofi-music.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.3s ease; backdrop-filter: blur(10px);">Christmas Article</a>
             </div>
             <h3 style="color: rgba(255, 255, 255, 0.9); margin-bottom: 15px; font-size: 1.2em;">All tracks:</h3>
@@ -188,6 +195,10 @@
                 <!-- Track list will be added via JavaScript -->
             </div>
         </div>
+        
+        <footer style="text-align: center; padding: 20px; margin-top: 40px; color: rgba(255, 255, 255, 0.6); position: relative; z-index: 10; width: 100%;">
+            <p><a href="https://codengodiary.pages.dev/en/lofiradio/" style="color: #3498db; text-decoration: none; border-bottom: 1px solid #3498db;">Development Blog</a></p>
+        </footer>
         
         <audio id="audioPlayer" preload="none" crossorigin="anonymous">
             Your browser does not support audio.

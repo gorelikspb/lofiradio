@@ -1,6 +1,17 @@
 {
   "name": "lofiradio",
   "version": "1.0.0",
+<<<<<<< HEAD
+  "description": "Lofi Radio - бесплатная lofi музыка без рекламы",
+  "scripts": {
+    "screenshots": "node scripts/capture-screenshots.js"
+  },
+  "devDependencies": {
+    "puppeteer": "^21.0.0"
+  }
+}
+
+=======
   "description": "Простое Lofi Radio - один клик и музыка играет без рекламы.",
   "main": "index.js",
   "directories": {
@@ -26,3 +37,4 @@
     "puppeteer": "^24.32.1"
   }
 }
+>>>>>>> 62fb05cce1eb900a92e9afe92e40646d597c9b60

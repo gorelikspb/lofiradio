@@ -1,4 +1,9 @@
+# Node.js
+node_modules/
+package-lock.json
+
 # Документация проекта
+lofiradio_log/
 docs/
 project-docs/
 project-instructions/
@@ -26,11 +31,6 @@ Thumbs.db
 *.tmp
 *.temp
 
-# Node.js
-node_modules/
-package-lock.json
-
 # Музыкальные файлы - исключаем большие (>100MB)
 public/assets/music/track-001.mp3
 # Остальные треки коммитим (они меньше 100MB)
-
