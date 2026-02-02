@@ -5,6 +5,10 @@ project-instructions/
 reports/
 instructions/
 
+# Все markdown файлы (кроме README.md в корне)
+*.md
+!README.md
+
 # Конфигурационные файлы с секретами
 *.config.local
 .env
