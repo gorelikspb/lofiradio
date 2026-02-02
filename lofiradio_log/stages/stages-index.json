@@ -1,25 +1,14 @@
 [
   {
-<<<<<<< HEAD
-    "id": "03",
-    "file": "03-enhancements.md",
-    "date": "2024-12-30",
-    "title": "Расширение функциональности и улучшение UX",
-=======
     "id": "01",
     "file": "01-basic-player.md",
     "date": "2025-01-08",
     "title": "Создание базового функционала",
->>>>>>> 62fb05cce1eb900a92e9afe92e40646d597c9b60
     "published": false,
     "screenshots": {
       "ru": ["01-main-player.png", "02-player-playing.png", "03-mobile.png"],
       "en": ["01-main-player.png", "02-player-playing.png", "03-mobile.png"]
     }
-<<<<<<< HEAD
-  }
-]
-=======
   },
   {
     "id": "02",
@@ -56,4 +45,3 @@
   }
 ]
 
->>>>>>> 62fb05cce1eb900a92e9afe92e40646d597c9b60

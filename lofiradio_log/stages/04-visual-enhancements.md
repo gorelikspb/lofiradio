@@ -60,3 +60,7 @@
 - requestAnimationFrame для плавной анимации
 
 
+
+
+
+
