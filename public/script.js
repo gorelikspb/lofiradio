@@ -27,10 +27,11 @@ let dataArray;
 let animationFrameId;
 let volumeSlider;
 let muteBtn;
-let volumeBeforeMute = 0.75;
+let volumeBeforeMute = 0.8;
 let isVolumeMuted = false;
 
-const VOLUME_STORAGE_KEY = 'lofiradio-volume';
+const VOLUME_STORAGE_KEY = 'lofiradio-volume-v2';
+const VOLUME_DEFAULT = 0.8;
 
 // Определение языка из URL пути (простая и единообразная логика)
 function getLanguage() {
@@ -68,9 +69,9 @@ function setLanguage(lang) {
 
 function getStoredVolume() {
     const stored = localStorage.getItem(VOLUME_STORAGE_KEY);
-    if (stored === null) return 0.75;
+    if (stored === null) return VOLUME_DEFAULT;
     const value = parseFloat(stored);
-    return Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0.75;
+    return Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : VOLUME_DEFAULT;
 }
 
 function updateVolumeIcon(volume) {
@@ -134,7 +135,7 @@ function applyVolume(volume, save = true) {
 
 function toggleMute() {
     if (isVolumeMuted || (audioPlayer && audioPlayer.volume === 0)) {
-        applyVolume(volumeBeforeMute > 0 ? volumeBeforeMute : 0.75);
+        applyVolume(volumeBeforeMute > 0 ? volumeBeforeMute : VOLUME_DEFAULT);
     } else {
         volumeBeforeMute = audioPlayer ? audioPlayer.volume : volumeBeforeMute;
         applyVolume(0);
@@ -172,7 +173,7 @@ function initVolumeControl() {
                 <line x1="17" y1="9" x2="23" y2="15" stroke-linecap="round"/>
             </svg>
         </button>
-        <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="75"
+        <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="80"
             aria-label="${texts.label}" aria-valuemin="0" aria-valuemax="100">
     `;
 

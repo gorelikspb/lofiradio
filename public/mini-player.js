@@ -1,5 +1,6 @@
 // Мини-плеер для статей блога
-const MINI_VOLUME_STORAGE_KEY = 'lofiradio-volume';
+const MINI_VOLUME_STORAGE_KEY = 'lofiradio-volume-v2';
+const MINI_VOLUME_DEFAULT = 0.8;
 
 class MiniPlayer {
     constructor(options = {}) {
@@ -12,7 +13,7 @@ class MiniPlayer {
         this.currentTrackIndex = 0;
         this.isPlaying = false;
         this.audio = null;
-        this.volumeBeforeMute = 0.75;
+        this.volumeBeforeMute = MINI_VOLUME_DEFAULT;
         this.isVolumeMuted = false;
         
         // Legacy support: old constructor signature
@@ -72,9 +73,9 @@ class MiniPlayer {
 
     getStoredVolume() {
         const stored = localStorage.getItem(MINI_VOLUME_STORAGE_KEY);
-        if (stored === null) return 0.75;
+        if (stored === null) return MINI_VOLUME_DEFAULT;
         const value = parseFloat(stored);
-        return Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0.75;
+        return Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : MINI_VOLUME_DEFAULT;
     }
 
     updateVolumeIcon(volume) {
@@ -134,7 +135,7 @@ class MiniPlayer {
 
     toggleMute() {
         if (this.isVolumeMuted || (this.audio && this.audio.volume === 0)) {
-            this.applyVolume(this.volumeBeforeMute > 0 ? this.volumeBeforeMute : 0.75);
+            this.applyVolume(this.volumeBeforeMute > 0 ? this.volumeBeforeMute : MINI_VOLUME_DEFAULT);
         } else {
             this.volumeBeforeMute = this.audio ? this.audio.volume : this.volumeBeforeMute;
             this.applyVolume(0);
@@ -198,7 +199,7 @@ class MiniPlayer {
                         <line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-linecap="round"/>
                     </svg>
                 </button>
-                <input type="range" id="miniVolumeSlider" class="mini-volume-slider" min="0" max="100" value="75"
+                <input type="range" id="miniVolumeSlider" class="mini-volume-slider" min="0" max="100" value="80"
                     aria-label="${volumeTexts.label}" aria-valuemin="0" aria-valuemax="100">
             </div>
         `;
