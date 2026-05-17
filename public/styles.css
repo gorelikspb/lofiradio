@@ -389,6 +389,86 @@ body:has(.lofi-background-image img[src*="background-newyear"]) .lofi-background
     stroke-width: 2;
 }
 
+.volume-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 220px;
+    margin: -10px auto 20px;
+    position: relative;
+    z-index: 3;
+}
+
+.volume-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+}
+
+.volume-btn:hover {
+    background: rgba(255, 255, 255, 0.28);
+}
+
+.volume-btn svg {
+    width: 22px;
+    height: 22px;
+    stroke: rgba(255, 255, 255, 0.95);
+    stroke-width: 2;
+    fill: none;
+}
+
+.volume-slider {
+    flex: 1;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.25);
+    outline: none;
+    cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    transition: transform 0.15s ease;
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+}
+
+.volume-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+}
+
+.volume-slider::-moz-range-track {
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.25);
+}
+
 .play-icon,
 .pause-icon {
     width: 50px;
@@ -768,6 +848,21 @@ body:has(.lofi-background-image img[src*="background-newyear"]) .lofi-particles:
     .control-btn svg {
         width: 24px;
         height: 24px;
+    }
+
+    .volume-control {
+        max-width: 180px;
+        gap: 10px;
+    }
+
+    .volume-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .volume-btn svg {
+        width: 20px;
+        height: 20px;
     }
     
     .status {

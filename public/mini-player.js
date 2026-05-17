@@ -1,4 +1,6 @@
 // Мини-плеер для статей блога
+const MINI_VOLUME_STORAGE_KEY = 'lofiradio-volume';
+
 class MiniPlayer {
     constructor(options = {}) {
         this.containerId = options.containerId || 'miniPlayer';
@@ -10,6 +12,8 @@ class MiniPlayer {
         this.currentTrackIndex = 0;
         this.isPlaying = false;
         this.audio = null;
+        this.volumeBeforeMute = 0.75;
+        this.isVolumeMuted = false;
         
         // Legacy support: old constructor signature
         if (typeof options === 'string' && arguments.length >= 2) {
@@ -55,6 +59,87 @@ class MiniPlayer {
         if (path.includes('/en/')) return 'en';
         return 'ru';
     }
+
+    getVolumeTexts() {
+        const lang = this.getLanguage();
+        if (typeof translations !== 'undefined' && translations[lang]?.volume) {
+            return translations[lang].volume;
+        }
+        return lang === 'en'
+            ? { label: 'Volume', mute: 'Mute', unmute: 'Unmute' }
+            : { label: 'Громкость', mute: 'Выключить звук', unmute: 'Включить звук' };
+    }
+
+    getStoredVolume() {
+        const stored = localStorage.getItem(MINI_VOLUME_STORAGE_KEY);
+        if (stored === null) return 0.75;
+        const value = parseFloat(stored);
+        return Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0.75;
+    }
+
+    updateVolumeIcon(volume) {
+        const muteBtn = this.container?.querySelector('#miniMuteBtn');
+        if (!muteBtn) return;
+
+        const iconHigh = muteBtn.querySelector('.mini-volume-icon-high');
+        const iconLow = muteBtn.querySelector('.mini-volume-icon-low');
+        const iconMute = muteBtn.querySelector('.mini-volume-icon-mute');
+        if (!iconHigh || !iconLow || !iconMute) return;
+
+        iconHigh.style.display = 'none';
+        iconLow.style.display = 'none';
+        iconMute.style.display = 'none';
+
+        if (volume === 0 || this.isVolumeMuted) {
+            iconMute.style.display = 'block';
+        } else if (volume < 0.35) {
+            iconLow.style.display = 'block';
+        } else {
+            iconHigh.style.display = 'block';
+        }
+    }
+
+    applyVolume(volume, save = true) {
+        const clamped = Math.max(0, Math.min(1, volume));
+        this.isVolumeMuted = clamped === 0;
+
+        if (this.audio) {
+            this.audio.volume = clamped;
+        }
+
+        const slider = this.container?.querySelector('#miniVolumeSlider');
+        if (slider) {
+            slider.value = Math.round(clamped * 100);
+        }
+
+        if (clamped > 0) {
+            this.volumeBeforeMute = clamped;
+        }
+
+        this.updateVolumeIcon(clamped);
+
+        const texts = this.getVolumeTexts();
+        const muteBtn = this.container?.querySelector('#miniMuteBtn');
+        if (muteBtn) {
+            muteBtn.setAttribute(
+                'aria-label',
+                this.isVolumeMuted ? texts.unmute : texts.mute
+            );
+        }
+
+        if (save) {
+            localStorage.setItem(MINI_VOLUME_STORAGE_KEY, String(clamped));
+        }
+    }
+
+    toggleMute() {
+        if (this.isVolumeMuted || (this.audio && this.audio.volume === 0)) {
+            this.applyVolume(this.volumeBeforeMute > 0 ? this.volumeBeforeMute : 0.75);
+        } else {
+            this.volumeBeforeMute = this.audio ? this.audio.volume : this.volumeBeforeMute;
+            this.applyVolume(0);
+        }
+    }
     
     init() {
         if (!this.container) return;
@@ -73,6 +158,7 @@ class MiniPlayer {
         const lang = this.getLanguage();
         const mainLink = this.mainPlayerLink || (lang === 'en' ? '../../en/' : '../../ru/');
         const linkText = lang === 'ru' ? 'Полный плеер →' : 'Full player →';
+        const volumeTexts = this.getVolumeTexts();
         
         // Get title from container if it exists, otherwise use default
         const existingTitle = this.container.querySelector('.mini-player-title');
@@ -94,6 +180,26 @@ class MiniPlayer {
                         <span id="miniCurrentTime">0:00</span> / <span id="miniDuration">0:00</span>
                     </div>
                 </div>
+            </div>
+            <div class="mini-volume-control">
+                <button type="button" class="mini-volume-btn" id="miniMuteBtn" aria-label="${volumeTexts.mute}">
+                    <svg class="mini-volume-icon-high" viewBox="0 0 24 24" aria-hidden="true">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07" fill="none" stroke="currentColor" stroke-linecap="round"/>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14" fill="none" stroke="currentColor" stroke-linecap="round"/>
+                    </svg>
+                    <svg class="mini-volume-icon-low" viewBox="0 0 24 24" aria-hidden="true" style="display: none;">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07" fill="none" stroke="currentColor" stroke-linecap="round"/>
+                    </svg>
+                    <svg class="mini-volume-icon-mute" viewBox="0 0 24 24" aria-hidden="true" style="display: none;">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-linecap="round"/>
+                        <line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                <input type="range" id="miniVolumeSlider" class="mini-volume-slider" min="0" max="100" value="75"
+                    aria-label="${volumeTexts.label}" aria-valuemin="0" aria-valuemax="100">
             </div>
         `;
     }
@@ -129,21 +235,40 @@ class MiniPlayer {
         
         this.audio.src = trackPath;
         this.audio.load();
+        this.applyVolume(this.getStoredVolume(), false);
     }
     
     setupEventListeners() {
         const playBtn = this.container.querySelector('#miniPlayBtn');
-        const progressContainer = this.container.querySelector('#miniProgressContainer');
+        const progressBar = this.container.querySelector('.mini-progress-bar');
+        const volumeSlider = this.container.querySelector('#miniVolumeSlider');
+        const muteBtn = this.container.querySelector('#miniMuteBtn');
         
         playBtn.addEventListener('click', () => {
             this.togglePlay();
         });
         
-        progressContainer.addEventListener('click', (e) => {
-            const rect = progressContainer.getBoundingClientRect();
-            const percent = (e.clientX - rect.left) / rect.width;
-            this.seek(percent);
-        });
+        if (progressBar) {
+            progressBar.addEventListener('click', (e) => {
+                const rect = progressBar.getBoundingClientRect();
+                const percent = (e.clientX - rect.left) / rect.width;
+                this.seek(percent);
+            });
+        }
+
+        if (volumeSlider) {
+            volumeSlider.addEventListener('input', () => {
+                this.applyVolume(volumeSlider.value / 100);
+            });
+        }
+
+        if (muteBtn) {
+            muteBtn.addEventListener('click', () => {
+                this.toggleMute();
+            });
+        }
+
+        this.applyVolume(this.getStoredVolume(), false);
     }
     
     togglePlay() {

@@ -112,6 +112,80 @@
     margin-top: 5px;
 }
 
+.mini-time {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8em;
+    color: #666;
+    margin-top: 5px;
+}
+
+.mini-volume-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.mini-volume-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(102, 126, 234, 0.15);
+    color: #667eea;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s ease;
+}
+
+.mini-volume-btn:hover {
+    background: rgba(102, 126, 234, 0.28);
+}
+
+.mini-volume-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.mini-volume-slider {
+    flex: 1;
+    height: 5px;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 3px;
+    background: rgba(102, 126, 234, 0.2);
+    outline: none;
+    cursor: pointer;
+}
+
+.mini-volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #667eea;
+    box-shadow: 0 1px 4px rgba(102, 126, 234, 0.4);
+}
+
+.mini-volume-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border: none;
+    border-radius: 50%;
+    background: #667eea;
+    cursor: pointer;
+}
+
+.mini-volume-slider::-moz-range-track {
+    height: 5px;
+    border-radius: 3px;
+    background: rgba(102, 126, 234, 0.2);
+}
+
 /* Фиксированный мини-плеер в углу */
 .mini-player-fixed {
     position: fixed;
@@ -166,6 +240,7 @@
         right: 10px;
     }
 }
+
 
 
 

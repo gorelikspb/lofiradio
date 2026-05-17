@@ -24,15 +24,21 @@ let analyser;
 let audioContext;
 let dataArray;
 let animationFrameId;
+let volumeSlider;
+let muteBtn;
+let volumeBeforeMute = 0.75;
+let isVolumeMuted = false;
 
-// Определение языка из URL пути
+const VOLUME_STORAGE_KEY = 'lofiradio-volume';
+
+// Определение языка из URL пути (простая и единообразная логика)
 function getLanguage() {
     const path = window.location.pathname;
-    // Проверяем путь: /ru/ или /en/
-    if (path.startsWith('/en/') || path.includes('/en/')) {
+    // Просто проверяем начало пути
+    if (path.startsWith('/en/') || path.startsWith('/en')) {
         return 'en';
     }
-    if (path.startsWith('/ru/') || path.includes('/ru/')) {
+    if (path.startsWith('/ru/') || path.startsWith('/ru')) {
         return 'ru';
     }
     // По умолчанию русский
@@ -55,15 +61,138 @@ function setLanguage(lang) {
             el.textContent = value;
         }
     });
+
+    updateVolumeLabels(lang);
+}
+
+function getStoredVolume() {
+    const stored = localStorage.getItem(VOLUME_STORAGE_KEY);
+    if (stored === null) return 0.75;
+    const value = parseFloat(stored);
+    return Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0.75;
+}
+
+function updateVolumeIcon(volume) {
+    if (!muteBtn) return;
+
+    const iconHigh = muteBtn.querySelector('.volume-icon-high');
+    const iconLow = muteBtn.querySelector('.volume-icon-low');
+    const iconMute = muteBtn.querySelector('.volume-icon-mute');
+    if (!iconHigh || !iconLow || !iconMute) return;
+
+    iconHigh.style.display = 'none';
+    iconLow.style.display = 'none';
+    iconMute.style.display = 'none';
+
+    if (volume === 0 || isVolumeMuted) {
+        iconMute.style.display = 'block';
+    } else if (volume < 0.35) {
+        iconLow.style.display = 'block';
+    } else {
+        iconHigh.style.display = 'block';
+    }
+}
+
+function updateVolumeLabels(lang) {
+    if (!muteBtn || !volumeSlider) return;
+    const texts = translations[lang]?.volume;
+    if (!texts) return;
+
+    volumeSlider.setAttribute('aria-label', texts.label);
+    muteBtn.setAttribute(
+        'aria-label',
+        isVolumeMuted || (audioPlayer && audioPlayer.volume === 0) ? texts.unmute : texts.mute
+    );
+}
+
+function applyVolume(volume, save = true) {
+    const clamped = Math.max(0, Math.min(1, volume));
+    isVolumeMuted = clamped === 0;
+
+    if (audioPlayer) {
+        audioPlayer.volume = clamped;
+    }
+    if (volumeSlider) {
+        volumeSlider.value = Math.round(clamped * 100);
+    }
+
+    if (clamped > 0) {
+        volumeBeforeMute = clamped;
+    }
+
+    updateVolumeIcon(clamped);
+    updateVolumeLabels(getLanguage());
+
+    if (save) {
+        localStorage.setItem(VOLUME_STORAGE_KEY, String(clamped));
+    }
+}
+
+function toggleMute() {
+    if (isVolumeMuted || (audioPlayer && audioPlayer.volume === 0)) {
+        applyVolume(volumeBeforeMute > 0 ? volumeBeforeMute : 0.75);
+    } else {
+        volumeBeforeMute = audioPlayer ? audioPlayer.volume : volumeBeforeMute;
+        applyVolume(0);
+    }
+}
+
+function initVolumeControl() {
+    const controls = document.querySelector('.controls');
+    if (!controls || document.getElementById('volumeControl')) return;
+
+    const lang = getLanguage();
+    const texts = translations[lang]?.volume || {
+        label: 'Громкость',
+        mute: 'Выключить звук',
+        unmute: 'Включить звук'
+    };
+
+    const volumeControl = document.createElement('div');
+    volumeControl.id = 'volumeControl';
+    volumeControl.className = 'volume-control';
+    volumeControl.innerHTML = `
+        <button type="button" id="muteBtn" class="volume-btn" aria-label="${texts.mute}">
+            <svg class="volume-icon-high" viewBox="0 0 24 24" aria-hidden="true">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke-linecap="round"/>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14" stroke-linecap="round"/>
+            </svg>
+            <svg class="volume-icon-low" viewBox="0 0 24 24" aria-hidden="true" style="display: none;">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke-linecap="round"/>
+            </svg>
+            <svg class="volume-icon-mute" viewBox="0 0 24 24" aria-hidden="true" style="display: none;">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="23" y1="9" x2="17" y2="15" stroke-linecap="round"/>
+                <line x1="17" y1="9" x2="23" y2="15" stroke-linecap="round"/>
+            </svg>
+        </button>
+        <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="75"
+            aria-label="${texts.label}" aria-valuemin="0" aria-valuemax="100">
+    `;
+
+    controls.parentNode.insertBefore(volumeControl, controls.nextSibling);
+
+    muteBtn = document.getElementById('muteBtn');
+    volumeSlider = document.getElementById('volumeSlider');
+
+    applyVolume(getStoredVolume(), false);
+
+    volumeSlider.addEventListener('input', () => {
+        applyVolume(volumeSlider.value / 100);
+    });
+
+    muteBtn.addEventListener('click', toggleMute);
 }
 
 // Инициализация
 document.addEventListener('DOMContentLoaded', async () => {
-    // Устанавливаем язык
     const lang = getLanguage();
     setLanguage(lang);
     
     audioPlayer = document.getElementById('audioPlayer');
+    initVolumeControl();
     playBtn = document.getElementById('playBtn');
     prevBtn = document.getElementById('prevBtn');
     nextBtn = document.getElementById('nextBtn');
@@ -194,6 +323,55 @@ document.addEventListener('DOMContentLoaded', async () => {
         navigator.mediaSession.setActionHandler('previoustrack', playPrevious);
         navigator.mediaSession.setActionHandler('nexttrack', playNext);
     }
+
+    // Управление с клавиатуры
+    document.addEventListener('keydown', (event) => {
+        const activeElement = document.activeElement;
+        const isInputElement =
+            activeElement &&
+            (activeElement.tagName === 'INPUT' ||
+                activeElement.tagName === 'TEXTAREA' ||
+                activeElement.isContentEditable);
+
+        // Не перехватываем ввод в полях/текстовых областях
+        if (isInputElement) {
+            return;
+        }
+
+        switch (event.key) {
+            case ' ':
+            case 'Spacebar': // старые браузеры
+                event.preventDefault();
+                togglePlay();
+                break;
+            case 'ArrowRight':
+                event.preventDefault();
+                playNext();
+                break;
+            case 'ArrowLeft':
+                event.preventDefault();
+                playPrevious();
+                break;
+            case 'ArrowUp':
+                event.preventDefault();
+                if (audioPlayer) {
+                    applyVolume(audioPlayer.volume + 0.05);
+                }
+                break;
+            case 'ArrowDown':
+                event.preventDefault();
+                if (audioPlayer) {
+                    applyVolume(audioPlayer.volume - 0.05);
+                }
+                break;
+            case 'k':
+            case 'K':
+                // Альтернатива для Space — удобно на ноутбуках
+                event.preventDefault();
+                togglePlay();
+                break;
+        }
+    });
     
     // Загружаем первый трек после загрузки плейлиста и пытаемся запустить автоплей
     if (shuffledPlaylist.length > 0) {
@@ -629,14 +807,18 @@ function updatePlaylistSchema() {
 // Удаление цифр в конце названия трека
 function cleanTrackTitle(title) {
     if (!title) return title;
-    // Убираем цифры и пробелы в конце строки
-    return title.replace(/\s+\d+$/, '').trim();
+    // Убираем все цифры в конце строки (включая пробелы перед ними)
+    // Простая и единообразная логика: убираем числа в конце
+    return title.replace(/\s*\d+\s*$/, '').trim();
 }
 
 // Создание списка треков для навигации
 function createTracksList() {
     const tracksListEl = document.getElementById('tracksList');
     if (!tracksListEl || playlist.length === 0) return;
+    
+    // Определяем текущий язык для правильного формирования URL
+    const lang = getLanguage();
     
     // Используем оригинальный плейлист (не перемешанный) для списка
     playlist.forEach((track) => {
@@ -646,7 +828,8 @@ function createTracksList() {
             .replace(/\s+/g, '-')
             .trim();
         
-        const trackUrl = `track/${trackSlug}.html`;
+        // Добавляем префикс языка к URL трека
+        const trackUrl = `${lang}/track/${trackSlug}.html`;
         const link = document.createElement('a');
         link.href = trackUrl;
         link.textContent = cleanTitle;
@@ -664,13 +847,17 @@ function updateTrackInfo() {
     if (track) {
         const cleanTitle = cleanTrackTitle(track.title);
         
+        // Определяем текущий язык для правильного формирования URL
+        const lang = getLanguage();
+        
         // Создаем slug для ссылки на страницу трека
         const trackSlug = cleanTitle.toLowerCase()
             .replace(/[^a-z0-9\s-]/g, '')
             .replace(/\s+/g, '-')
             .trim();
         
-        const trackUrl = `track/${trackSlug}.html`;
+        // Добавляем префикс языка к URL трека
+        const trackUrl = `${lang}/track/${trackSlug}.html`;
         
         // Делаем название трека кликабельным
         if (sourceInfoEl) {

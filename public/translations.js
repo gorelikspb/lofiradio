@@ -7,7 +7,12 @@ const translations = {
             playing: "Играет",
             pause: "Пауза"
         },
-        trackCounter: "трек"
+        trackCounter: "трек",
+        volume: {
+            label: "Громкость",
+            mute: "Выключить звук",
+            unmute: "Включить звук"
+        }
     },
     en: {
         status: {
@@ -16,9 +21,15 @@ const translations = {
             playing: "Playing",
             pause: "Pause"
         },
-        trackCounter: "track"
+        trackCounter: "track",
+        volume: {
+            label: "Volume",
+            mute: "Mute",
+            unmute: "Unmute"
+        }
     }
 };
+
 
 
 
