@@ -22,6 +22,7 @@ let backgroundCanvas;
 let backgroundCanvasCtx;
 let analyser;
 let audioContext;
+let gainNode;
 let dataArray;
 let animationFrameId;
 let volumeSlider;
@@ -109,6 +110,9 @@ function applyVolume(volume, save = true) {
     const clamped = Math.max(0, Math.min(1, volume));
     isVolumeMuted = clamped === 0;
 
+    if (gainNode) {
+        gainNode.gain.value = clamped;
+    }
     if (audioPlayer) {
         audioPlayer.volume = clamped;
     }
@@ -612,12 +616,20 @@ function initAudioVisualizer() {
         analyser.fftSize = 256;
         dataArray = new Uint8Array(analyser.frequencyBinCount);
         
-        // Подключаем аудио к анализатору
+        // Подключаем аудио через GainNode (иначе audio.volume не влияет на выход)
+        gainNode = audioContext.createGain();
         const source = audioContext.createMediaElementSource(audioPlayer);
-        source.connect(analyser);
+        source.connect(gainNode);
+        gainNode.connect(analyser);
         analyser.connect(audioContext.destination);
+
+        const currentVolume = volumeSlider
+            ? volumeSlider.value / 100
+            : getStoredVolume();
+        applyVolume(currentVolume, false);
     } catch (e) {
         console.warn('Web Audio API не поддерживается:', e);
+        gainNode = null;
     }
 }
 
