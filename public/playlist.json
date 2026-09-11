@@ -1,172 +1,403 @@
-﻿{
+{
     "repeat":  true,
     "tracks":  [
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "chill lofi beat 469069",
+                       "title":  "A Blue Day",
                        "category":  "regular",
                        "id":  1,
+                       "file":  "assets/music/a-blue-day.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Ambient",
+                       "category":  "regular",
+                       "id":  2,
+                       "file":  "assets/music/ambient.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "A New Start",
+                       "category":  "regular",
+                       "id":  3,
+                       "file":  "assets/music/a-new-start.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Chillax",
+                       "category":  "regular",
+                       "id":  4,
+                       "file":  "assets/music/chillax.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Chill Bro",
+                       "category":  "regular",
+                       "id":  5,
+                       "file":  "assets/music/chill-bro.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Chill Lofi Beat",
+                       "category":  "regular",
+                       "id":  6,
                        "file":  "assets/music/chill-lofi-beat-469069.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "coffee lofi lofi music chill ambient 458900",
+                       "title":  "Coffee Lofi Lofi Music Chill Ambient",
                        "category":  "regular",
-                       "id":  2,
+                       "id":  7,
                        "file":  "assets/music/coffee-lofi-lofi-music-chill-ambient-458900.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "cozy lofi background music for study 457198",
+                       "title":  "Cozy Lofi Background Music For Study",
                        "category":  "regular",
-                       "id":  3,
+                       "id":  8,
                        "file":  "assets/music/cozy-lofi-background-music-for-study-457198.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "cutie japan lofi 402355",
+                       "title":  "Cutie Japan Lofi",
                        "category":  "regular",
-                       "id":  4,
+                       "id":  9,
                        "file":  "assets/music/cutie-japan-lofi-402355.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "good night lofi cozy chill music 160166",
+                       "title":  "Day Dreamin With U",
                        "category":  "regular",
-                       "id":  5,
+                       "id":  10,
+                       "file":  "assets/music/day-dreamin-with-u.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Digital Clouds",
+                       "category":  "regular",
+                       "id":  11,
+                       "file":  "assets/music/digital-clouds.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Down The River",
+                       "category":  "regular",
+                       "id":  12,
+                       "file":  "assets/music/down-the-river.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Finding Myself",
+                       "category":  "regular",
+                       "id":  13,
+                       "file":  "assets/music/finding-myself.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Forest Walk",
+                       "category":  "regular",
+                       "id":  14,
+                       "file":  "assets/music/forest-walk.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Good Night Lofi Cozy Chill Music",
+                       "category":  "regular",
+                       "id":  15,
                        "file":  "assets/music/good-night-lofi-cozy-chill-music-160166.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "lofi background music 314199",
+                       "title":  "Green Chair Rnb",
                        "category":  "regular",
-                       "id":  6,
+                       "id":  16,
+                       "file":  "assets/music/green-chair-rnb.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Hazy After Hours",
+                       "category":  "regular",
+                       "id":  17,
+                       "file":  "assets/music/hazy-after-hours.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Hip Hop Two",
+                       "category":  "regular",
+                       "id":  18,
+                       "file":  "assets/music/hip-hop-two.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Lo Fi 03",
+                       "category":  "regular",
+                       "id":  19,
+                       "file":  "assets/music/lo-fi-03.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Lofi Background Music",
+                       "category":  "regular",
+                       "id":  20,
                        "file":  "assets/music/lofi-background-music-314199.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "lofi background music 326931",
+                       "title":  "Lofi Background Music",
                        "category":  "regular",
-                       "id":  7,
+                       "id":  21,
                        "file":  "assets/music/lofi-background-music-326931.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "lofi background music 3 471122",
+                       "title":  "Lofi Background Music 3",
                        "category":  "regular",
-                       "id":  8,
+                       "id":  22,
                        "file":  "assets/music/lofi-background-music-3-471122.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "lofi background music 466461",
+                       "title":  "Lofi Background Music",
                        "category":  "regular",
-                       "id":  9,
+                       "id":  23,
                        "file":  "assets/music/lofi-background-music-466461.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "lofi chill 2 462279",
+                       "title":  "Lofi Chill 2",
                        "category":  "regular",
-                       "id":  10,
+                       "id":  24,
                        "file":  "assets/music/lofi-chill-2-462279.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "lofi chill 456258",
+                       "title":  "Lofi Chill",
                        "category":  "regular",
-                       "id":  11,
+                       "id":  25,
                        "file":  "assets/music/lofi-chill-456258.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "lofi chill background 461490",
+                       "title":  "Lofi Chill Background",
                        "category":  "regular",
-                       "id":  12,
+                       "id":  26,
                        "file":  "assets/music/lofi-chill-background-461490.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "lofi girl lofi ambient music 365952",
+                       "title":  "Lofi Ambient Music",
                        "category":  "regular",
-                       "id":  13,
+                       "id":  27,
                        "file":  "assets/music/lofi-girl-lofi-ambient-music-365952.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "lofi girl lofi hiphop beats 328177",
+                       "title":  "Lofi Hiphop Beats",
                        "category":  "regular",
-                       "id":  14,
+                       "id":  28,
                        "file":  "assets/music/lofi-girl-lofi-hiphop-beats-328177.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "lofi instrumental 462286",
+                       "title":  "Lofi Instrumental",
                        "category":  "regular",
-                       "id":  15,
+                       "id":  29,
                        "file":  "assets/music/lofi-instrumental-462286.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "lofi lofi chill lofi girl 438671",
+                       "title":  "Lofi Lofi Chill",
                        "category":  "regular",
-                       "id":  16,
+                       "id":  30,
                        "file":  "assets/music/lofi-lofi-chill-lofi-girl-438671.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "lofi rain lofi music 458077",
+                       "title":  "Lofi Rain Lofi Music",
                        "category":  "regular",
-                       "id":  17,
+                       "id":  31,
                        "file":  "assets/music/lofi-rain-lofi-music-458077.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "lofi study calm peaceful chill hop 112191",
+                       "title":  "Lofi Study Calm Peaceful Chill Hop",
                        "category":  "regular",
-                       "id":  18,
+                       "id":  32,
                        "file":  "assets/music/lofi-study-calm-peaceful-chill-hop-112191.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "rainy lofi city lofi music 332746",
+                       "title":  "Lost In A Dream",
                        "category":  "regular",
-                       "id":  19,
+                       "id":  33,
+                       "file":  "assets/music/lost-in-a-dream.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Lounging By Moonlight",
+                       "category":  "regular",
+                       "id":  34,
+                       "file":  "assets/music/lounging-by-moonlight.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "New York",
+                       "category":  "regular",
+                       "id":  35,
+                       "file":  "assets/music/new-york.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Night Sky Hip Hop",
+                       "category":  "regular",
+                       "id":  36,
+                       "file":  "assets/music/night-sky-hip-hop.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Nostalgic Night",
+                       "category":  "regular",
+                       "id":  37,
+                       "file":  "assets/music/nostalgic-night.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Rainy Lofi City Lofi Music",
+                       "category":  "regular",
+                       "id":  38,
                        "file":  "assets/music/rainy-lofi-city-lofi-music-332746.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "christmas lofi music 269177",
+                       "title":  "Relaxation 04",
+                       "category":  "regular",
+                       "id":  39,
+                       "file":  "assets/music/relaxation-04.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Relax Beat",
+                       "category":  "regular",
+                       "id":  40,
+                       "file":  "assets/music/relax-beat.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "See Line Funk",
+                       "category":  "regular",
+                       "id":  41,
+                       "file":  "assets/music/see-line-funk.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Serene Moments",
+                       "category":  "regular",
+                       "id":  42,
+                       "file":  "assets/music/serene-moments.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Serene View",
+                       "category":  "regular",
+                       "id":  43,
+                       "file":  "assets/music/serene-view.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Sleepy Cat",
+                       "category":  "regular",
+                       "id":  44,
+                       "file":  "assets/music/sleepy-cat.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Slow Walk",
+                       "category":  "regular",
+                       "id":  45,
+                       "file":  "assets/music/slow-walk.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Smooth Jazz",
+                       "category":  "regular",
+                       "id":  46,
+                       "file":  "assets/music/smooth-jazz.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Smooth Meditation",
+                       "category":  "regular",
+                       "id":  47,
+                       "file":  "assets/music/smooth-meditation.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Soul Jazz",
+                       "category":  "regular",
+                       "id":  48,
+                       "file":  "assets/music/soul-jazz.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Sweet September",
+                       "category":  "regular",
+                       "id":  49,
+                       "file":  "assets/music/sweet-september.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Thinking About You",
+                       "category":  "regular",
+                       "id":  50,
+                       "file":  "assets/music/thinking-about-you.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Valley Sunset",
+                       "category":  "regular",
+                       "id":  51,
+                       "file":  "assets/music/valley-sunset.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Yoga Song",
+                       "category":  "regular",
+                       "id":  52,
+                       "file":  "assets/music/yoga-song.mp3"
+                   },
+                   {
+                       "artist":  "Lofi Radio",
+                       "title":  "Christmas Lofi Music",
                        "category":  "xmas",
-                       "id":  20,
+                       "id":  53,
                        "file":  "assets/music/xmas/christmas-lofi-music-269177.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "christmas relax music 275516",
+                       "title":  "Christmas Relax Music",
                        "category":  "xmas",
-                       "id":  21,
+                       "id":  54,
                        "file":  "assets/music/xmas/christmas-relax-music-275516.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "christmas tree chillhop lofi christmas background music 126617",
+                       "title":  "Christmas Tree Chillhop Lofi Christmas Background Music",
                        "category":  "xmas",
-                       "id":  22,
+                       "id":  55,
                        "file":  "assets/music/xmas/christmas-tree-chillhop-lofi-christmas-background-music-126617.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "happy new year lo fi beat 281422",
+                       "title":  "Happy New Year Lo Fi Beat",
                        "category":  "xmas",
-                       "id":  23,
+                       "id":  56,
                        "file":  "assets/music/xmas/happy-new-year-lo-fi-beat-281422.mp3"
                    },
                    {
                        "artist":  "Lofi Radio",
-                       "title":  "lofi christmas music 271594",
+                       "title":  "Lofi Christmas Music",
                        "category":  "xmas",
-                       "id":  24,
+                       "id":  57,
                        "file":  "assets/music/xmas/lofi-christmas-music-271594.mp3"
                    }
                ],
