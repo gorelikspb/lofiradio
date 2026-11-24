@@ -8,6 +8,8 @@ instructions/
 # Все markdown файлы (кроме README.md в корне)
 *.md
 !README.md
+!mobile/README.md
+!mobile/store-create-grok-prompt.md
 
 # Конфигурационные файлы с секретами
 *.config.local
@@ -37,4 +39,27 @@ package-lock.json
 # Музыкальные файлы - исключаем большие (>100MB)
 public/assets/music/track-001.mp3
 # Остальные треки коммитим (они меньше 100MB)
+
+# Android / Capacitor
+mobile/node_modules/
+mobile/www/
+mobile/android/
+mobile/keystore/*.jks
+mobile/keystore/keystore.properties
+mobile/.gradle/
+mobile/store-assets/*.apk
+mobile/store-assets/*.aab
+
+# Cloudflare Wrangler & local artifacts
+.wrangler/
+portable-pack/
+
+# YouTube generation artifacts
+youtube-input/
+youtube-output/
+youtube-upload/
+youtube-mix.mp3
+youtube-mix.mp4
+scripts/youtube-output/
+
 

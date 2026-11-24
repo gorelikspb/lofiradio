@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lofi Radio - Redirecting...</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <!-- Canonical указывает на основную страницу -->
     <link rel="canonical" href="https://lofimusic.online/ru/">
     <!-- hreflang для SEO -->
@@ -11,16 +12,29 @@
     <link rel="alternate" hreflang="en" href="https://lofimusic.online/en/">
     <link rel="alternate" hreflang="x-default" href="https://lofimusic.online/ru/">
     <script>
-        // Определяем язык браузера
-        const browserLang = navigator.language.split('-')[0];
-        const supportedLangs = ['ru', 'en'];
-        const defaultLang = 'ru';
-        
-        // Проверяем, поддерживается ли язык браузера
-        const lang = supportedLangs.includes(browserLang) ? browserLang : defaultLang;
-        
-        // Редирект на языковую версию
-        window.location.href = `${lang}/`;
+        (() => {
+            // Простая логика: если путь уже содержит /en/ или /ru/, не делаем редирект
+            const path = window.location.pathname;
+            if (
+                path.startsWith('/en/') || path.startsWith('/ru/') ||
+                path.startsWith('/en') || path.startsWith('/ru') ||
+                path.startsWith('/privacy')
+            ) {
+                // Языковые страницы и политика — без редиректа на /ru/
+                return;
+            }
+
+            // Определяем язык браузера только для корневого пути
+            const browserLang = navigator.language.split('-')[0];
+            const supportedLangs = ['ru', 'en'];
+            const defaultLang = 'ru';
+
+            // Проверяем, поддерживается ли язык браузера
+            const lang = supportedLangs.includes(browserLang) ? browserLang : defaultLang;
+
+            // Редирект на языковую версию
+            window.location.href = `${lang}/`;
+        })();
     </script>
     <meta http-equiv="refresh" content="0; url=ru/">
 </head>
