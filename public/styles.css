@@ -945,6 +945,25 @@ body:has(.lofi-background-image img[src*="background-newyear"]) .lofi-particles:
     margin: 0 auto;
     max-height: 28vh;
     overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
+}
+
+#tracksList::-webkit-scrollbar {
+    width: 6px;
+}
+
+#tracksList::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#tracksList::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.28);
+    border-radius: 999px;
+}
+
+#tracksList::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.45);
 }
 
 .track-chip {
@@ -989,4 +1008,48 @@ body:has(.lofi-background-image img[src*="background-newyear"]) .lofi-particles:
 body.capacitor-native .language-switcher {
     top: max(20px, env(safe-area-inset-top));
 }
+
+@media (min-width: 900px) {
+    .container {
+        max-width: 920px;
+        display: grid;
+        grid-template-columns: 400px minmax(0, 1fr);
+        gap: 28px;
+        align-items: stretch;
+    }
+
+    .player-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .content-links {
+        margin-top: 0;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 30px;
+        padding: 28px 24px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        max-height: 520px;
+        text-align: left;
+    }
+
+    .tracks-head {
+        justify-content: space-between;
+        margin-bottom: 16px;
+    }
+
+    #tracksList {
+        max-height: none;
+        flex: 1;
+        justify-content: flex-start;
+        align-content: flex-start;
+        padding-right: 6px;
+    }
+}
+
 
