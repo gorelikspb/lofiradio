@@ -80,6 +80,7 @@
     <link rel="stylesheet" href="../styles.css">
     <link rel="manifest" href="../manifest.json">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="preload" href="../playlist.json" as="fetch" crossorigin>
     <meta name="theme-color" content="#1a1a2e">
     <script src="../translations.js"></script>
 </head>
@@ -186,13 +187,29 @@
             </div>
             <div class="track-counter" id="trackCounter"></div>
         </div>
+
+        <!-- KeepItFree centered support & goal block -->
+        <div style="width: 100%; max-width: 520px; margin: 16px auto 0;" data-keepitfree data-project="lofiradio" data-mode="inline" data-theme="dark" data-lang="ru"></div>
         
         <div class="content-links">
             <div class="tracks-head">
                 <h3 id="tracksHeading">Все треки</h3>
                 <button type="button" id="favoritesBtn" class="favorites-btn" aria-label="Только избранное" title="Только избранное">Избранное</button>
             </div>
-            <div id="tracksList"></div>
+            <div id="tracksList">
+                <span class="track-skeleton" style="width: 96px" aria-hidden="true"></span>
+                <span class="track-skeleton" style="width: 124px" aria-hidden="true"></span>
+                <span class="track-skeleton" style="width: 88px" aria-hidden="true"></span>
+                <span class="track-skeleton" style="width: 148px" aria-hidden="true"></span>
+                <span class="track-skeleton" style="width: 112px" aria-hidden="true"></span>
+                <span class="track-skeleton" style="width: 136px" aria-hidden="true"></span>
+                <span class="track-skeleton" style="width: 102px" aria-hidden="true"></span>
+                <span class="track-skeleton" style="width: 160px" aria-hidden="true"></span>
+                <span class="track-skeleton" style="width: 118px" aria-hidden="true"></span>
+                <span class="track-skeleton" style="width: 92px" aria-hidden="true"></span>
+                <span class="track-skeleton" style="width: 140px" aria-hidden="true"></span>
+                <span class="track-skeleton" style="width: 108px" aria-hidden="true"></span>
+            </div>
         </div>
         
         <audio id="audioPlayer" preload="auto" crossorigin="anonymous">
