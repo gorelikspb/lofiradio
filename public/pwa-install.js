@@ -5,6 +5,9 @@ let bookmarkButton;
 
 // Инициализация после загрузки DOM
 document.addEventListener('DOMContentLoaded', () => {
+    if (window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) {
+        return;
+    }
     initPWAInstall();
     initBookmarkButton();
 });
@@ -342,6 +345,7 @@ function showModal(title, content) {
         }
     });
 }
+
 
 
 

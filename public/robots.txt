@@ -1,7 +1,8 @@
-User-agent: *
+﻿User-agent: *
 Allow: /
 
-Sitemap: https://lofilofi.pages.dev/sitemap.xml
+Sitemap: https://lofimusic.online/sitemap.xml
+
 
 
 

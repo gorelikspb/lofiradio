@@ -12,10 +12,12 @@ let sourceInfoEl;
 let trackCounterEl;
 let trackTimeEl;
 let likeBtn;
+let favoritesBtn;
 let visualizer;
 let isPlaying = false;
 let shuffledPlaylist = [];
 let likedTracks = new Set();
+let favoritesOnly = false;
 let canvas;
 let canvasCtx;
 let backgroundCanvas;
@@ -32,18 +34,35 @@ let isVolumeMuted = false;
 
 const VOLUME_STORAGE_KEY = 'lofiradio-volume-v2';
 const VOLUME_DEFAULT = 0.8;
+const MUSIC_CDN = 'https://lofimusic.online';
+const NATIVE_STALL_MS = 4000;
+const WEB_STALL_MS = 12000;
+const CDN_FAIL_LIMIT = 1;
+let usingLocalFallback = false;
+let offlineMode = false;
+let fullOnlinePlaylist = [];
+let cdnFailCount = 0;
+let currentBlobUrl = null;
+let loadToken = 0;
+let loadAbort = null;
+let stallTimer = null;
 
 // Определение языка из URL пути (простая и единообразная логика)
 function getLanguage() {
+    if (typeof isNativeApp === 'function' && isNativeApp()) {
+        try {
+            const saved = localStorage.getItem('lofiradio-lang');
+            if (saved === 'en' || saved === 'ru') return saved;
+        } catch (e) {}
+        return 'ru';
+    }
     const path = window.location.pathname;
-    // Просто проверяем начало пути
     if (path.startsWith('/en/') || path.startsWith('/en')) {
         return 'en';
     }
     if (path.startsWith('/ru/') || path.startsWith('/ru')) {
         return 'ru';
     }
-    // По умолчанию русский
     return 'ru';
 }
 
@@ -206,6 +225,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     trackCounterEl = document.getElementById('trackCounter');
     trackTimeEl = document.getElementById('trackTime');
     likeBtn = document.getElementById('likeBtn');
+    favoritesBtn = document.getElementById('favoritesBtn');
     visualizer = document.querySelector('.visualizer');
     canvas = document.getElementById('audioVisualizer');
     backgroundCanvas = document.getElementById('backgroundVisualizer');
@@ -244,11 +264,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             audioContext.resume();
         }
         updateUI();
+        syncNativeBackgroundAudio(true);
     });
     
     audioPlayer.addEventListener('pause', () => {
         isPlaying = false;
         updateUI();
+        if (audioPlayer.ended || document.hidden) {
+            syncNativeBackgroundAudio(true);
+        } else {
+            syncNativeBackgroundAudio(false);
+        }
     });
     
     audioPlayer.addEventListener('ended', () => {
@@ -259,30 +285,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     audioPlayer.addEventListener('error', (e) => {
         console.error('Ошибка загрузки трека:', e, audioPlayer.error);
         console.error('Текущий src:', audioPlayer.src);
-        console.error('Ожидаемый путь:', trackPath);
         console.error('Текущий URL:', window.location.href);
         statusEl.classList.remove('loading');
-        
-        // Показываем ошибку только если это реальная ошибка загрузки файла
+
+        const track = shuffledPlaylist[currentTrackIndex];
+        if (handleNativeTrackError(track)) return;
+
         if (audioPlayer.error && audioPlayer.error.code !== 0) {
-            // Показываем ошибку только если пользователь пытался играть или трек не загрузился
-            if (isPlaying || audioPlayer.error.code === 4) { // MEDIA_ERR_SRC_NOT_SUPPORTED
+            if (isPlaying || audioPlayer.error.code === 4) {
                 const lang = getLanguage();
                 statusEl.textContent = lang === 'en' ? 'Error loading track' : 'Ошибка загрузки трека';
-                // Пробуем следующий трек
                 setTimeout(() => {
                     playNext();
                 }, 1000);
             } else {
-                // Если просто загрузка без воспроизведения, не показываем ошибку
                 const lang = getLanguage();
                 statusEl.textContent = translations[lang]?.status?.clickToStart || 'Нажмите для начала';
             }
         } else {
-            // Нет реальной ошибки, просто обновляем статус
             const lang = getLanguage();
             statusEl.textContent = translations[lang]?.status?.clickToStart || 'Нажмите для начала';
         }
+    });
+
+    audioPlayer.addEventListener('canplay', () => {
+        if (stallTimer) {
+            clearTimeout(stallTimer);
+            stallTimer = null;
+        }
+        cdnFailCount = 0;
     });
     
     audioPlayer.addEventListener('loadstart', () => {
@@ -291,6 +322,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     
     audioPlayer.addEventListener('canplay', () => {
+        if (!usingLocalFallback && /^https?:\/\//i.test(audioPlayer.currentSrc || audioPlayer.src || '')) {
+            cdnFailCount = 0;
+        }
         statusEl.classList.remove('loading');
         updateTrackInfo();
         updateTime();
@@ -320,14 +354,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Обработчик лайка
     likeBtn.addEventListener('click', toggleLike);
+    if (favoritesBtn) favoritesBtn.addEventListener('click', toggleFavoritesOnly);
+    initLanguageToggle();
     
     // Поддержка медиа-клавиш
     if ('mediaSession' in navigator) {
-        navigator.mediaSession.setActionHandler('play', togglePlay);
-        navigator.mediaSession.setActionHandler('pause', togglePlay);
+        navigator.mediaSession.setActionHandler('play', () => audioPlayer.play());
+        navigator.mediaSession.setActionHandler('pause', () => audioPlayer.pause());
         navigator.mediaSession.setActionHandler('previoustrack', playPrevious);
         navigator.mediaSession.setActionHandler('nexttrack', playNext);
     }
+
+    initNativeShell();
+
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+            }
+        } else if (isPlaying) {
+            drawVisualization();
+        }
+    });
 
     // Управление с клавиатуры
     document.addEventListener('keydown', (event) => {
@@ -380,7 +429,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Загружаем первый трек после загрузки плейлиста и пытаемся запустить автоплей
     if (shuffledPlaylist.length > 0) {
-        loadTrack(0, true); // true = пытаемся начать воспроизведение автоматически
+        loadTrack(0, true, offlineMode);
         
         // Устанавливаем начальный статус через небольшую задержку на случай если события не сработают
         setTimeout(() => {
@@ -396,6 +445,87 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Плейлист не загружен. playlist.length:', playlist.length, 'shuffledPlaylist.length:', shuffledPlaylist.length);
     }
 });
+
+function shuffleArray(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
+    }
+    return a;
+}
+
+function trackKey(track) {
+    if (!track) return '';
+    const raw = String(track.local || track.file || track.id || '');
+    const base = raw.replace(/^https?:\/\/[^/]+\//i, '').split('/').pop() || raw;
+    return base.replace(/\.mp3$/i, '');
+}
+
+function isLikedTrack(track) {
+    if (!track) return false;
+    const key = trackKey(track);
+    return likedTracks.has(key) || likedTracks.has(track.id) || likedTracks.has(track.file);
+}
+
+function activeQueue() {
+    if (!favoritesOnly) return playlist.slice();
+    return playlist.filter(isLikedTrack);
+}
+
+function rebuildQueue(keepCurrent) {
+    const current = shuffledPlaylist[currentTrackIndex];
+    const queue = activeQueue();
+    shuffledPlaylist = isShuffle ? shuffleArray(queue) : queue;
+    if (!shuffledPlaylist.length) {
+        currentTrackIndex = 0;
+        return;
+    }
+    if (keepCurrent && current) {
+        const idx = shuffledPlaylist.findIndex((t) => trackKey(t) === trackKey(current));
+        currentTrackIndex = idx >= 0 ? idx : 0;
+    } else {
+        currentTrackIndex = 0;
+    }
+}
+
+function languageToggleUrl() {
+    const lang = getLanguage();
+    if (isNativeApp()) return lang === 'en' ? '../' : './en/';
+    return lang === 'en' ? '/ru/' : '/en/';
+}
+
+function refreshLanguageToggle() {
+    const btn = document.getElementById('langToggle');
+    const code = document.getElementById('langToggleCode');
+    if (!btn) return;
+    const lang = getLanguage();
+    if (code) code.textContent = lang === 'en' ? 'RU' : 'EN';
+    btn.setAttribute('aria-label', lang === 'en' ? 'Switch to Russian' : 'Switch to English');
+}
+
+function initLanguageToggle() {
+    const btn = document.getElementById('langToggle');
+    if (!btn) return;
+    refreshLanguageToggle();
+    btn.onclick = () => {
+        const current = getLanguage();
+        const next = current === 'en' ? 'ru' : 'en';
+        try { localStorage.setItem('lofiradio-lang', next); } catch (e) {}
+        if (isNativeApp()) {
+            document.documentElement.lang = next;
+            setLanguage(next);
+            refreshLanguageToggle();
+            createTracksList();
+            updateTrackInfo();
+            updateUI();
+            return;
+        }
+        window.location.href = languageToggleUrl();
+    };
+}
 
 // Загрузка плейлиста
 async function loadPlaylist() {
@@ -458,13 +588,15 @@ async function loadPlaylist() {
             statusEl.textContent = lang === 'en' ? 'Playlist is empty. Check console (F12)' : 'Плейлист пуст. Проверь консоль (F12)';
             return;
         }
-        
-        // Создаем перемешанный плейлист если включен shuffle
-        if (isShuffle) {
-            shuffledPlaylist = [...playlist].sort(() => Math.random() - 0.5);
-        } else {
-            shuffledPlaylist = [...playlist];
+
+        fullOnlinePlaylist = playlist.slice();
+        // RuStore / poor networks: play bundled MP3s first (Benzin-style local-first).
+        if (isNativeApp() && applyOfflineFirstPlaylist()) {
+            console.warn('Native offline-first:', playlist.length, 'bundled tracks');
+            probeCdnAndUpgrade();
         }
+        
+        rebuildQueue(false);
         
         console.log(`Перемешанный плейлист: ${shuffledPlaylist.length} треков`);
         
@@ -476,7 +608,7 @@ async function loadPlaylist() {
         
         // Загружаем первый трек для автозапуска
         if (shuffledPlaylist.length > 0) {
-            loadTrack(0, true);
+            loadTrack(0, true, offlineMode);
         }
     } catch (error) {
         console.error('Ошибка загрузки плейлиста:', error);
@@ -486,108 +618,249 @@ async function loadPlaylist() {
     }
 }
 
-// Загрузка трека
-function loadTrack(index, autoPlay = false) {
+function relativeTrackFile(track) {
+    if (!track) return '';
+    const raw = track.local || track.file || '';
+    return String(raw).replace(/^https?:\/\/[^/]+\//i, '').replace(/^\//, '');
+}
+
+function localTrackUrl(rel) {
+    if (!rel) return '';
+    const path = window.location.pathname || '';
+    if (path.includes('/xmas/') || path.includes('/new-year/') || path.includes('/christmas/')) {
+        return '../../' + rel;
+    }
+    if (path.includes('/ru/') || path.includes('/en/')) {
+        return '../' + rel;
+    }
+    return rel;
+}
+
+function resolveTrackUrl(track, preferLocal) {
+    if ((preferLocal || offlineMode) && track.local) {
+        return localTrackUrl(track.local);
+    }
+    if (track.file && /^https?:\/\//i.test(track.file)) {
+        return track.file;
+    }
+    const rel = relativeTrackFile(track);
+    if (isNativeApp() && rel && !offlineMode) {
+        return `${MUSIC_CDN}/${rel}`;
+    }
+    return localTrackUrl(rel);
+}
+
+function applyOfflineFirstPlaylist() {
+    const source = fullOnlinePlaylist.length ? fullOnlinePlaylist : playlist;
+    const locals = source.filter((t) => t.local);
+    if (!locals.length) return false;
+    offlineMode = true;
+    playlist = locals;
+    cdnFailCount = 0;
+    return true;
+}
+
+function switchToOfflinePlaylist() {
+    if (!applyOfflineFirstPlaylist()) return false;
+    shuffledPlaylist = isShuffle ? shuffleArray([...playlist]) : [...playlist];
+    console.warn('CDN unavailable, playing', playlist.length, 'bundled tracks');
+    return true;
+}
+
+function probeCdnAndUpgrade() {
+    if (!isNativeApp() || !fullOnlinePlaylist.length) return;
+    const sample =
+        fullOnlinePlaylist.find((t) => t.local) ||
+        fullOnlinePlaylist[0];
+    const rel = relativeTrackFile(sample);
+    if (!rel) return;
+    const url = `${MUSIC_CDN}/${rel}`;
+
+    const probe = new Audio();
+    probe.preload = 'metadata';
+    let settled = false;
+    const done = (ok) => {
+        if (settled) return;
+        settled = true;
+        try {
+            probe.removeAttribute('src');
+            probe.load();
+        } catch (e) { /* ignore */ }
+        if (!ok || !offlineMode) return;
+        offlineMode = false;
+        playlist = fullOnlinePlaylist.slice();
+        const current = shuffledPlaylist[currentTrackIndex];
+        rebuildQueue(false);
+        if (current) {
+            const idx = shuffledPlaylist.findIndex((t) => trackKey(t) === trackKey(current));
+            if (idx >= 0) currentTrackIndex = idx;
+        }
+        createTracksList();
+        updateTrackInfo();
+        console.log('CDN reachable, restored full playlist:', playlist.length);
+    };
+    const timer = setTimeout(() => done(false), 4500);
+    probe.addEventListener('loadedmetadata', () => {
+        clearTimeout(timer);
+        done(true);
+    }, { once: true });
+    probe.addEventListener('error', () => {
+        clearTimeout(timer);
+        done(false);
+    }, { once: true });
+    try {
+        probe.src = url;
+    } catch (e) {
+        clearTimeout(timer);
+        done(false);
+    }
+}
+
+function revokeTrackBlob() {
+    if (currentBlobUrl) {
+        URL.revokeObjectURL(currentBlobUrl);
+        currentBlobUrl = null;
+    }
+}
+
+function needsBlobFetch(url) {
+    if (!isNativeApp()) return false;
+    if (!/^https?:\/\//i.test(url)) return false;
+    try {
+        const host = new URL(url).hostname;
+        if (host === 'lofimusic.online' || host === 'www.lofimusic.online') return false;
+        if (host === location.hostname) return false;
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
+async function materializeTrackUrl(url, signal) {
+    if (!needsBlobFetch(url)) return url;
+    const res = await fetch(url, { mode: 'cors', signal });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const ct = (res.headers.get('content-type') || '').toLowerCase();
+    const buf = await res.arrayBuffer();
+    if (ct.includes('text/html') || buf.byteLength < 4000) {
+        throw new Error('not audio');
+    }
+    revokeTrackBlob();
+    currentBlobUrl = URL.createObjectURL(new Blob([buf], { type: 'audio/mpeg' }));
+    return currentBlobUrl;
+}
+
+function handleNativeTrackError(track) {
+    if (!isNativeApp() || !track) return false;
+    if (!usingLocalFallback && track.local) {
+        loadTrack(currentTrackIndex, true, true);
+        return true;
+    }
+    cdnFailCount += 1;
+    const forceOffline = !navigator.onLine || offlineMode || cdnFailCount >= CDN_FAIL_LIMIT;
+    if (forceOffline && switchToOfflinePlaylist()) {
+        loadTrack(0, true, true);
+        return true;
+    }
+    setTimeout(() => playNext(), 250);
+    return true;
+}
+
+function tryAutoplay(token) {
+    if (token !== loadToken) return;
+    const play = () => {
+        if (token !== loadToken) return;
+        audioPlayer.play().then(() => {
+            isPlaying = true;
+            updateUI();
+        }).catch((err) => {
+            console.log('Автоплей заблокирован браузером (это нормально):', err.name);
+            statusEl.classList.remove('loading');
+            const lang = getLanguage();
+            statusEl.textContent = translations[lang]?.status?.clickToStart || 'Нажмите для начала';
+        });
+    };
+    if (audioPlayer.readyState >= 2) {
+        play();
+        return;
+    }
+    audioPlayer.addEventListener('canplay', play, { once: true });
+}
+
+function applyTrackSrc(src, track, autoPlay, token) {
+    if (token !== loadToken) return;
+    audioPlayer.src = src;
+    console.log('Загрузка трека:', track.file, 'Track:', track.title);
+    console.log('Полный путь к треку:', src, 'Текущий путь:', window.location.pathname);
+    audioPlayer.load();
+    if (stallTimer) clearTimeout(stallTimer);
+    stallTimer = setTimeout(() => {
+        if (token !== loadToken) return;
+        if (audioPlayer.readyState < 2) {
+            console.warn('Track stall', src);
+            handleNativeTrackError(track);
+        }
+    }, isNativeApp() ? NATIVE_STALL_MS : WEB_STALL_MS);
+    if (autoPlay || isPlaying) {
+        setTimeout(() => tryAutoplay(token), 200);
+    }
+}
+
+function loadTrack(index, autoPlay = false, preferLocal = false) {
     if (shuffledPlaylist.length === 0) {
         const lang = getLanguage();
         statusEl.textContent = lang === 'en' ? 'Playlist is empty' : 'Плейлист пуст';
         return;
     }
-    
-    // Используем перемешанный плейлист
+
     const track = shuffledPlaylist[index];
     if (!track) {
-        // Если трек не найден, начинаем сначала
         if (isRepeat) {
             currentTrackIndex = 0;
             loadTrack(0, autoPlay);
         }
         return;
     }
-    
+
     currentTrackIndex = index;
-    // Путь к треку в зависимости от структуры папок
-    let trackPath;
-    const path = window.location.pathname;
-    if (path.includes('/xmas/') || path.includes('/new-year/') || path.includes('/christmas/')) {
-        // Из папки xmas/new-year/christmas нужно подняться на 2 уровня выше
-        trackPath = '../../' + track.file;
-    } else if (path.includes('/ru/') || path.includes('/en/')) {
-        // Из папки ru/ или en/ нужно подняться на уровень выше
-        trackPath = '../' + track.file;
-    } else {
-        trackPath = track.file;
+    usingLocalFallback = !!(preferLocal || offlineMode) && !!track.local;
+    const trackPath = resolveTrackUrl(track, usingLocalFallback || offlineMode);
+    const token = ++loadToken;
+    if (loadAbort) loadAbort.abort();
+    loadAbort = new AbortController();
+    if (stallTimer) {
+        clearTimeout(stallTimer);
+        stallTimer = null;
     }
-    audioPlayer.src = trackPath;
-    
-    console.log('Загрузка трека:', track.file, 'Track:', track.title);
-    console.log('Полный путь к треку:', trackPath, 'Текущий путь:', path);
-    
-    // Инициализируем визуализацию если еще не инициализирована
+
     if (!audioContext && canvas) {
         initAudioVisualizer();
     }
-    
-    // Обновляем информацию о треке
+
     updateTrackInfo();
-    
-    // Загружаем трек
-    audioPlayer.load();
-    
-    // Проверяем состояние трека после небольшой задержки
-    setTimeout(() => {
-        if (!isPlaying) {
-            // Проверяем что трек загружен и нет ошибок
-            if (audioPlayer.readyState >= 2 && (!audioPlayer.error || audioPlayer.error.code === 0)) {
-                // Трек загружен успешно, обновляем статус
-                statusEl.classList.remove('loading');
-                const lang = getLanguage();
-                statusEl.textContent = translations[lang]?.status?.clickToStart || 'Нажмите для начала';
-            } else if (audioPlayer.error && audioPlayer.error.code !== 0) {
-                // Есть реальная ошибка, но не показываем если не играет
-                statusEl.classList.remove('loading');
-                const lang = getLanguage();
-                statusEl.textContent = translations[lang]?.status?.clickToStart || 'Нажмите для начала';
-            }
-        }
-    }, 1000);
-    
-    // Автоматически начинаем воспроизведение только если явно запрошено или уже играло
-    if (autoPlay || isPlaying) {
-        // Пытаемся запустить автоплей после небольшой задержки, чтобы трек успел загрузиться
-        setTimeout(() => {
-            if (audioPlayer.readyState >= 2) {
-                audioPlayer.play().then(() => {
-                    isPlaying = true;
-                    updateUI();
-                }).catch(err => {
-                    console.log('Автоплей заблокирован браузером (это нормально):', err.name);
-                    // Браузер блокирует автоплей - это нормально, не показываем ошибку
-                    statusEl.classList.remove('loading');
-                    const lang = getLanguage();
-                    statusEl.textContent = translations[lang]?.status?.clickToStart || 'Нажмите для начала';
-                });
-            } else {
-                // Трек еще не загружен, ждем события canplay
-                audioPlayer.addEventListener('canplay', () => {
-                    audioPlayer.play().then(() => {
-                        isPlaying = true;
-                        updateUI();
-                    }).catch(err => {
-                        console.log('Автоплей заблокирован браузером (это нормально):', err.name);
-                        statusEl.classList.remove('loading');
-                        const lang = getLanguage();
-                        statusEl.textContent = translations[lang]?.status?.clickToStart || 'Нажмите для начала';
-                    });
-                }, { once: true });
-            }
-        }, 300);
+    createTracksList();
+
+    if (needsBlobFetch(trackPath)) {
+        const lang = getLanguage();
+        statusEl.textContent = lang === 'en' ? 'Loading…' : 'Загрузка...';
+        statusEl.classList.add('loading');
+        materializeTrackUrl(trackPath, loadAbort.signal).then((src) => {
+            applyTrackSrc(src, track, autoPlay, token);
+        }).catch((err) => {
+            if (err && err.name === 'AbortError') return;
+            console.warn('Remote track fetch failed', trackPath, err);
+            handleNativeTrackError(track);
+        });
+        return;
     }
+
+    applyTrackSrc(trackPath, track, autoPlay, token);
 }
 
 // Инициализация визуализации звука
 function initAudioVisualizer() {
     if (!audioPlayer) return;
+    if (isNativeApp()) return;
     
     // Настройка размера canvas внутри плеера
     if (canvas) {
@@ -636,6 +909,7 @@ function initAudioVisualizer() {
 
 // Визуализация звука
 function drawVisualization() {
+    if (document.hidden) return;
     if (!analyser || !isPlaying) {
         if (canvas) {
             canvas.classList.remove('active');
@@ -828,29 +1102,40 @@ function cleanTrackTitle(title) {
 // Создание списка треков для навигации
 function createTracksList() {
     const tracksListEl = document.getElementById('tracksList');
+    const heading = document.getElementById('tracksHeading');
     if (!tracksListEl || playlist.length === 0) return;
-    
-    // Определяем текущий язык для правильного формирования URL
+
     const lang = getLanguage();
-    
-    // Используем оригинальный плейлист (не перемешанный) для списка
-    playlist.forEach((track) => {
-        const cleanTitle = cleanTrackTitle(track.title);
-        const trackSlug = cleanTitle.toLowerCase()
-            .replace(/[^a-z0-9\s-]/g, '')
-            .replace(/\s+/g, '-')
-            .trim();
-        
-        // Добавляем префикс языка к URL трека
-        const trackUrl = `${lang}/track/${trackSlug}.html`;
-        const link = document.createElement('a');
-        link.href = trackUrl;
-        link.textContent = cleanTitle;
-        link.style.cssText = 'color: rgba(255, 255, 255, 0.7); text-decoration: none; padding: 6px 12px; background: rgba(255, 255, 255, 0.05); border-radius: 12px; font-size: 0.9em; transition: all 0.3s ease; backdrop-filter: blur(5px);';
-        link.onmouseover = function() { this.style.color = 'rgba(255, 255, 255, 1)'; this.style.background = 'rgba(255, 255, 255, 0.15)'; };
-        link.onmouseout = function() { this.style.color = 'rgba(255, 255, 255, 0.7)'; this.style.background = 'rgba(255, 255, 255, 0.05)'; };
-        
-        tracksListEl.appendChild(link);
+    const t = translations[lang] || translations.ru;
+    if (heading) heading.textContent = favoritesOnly ? t.tracksFav : t.tracksAll;
+    if (favoritesBtn) {
+        favoritesBtn.classList.toggle('active', favoritesOnly);
+        favoritesBtn.textContent = t.tracksFav;
+        favoritesBtn.title = favoritesOnly ? t.favOff : t.favOn;
+    }
+
+    tracksListEl.innerHTML = '';
+    const shown = favoritesOnly ? activeQueue() : playlist;
+    const currentKey = trackKey(shuffledPlaylist[currentTrackIndex]);
+
+    shown.forEach((track) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'track-chip';
+        btn.textContent = cleanTrackTitle(track.title);
+        if (isLikedTrack(track)) btn.classList.add('liked');
+        if (trackKey(track) === currentKey) btn.classList.add('current');
+        btn.addEventListener('click', () => {
+            const idx = shuffledPlaylist.findIndex((item) => trackKey(item) === trackKey(track));
+            if (idx >= 0) {
+                loadTrack(idx, true);
+            } else {
+                shuffledPlaylist.unshift(track);
+                loadTrack(0, true);
+            }
+            createTracksList();
+        });
+        tracksListEl.appendChild(btn);
     });
 }
 
@@ -944,8 +1229,8 @@ function updateLikeButton() {
     const track = shuffledPlaylist[currentTrackIndex];
     if (!track) return;
     
-    const trackId = track.id || track.file;
-    const isLiked = likedTracks.has(trackId);
+    const trackId = trackKey(track);
+    const isLiked = isLikedTrack(track);
     
     if (isLiked) {
         likeBtn.classList.add('liked');
@@ -959,16 +1244,46 @@ function toggleLike() {
     const track = shuffledPlaylist[currentTrackIndex];
     if (!track) return;
     
-    const trackId = track.id || track.file;
+    const trackId = trackKey(track);
     
-    if (likedTracks.has(trackId)) {
+    if (isLikedTrack(track)) {
         likedTracks.delete(trackId);
+        likedTracks.delete(track.id);
+        likedTracks.delete(track.file);
     } else {
         likedTracks.add(trackId);
     }
     
     updateLikeButton();
     saveLikes();
+    if (favoritesOnly && !isLikedTrack(track)) {
+        rebuildQueue(false);
+        if (shuffledPlaylist.length === 0) {
+            favoritesOnly = false;
+            rebuildQueue(false);
+        }
+        if (shuffledPlaylist.length) loadTrack(0, isPlaying);
+    }
+    createTracksList();
+}
+
+function toggleFavoritesOnly() {
+    const lang = getLanguage();
+    const t = translations[lang] || translations.ru;
+    if (!favoritesOnly && playlist.filter(isLikedTrack).length === 0) {
+        if (statusEl) statusEl.textContent = t.favEmpty;
+        return;
+    }
+    favoritesOnly = !favoritesOnly;
+    rebuildQueue(true);
+    if (!shuffledPlaylist.length) {
+        favoritesOnly = false;
+        rebuildQueue(true);
+        if (statusEl) statusEl.textContent = t.favEmpty;
+        return;
+    }
+    loadTrack(currentTrackIndex, isPlaying);
+    createTracksList();
 }
 
 // Следующий трек
@@ -981,7 +1296,7 @@ function playNext() {
         if (isRepeat) {
             // Перемешиваем заново если включен shuffle
             if (isShuffle) {
-                shuffledPlaylist = [...playlist].sort(() => Math.random() - 0.5);
+                shuffledPlaylist = shuffleArray(activeQueue());
             }
             nextIndex = 0;
         } else {
@@ -1110,25 +1425,7 @@ window.addEventListener('beforeunload', () => {
     }
 });
 
-// Восстановление состояния
-window.addEventListener('load', async () => {
-    // Ждем загрузки плейлиста
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
-    if (playlist.length === 0) return;
-    
-    const wasPlaying = localStorage.getItem('lofiRadioPlaying') === 'true';
-    const savedTrackIndex = parseInt(localStorage.getItem('lofiRadioTrackIndex') || '0');
-    const savedTime = parseFloat(localStorage.getItem('lofiRadioTime') || '0');
-    
-    if (wasPlaying && savedTrackIndex < shuffledPlaylist.length && shuffledPlaylist.length > 0) {
-        loadTrack(savedTrackIndex);
-        audioPlayer.currentTime = savedTime;
-        setTimeout(() => {
-            togglePlay();
-        }, 500);
-    }
-});
+// Cold start: always a random track. Do not resume the last index.
 
 // Фейерверки для новогодних страниц
 function initFireworks() {
@@ -1203,3 +1500,116 @@ function initFireworks() {
         }
     }, 5000);
 }
+
+function isNativeApp() {
+    return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+}
+
+function nativeBackgroundAudio() {
+    const cap = window.Capacitor;
+    if (!cap || !isNativeApp()) return null;
+    if (cap.Plugins && cap.Plugins.BackgroundAudio) return cap.Plugins.BackgroundAudio;
+    if (typeof cap.registerPlugin === 'function') {
+        try {
+            return cap.registerPlugin('BackgroundAudio');
+        } catch (e) {
+            console.warn('registerPlugin BackgroundAudio', e);
+        }
+    }
+    return null;
+}
+
+function currentNativeTrack() {
+    const track = shuffledPlaylist[currentTrackIndex];
+    return {
+        title: track ? cleanTrackTitle(track.title) : 'Lofi Radio',
+        artist: (track && track.artist) || 'Lofi Radio',
+        playing: !!isPlaying
+    };
+}
+
+function syncNativeBackgroundAudio(playing) {
+    const plugin = nativeBackgroundAudio();
+    if (!plugin) return;
+    const info = currentNativeTrack();
+    info.playing = playing;
+    if (playing) {
+        plugin.start(info).catch((err) => console.warn('BackgroundAudio.start', err));
+    } else if (document.hidden) {
+        plugin.update(info).catch((err) => console.warn('BackgroundAudio.update', err));
+    } else {
+        plugin.stop().catch((err) => console.warn('BackgroundAudio.stop', err));
+    }
+}
+
+function initNativeShell() {
+    if (!isNativeApp()) return;
+
+    const path = window.location.pathname || '';
+    if (path.includes('/en/') || path.endsWith('/en') || path.endsWith('/en/index.html')) {
+        window.location.replace('../index.html');
+        return;
+    }
+
+    document.documentElement.classList.add('capacitor-native');
+    document.body.classList.add('capacitor-native');
+
+    if (navigator.serviceWorker) {
+        navigator.serviceWorker.getRegistrations().then((regs) => {
+            regs.forEach((reg) => reg.unregister());
+        });
+    }
+
+    const App = window.Capacitor.Plugins?.App;
+    const SplashScreen = window.Capacitor.Plugins?.SplashScreen;
+    const StatusBar = window.Capacitor.Plugins?.StatusBar;
+    const plugin = nativeBackgroundAudio();
+
+    if (StatusBar?.setStyle) {
+        StatusBar.setStyle({ style: 'DARK' }).catch(() => {});
+        StatusBar.setBackgroundColor({ color: '#1a1a2e' }).catch(() => {});
+    }
+    if (SplashScreen?.hide) {
+        SplashScreen.hide().catch(() => {});
+    }
+
+    if (App?.addListener) {
+        App.addListener('backButton', (ev) => {
+            if (ev.canGoBack) {
+                window.history.back();
+                return;
+            }
+            if (plugin?.minimize) plugin.minimize();
+        });
+    }
+
+    if (plugin?.addListener) {
+        plugin.addListener('control', (data) => {
+            const action = data && data.action;
+            if (action === 'play') {
+                if (audioPlayer && audioPlayer.paused) audioPlayer.play().catch(() => {});
+            } else if (action === 'pause') {
+                if (audioPlayer && !audioPlayer.paused) audioPlayer.pause();
+            } else if (action === 'next') {
+                playNext();
+            } else if (action === 'prev') {
+                playPrevious();
+            }
+        });
+    }
+
+    window.__lofiDebug = {
+        isPlaying: () => isPlaying,
+        paused: () => !audioPlayer || audioPlayer.paused,
+        time: () => (audioPlayer ? audioPlayer.currentTime : 0),
+        native: true
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('testPlay') === '1') {
+        setTimeout(() => {
+            if (!isPlaying) togglePlay();
+        }, 1200);
+    }
+}
+
