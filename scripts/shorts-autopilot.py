@@ -77,6 +77,12 @@ BUCKET_TITLES = {
     "cozy_cat": "{track} — cozy cat lofi chill #shorts #lofi #chillbeats",
 }
 
+BUCKET_RELATED_MIX = {
+    "gta6": "https://www.youtube.com/watch?v=E8hc2IlieuQ",
+    "veo_winter": "https://www.youtube.com/watch?v=DZpEUZRDHl0",
+    "default": "https://www.youtube.com/watch?v=fZbtUFuN4pQ",
+}
+
 
 def load_log() -> list[dict]:
     if not LOG_FILE.exists():
@@ -223,9 +229,11 @@ def get_youtube_service():
 
 
 def upload_short(youtube, video_path: Path, title: str, bucket: str) -> str:
+    mix_url = BUCKET_RELATED_MIX.get(bucket, BUCKET_RELATED_MIX["default"])
     description = (
+        f"🔥 Full 1-hour mix: {mix_url}\n"
         "🎧 Ad-free lofi radio in 1 click: https://lofimusic.online\n"
-        "☕ 1-hour mixes on this channel — subscribe for daily chill beats.\n\n"
+        "☕ Subscribe for daily chill beats.\n\n"
         "#shorts #lofi #lofibeats #chill #lofiradio"
     )
     body = {
