@@ -35,6 +35,12 @@ OVERLAY_FILTER = (
     "fontcolor=white@0.95:fontsize=38:x=(w-text_w)/2:y=150:"
     "box=1:boxcolor=black@0.48:boxborderw=18"
 )
+GTA6_CAPTION_FILTER = (
+    "drawtext=fontfile='C\\:/Windows/Fonts/segoeuib.ttf':"
+    "text='GTA 6 Vibes Playlist  •  Full mix on channel':"
+    "fontcolor=white@0.95:fontsize=34:x=(w-text_w)/2:y=1460:"
+    "box=1:boxcolor=black@0.52:boxborderw=16"
+)
 IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp"}
 VIDEO_EXTS = {".mp4", ".mov", ".webm"}
 SHORT_DURATION = 20.0
@@ -154,11 +160,12 @@ def render_short(visual_path: Path, track_path: Path, output_path: Path, bucket:
     seek_sec = 20.0 if dur >= 45.0 else 0.0
     is_video = visual_path.suffix.lower() in {".mp4", ".mov", ".webm"}
     use_gta_logo = bucket == "gta6" and GTA6_LOGO.exists()
+    overlay_chain = f"{OVERLAY_FILTER},{GTA6_CAPTION_FILTER}" if bucket == "gta6" else OVERLAY_FILTER
 
     audio_filter = f"afade=t=in:st=0:d=0.6,afade=t=out:st={SHORT_DURATION - 1.5:.1f}:d=1.5"
 
     if is_video:
-        base_vf = f"scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,{OVERLAY_FILTER},setsar=1"
+        base_vf = f"scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,{overlay_chain},setsar=1"
         cmd = [
             "ffmpeg", "-y",
             "-stream_loop", "-1", "-i", str(visual_path),
@@ -170,7 +177,7 @@ def render_short(visual_path: Path, track_path: Path, output_path: Path, bucket:
             "scale=1080:1920:force_original_aspect_ratio=increase,"
             "crop=1080:1920,"
             f"zoompan=z='min(zoom+0.0004,1.08)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d={frames}:s=1080x1920:fps=24,"
-            f"{OVERLAY_FILTER},setsar=1"
+            f"{overlay_chain},setsar=1"
         )
         cmd = [
             "ffmpeg", "-y",
