@@ -217,6 +217,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     audioPlayer = document.getElementById('audioPlayer');
     initVolumeControl();
+    initSleepTimer();
     playBtn = document.getElementById('playBtn');
     prevBtn = document.getElementById('prevBtn');
     nextBtn = document.getElementById('nextBtn');
@@ -1334,6 +1335,75 @@ function playPrevious() {
 }
 
 // Переключение Play/Pause
+let sleepTimerId = null;
+let sleepEndAt = 0;
+let sleepActiveMinutes = 0;
+let sleepBaseVolume = null;
+
+function clearSleepTimer(restoreVol = false) {
+    if (sleepTimerId) {
+        clearInterval(sleepTimerId);
+        sleepTimerId = null;
+    }
+    sleepEndAt = 0;
+    sleepActiveMinutes = 0;
+    if (restoreVol && sleepBaseVolume !== null) {
+        applyVolume(sleepBaseVolume, false);
+    }
+    sleepBaseVolume = null;
+    const countdownEl = document.getElementById('sleepCountdown');
+    if (countdownEl) countdownEl.textContent = '';
+    document.querySelectorAll('#sleepTimer .sleep-btn').forEach((b) => b.classList.remove('active'));
+}
+
+function initSleepTimer() {
+    const container = document.getElementById('sleepTimer');
+    const countdownEl = document.getElementById('sleepCountdown');
+    if (!container || !countdownEl) return;
+
+    const tick = () => {
+        const remainingMs = sleepEndAt - Date.now();
+        const remainingSec = Math.max(0, Math.ceil(remainingMs / 1000));
+        if (remainingSec <= 0) {
+            if (audioPlayer && !audioPlayer.paused) {
+                audioPlayer.pause();
+            }
+            const volToRestore = sleepBaseVolume !== null ? sleepBaseVolume : getStoredVolume();
+            clearSleepTimer(false);
+            applyVolume(volToRestore, false);
+            return;
+        }
+        const m = Math.floor(remainingSec / 60);
+        const s = remainingSec % 60;
+        countdownEl.textContent = `${m}:${String(s).padStart(2, '0')}`;
+
+        if (remainingSec <= 10) {
+            if (sleepBaseVolume === null) {
+                sleepBaseVolume = getStoredVolume();
+            }
+            applyVolume(sleepBaseVolume * (remainingSec / 10), false);
+        }
+    };
+
+    container.querySelectorAll('.sleep-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const mins = parseInt(btn.dataset.minutes, 10);
+            if (!mins) return;
+            if (sleepActiveMinutes === mins && sleepTimerId) {
+                clearSleepTimer(true);
+                return;
+            }
+            clearSleepTimer(true);
+            sleepActiveMinutes = mins;
+            sleepBaseVolume = getStoredVolume();
+            sleepEndAt = Date.now() + mins * 60 * 1000;
+            btn.classList.add('active');
+            tick();
+            sleepTimerId = setInterval(tick, 1000);
+        });
+    });
+}
+
 function togglePlay() {
     if (shuffledPlaylist.length === 0) {
         const lang = getLanguage();
